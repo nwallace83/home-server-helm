@@ -1,3 +1,4 @@
+environment: development
 domain: localhost
 timezone: America/Denver
 
