@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.prowlarr.appName }}-env
-data:
-  PGID: "{{ .Values.localGID }}"
-  PUID: "{{ .Values.localUID }}"
-  TZ: {{ .Values.timezone }}
