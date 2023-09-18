@@ -1,9 +1,9 @@
 domain: local
 timezone: America/Denver
 
-localIP: 
-localUID: 
-localGID: 
+localIP: ""
+localUID: ""
+localGID: ""
 
 delugevpnUsername: 
 delugevpnPassword: 
