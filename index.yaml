@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  home-server-helm:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-09-18T19:51:41.685419467Z"
+    description: A Helm chart for Kubernetes
+    digest: cfb86631ed0794f32fe3b6d1e522ae93dff2bdf6bdd07349235b0bb0569abbc2
+    name: home-server-helm
+    type: application
+    urls:
+    - https://github.com/nwallace83/home-server-helm/releases/download/home-server-helm-1.0.1/home-server-helm-1.0.1.tgz
+    version: 1.0.1
+generated: "2023-09-18T19:51:41.685450867Z"
