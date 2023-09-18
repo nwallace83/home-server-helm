@@ -25,3 +25,7 @@ prowlarr:
 delugevpn:
   appName: delugevpn
   volumes: []
+
+handbrake:
+  appName: handbrake
+  volumes: []

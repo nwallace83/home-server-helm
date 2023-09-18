@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.handbrake.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.handbrake.appName }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Values.handbrake.appName }}
+    spec:
+      {{- if .Values.handbrake.volumes  }}
+      volumes:
+      {{- range .Values.handbrake.volumes }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .host_path }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.handbrake.appName }}
+          image: jlesage/handbrake:latest
+          ports:
+            - containerPort: 5800
+              protocol: TCP
+          env:
+            - name: TZ
+              value: America/Denver
+          {{- if .Values.handbrake.volumes  }}
+          volumeMounts:
+          {{- range .Values.handbrake.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+          {{- end }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5800
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5800
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  revisionHistoryLimit: 0
