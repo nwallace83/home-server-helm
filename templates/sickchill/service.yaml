@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.sickchill.appName }}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+  selector:
+    app: {{ .Values.sickchill.appName }}
+  type: ClusterIP
