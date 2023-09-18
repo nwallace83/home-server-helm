@@ -6,9 +6,9 @@ localIP: ""
 localUID: ""
 localGID: ""
 
-delugevpnUsername: 
-delugevpnPassword: 
-webPassword: 
+delugevpnUsername: ""
+delugevpnPassword: ""
+webPassword: ""
 
 sickchill:
   appName: sickchill
@@ -28,4 +28,8 @@ delugevpn:
 
 handbrake:
   appName: handbrake
+  volumes: []
+
+plex:
+  appName: plex
   volumes: []

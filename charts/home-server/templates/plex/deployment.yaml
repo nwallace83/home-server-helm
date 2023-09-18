@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.plex.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.plex.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.plex.appName }}
+    spec:
+      {{- if .Values.plex.volumes  }}
+      volumes:
+      {{- range .Values.plex.volumes }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .host_path }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.plex.appName }}
+          image: plexinc/pms-docker:latest
+          ports:
+            - containerPort: 32400
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.plex.appName }}-env
+                optional: false
+          {{- if .Values.plex.volumes  }}
+          volumeMounts:
+          {{- range .Values.plex.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+          {{- end }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /web/index.html
+              port: 32400
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /web/index.html
+              port: 32400
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  revisionHistoryLimit: 0

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.plex.appName }}-env
+data:
+  ADVERTISE_IP: >-
+    http://{{ .Values.localIP }}:32400,http://plex.{{ .Values.domain }}:32400,http://plex.{{ .Values.domain }}
+  TZ: {{ .Values.timezone }}
+  VERSION: docker
