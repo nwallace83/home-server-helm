@@ -33,3 +33,7 @@ handbrake:
 plex:
   appName: plex
   volumes: []
+
+pihole:
+  appName: pihole
+  volumes: []
