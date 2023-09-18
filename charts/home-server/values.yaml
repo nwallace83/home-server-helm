@@ -1,4 +1,4 @@
-domain: local
+domain: localhost
 timezone: America/Denver
 
 localIP: ""
