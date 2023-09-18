@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.sickchill.appName }}
   labels:
     app: {{ .Values.sickchill.appName }}
+    test: deleteme
 spec:
   replicas: 1
   selector:
