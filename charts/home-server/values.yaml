@@ -1,0 +1,26 @@
+domain: local
+timezone: America/Denver
+
+localIP: ""
+localUID: ""
+localGID: ""
+
+delugevpnUsername: 
+delugevpnPassword: 
+webPassword: 
+
+sickchill:
+  appName: sickchill
+  volumes: []
+
+radarr:
+  appName: radarr
+  volumes: []
+
+prowlarr:
+  appName: prowlarr
+  volumes: []
+
+delugevpn:
+  appName: delugevpn
+  volumes: []

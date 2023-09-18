@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.radarr.appName }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.{{ .Values.domain }}"
+      secretName: {{ .Values.domain }}-tls-secret
+  rules:
+    - host: {{ .Values.radarr.appName }}.{{ .Values.domain }}
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.radarr.appName }}
+                port:
+                  number: 80

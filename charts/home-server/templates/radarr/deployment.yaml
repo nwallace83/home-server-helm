@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.radarr.appName }}
+  labels:
+    app: {{ .Values.radarr.appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.radarr.appName }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Values.radarr.appName }}
+    spec:
+      {{- if .Values.radarr.volumes  }}
+      volumes:
+      {{- range .Values.radarr.volumes }}
+        - name: {{ .name }}
+          hostPath:
+            path: {{ .host_path }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: radarr
+          image: linuxserver/radarr:latest
+          ports:
+            - containerPort: 7878
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.radarr.appName }}-env
+                optional: false
+          {{- if .Values.radarr.volumes  }}
+          volumeMounts:
+          {{- range .Values.radarr.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+          {{- end }}
+          {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 7878
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 7878
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  revisionHistoryLimit: 0

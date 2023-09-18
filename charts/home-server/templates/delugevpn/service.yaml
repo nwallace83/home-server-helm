@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.delugevpn.appName }}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8112
+  selector:
+    app: {{ .Values.delugevpn.appName }}
+  type: ClusterIP
