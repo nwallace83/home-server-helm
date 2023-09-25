@@ -4,4 +4,4 @@ metadata:
   name: udp-services
   namespace: ingress-nginx
 data:
-  '53': {{ .Release.Namespace }}/{{ .Values.pihole.appName }}:53
+  '53': {{ .Release.Namespace }}/{{ .Values.pihole.appName }}-dns:53
