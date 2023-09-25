@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.pihole.appName }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.pihole.appName }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Values.pihole.appName }}
+    spec:
+      volumes:
+        - name: custom-list
+          configMap:
+            name: {{ .Values.pihole.appName }}-custom-list
+            items:
+              - key: custom.list
+                path: custom.list
+            defaultMode: 420
+            optional: false
+        - name: etc-pihole
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+        - name: etc-dnsmasq-d
+          emptyDir:
+            medium: Memory
+            sizeLimit: 512Mi
+      containers:
+        - name: {{ .Values.pihole.appName }}
+          image: pihole/pihole:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.pihole.appName }}-env
+                optional: false
+          resources: {}
+          volumeMounts:
+            - name: etc-pihole
+              mountPath: /etc/pihole
+              mountPropagation: None
+            - name: etc-dnsmasq-d
+              mountPath: /etc/dnsmasq.d
+              mountPropagation: None
+            - name: custom-list
+              mountPath: /etc/pihole/custom.list
+              subPath: custom.list
+              mountPropagation: None
+          livenessProbe:
+            httpGet:
+              path: /admin
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /admin
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - '-c'
+                  - >-
+                    sleep 20 && sqlite3 /etc/pihole/gravity.db "INSERT INTO
+                    adlist (address, enabled, comment) VALUES
+                    ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',
+                    1, '');" && sqlite3 /etc/pihole/gravity.db "INSERT INTO
+                    adlist (address, enabled, comment) VALUES
+                    ('https://dbl.oisd.nl', 1, '');" && pihole updateGravity
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 2
+  revisionHistoryLimit: 0
+  progressDeadlineSeconds: 600

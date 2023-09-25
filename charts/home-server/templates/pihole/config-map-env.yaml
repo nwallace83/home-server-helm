@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.pihole.appName }}-env
+data:
+  DNSMASQ_LISTENING: all
+  FTLCONF_LOCAL_IPV4: {{ .Values.localIP }}
+  FTLCONF_MAXDBDAYS: '7'
+  IPv6: 'false'
+  PIHOLE_DNS_: {{ .Values.pihole.dnsOrigins }}
+  PIHOLE_GID: {{ .Values.localGID }}
+  PIHOLE_UID: {{ .Values.localUID }}
+  TZ: {{ .Values.timezone }}
+  WEBPASSWORD: {{ .Values.webPassword }}

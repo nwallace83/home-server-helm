@@ -36,4 +36,6 @@ plex:
 
 pihole:
   appName: pihole
+  dnsOrigins: 1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76
+  customList: ""
   volumes: []
