@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.pihole.appName }}-custom-list
 data:
-  custom.list: "{{ .Values.pihole.customList }}"
+  custom.list: {{ .Values.pihole.customList | toYaml | indent 2 }}
