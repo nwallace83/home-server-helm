@@ -8,7 +8,7 @@ data:
   FTLCONF_MAXDBDAYS: '7'
   IPv6: 'false'
   PIHOLE_DNS_: {{ .Values.pihole.dnsOrigins }}
-  PIHOLE_GID: {{ .Values.localGID }}
-  PIHOLE_UID: {{ .Values.localUID }}
+  PIHOLE_GID: "{{ .Values.localGID }}"
+  PIHOLE_UID: "{{ .Values.localUID }}"
   TZ: {{ .Values.timezone }}
   WEBPASSWORD: {{ .Values.webPassword }}
