@@ -11,8 +11,10 @@ spec:
   tls:
     - hosts:
       - '*.{{ .Values.domain }}'
-      - {{ .Values.domain }}
       secretName: {{ .Values.domain }}-tls-secret
+    - hosts:
+      - {{ .Values.domain }}
+      secretName: {{ .Values.domain }}-root-tls-secret
   rules:
     - host: '{{ .Values.domain }}'
       http:
