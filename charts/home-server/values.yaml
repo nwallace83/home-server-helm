@@ -54,3 +54,4 @@ pihole:
     192.168.0.5 delugevpn.nwallace.io
     192.168.0.5 grafana.nwallace.io
     192.168.0.5 argocd.nwallace.io
+    192.168.0.5 cockpit.nwallace.io
