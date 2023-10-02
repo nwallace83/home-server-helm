@@ -20,5 +20,6 @@ spec:
                 - pihole
               imagePullPolicy: IfNotPresent
           serviceAccountName: patch-deployment-sa
+          restartPolicy: Never
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
