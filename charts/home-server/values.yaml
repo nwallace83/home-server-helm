@@ -28,6 +28,8 @@ applications:
     volumes: []
     sharedVolumes: []
   delugevpn:
+    vpnUsname: ''
+    vpnPassword: ''
     replicas: 1
     appName: delugevpn
     volumes: []

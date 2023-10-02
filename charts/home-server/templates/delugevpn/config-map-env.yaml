@@ -18,7 +18,7 @@ data:
   UMASK: '000'
   VPN_CLIENT: openvpn
   VPN_ENABLED: 'yes'
-  VPN_PASS: {{ .delugevpnPassword }}
+  VPN_PASS: {{ .vpnPassword }}
   VPN_PROV: pia
-  VPN_USER: {{ .delugevpnUsername }}
+  VPN_USER: {{ .vpnUsername }}
 {{- end }}
