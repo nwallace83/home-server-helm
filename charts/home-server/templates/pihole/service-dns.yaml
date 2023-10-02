@@ -8,9 +8,12 @@ spec:
       protocol: TCP
       port: 53
       targetPort: 53
+      nodePort: 30053
     - name: dns-udp
       protocol: UDP
       port: 53
       targetPort: 53
+      nodePort: 30053
+  type: NodePort
   selector:
     app: {{ .Values.pihole.appName }}
