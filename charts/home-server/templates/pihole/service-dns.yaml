@@ -5,7 +5,6 @@ metadata:
   name: {{ .appName }}-dns
 spec:
   ports:
-    - name: dns
       protocol: UDP
       port: 53
       targetPort: 53
