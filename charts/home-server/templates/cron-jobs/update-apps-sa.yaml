@@ -3,7 +3,7 @@ kind: ServiceAccount
 metadata:
   name: patch-deployment-sa
 secrets:
-  - name: patch-deployment-sa-secret
+  - name: patch-deployment-sa-
 ---
 apiVersion: v1
 kind: Secret

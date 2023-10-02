@@ -1,0 +1,1989 @@
+NAME: home-server
+LAST DEPLOYED: Mon Oct  2 17:25:25 2023
+NAMESPACE: home-server
+STATUS: pending-install
+REVISION: 1
+TEST SUITE: None
+HOOKS:
+MANIFEST:
+---
+# Source: home-server/templates/cron-jobs/update-apps-sa.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: patch-deployment-sa
+secrets:
+  - name: patch-deployment-sa-
+---
+# Source: home-server/templates/cron-jobs/update-apps-sa.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: patch-deployment-sa
+  annotations:
+    kubernetes.io/service-account.name: patch-deployment-sa
+type: kubernetes.io/service-account-token
+---
+# Source: home-server/templates/helpers/tls-certificate-dev.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: localhost-tls-secret
+data:
+  tls.crt: >-
+    LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR5ekNDQXJPZ0F3SUJBZ0lVZnhneHhwaTZocjJGVklBNytibXFrV2xrMGFBd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0VqRVFNQTRHQTFVRUF3d0hjbTl2ZEMxallUQWVGdzB5TXpBNU1EZ3dNak0wTWpaYUZ3MHpNekE1TURVdwpNak0wTWpaYU1CWXhGREFTQmdOVkJBTU1DeW91Ykc5allXeG9iM04wTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGCkFBT0NBUThBTUlJQkNnS0NBUUVBbFVPUjkzdjRSRDJIemh1Rkc1MjFmaGsxK01yc3JKalhjODMzSzJzR0hoS3MKRlZYcEwxRkJhNlJnNHgyN0I5Wm84aG5uaTF2NzljOExRazB0T1ZNem1jejArMlNvQ2E5R3JHZzJhS1BESjVSVQovaExJOXhNSHJiTzBkTnkwUi9GZWxKOXErRmhLb2JwRmNTcTk2WU5sYjAwMUQxY2V5TmJiNDJEOXNzU0VzVDdKCmlrSGl5M0t3RVhJTUs2L2JHYXNQQ2c0S3poNVNFKzZ2T1h3MEZrc0dxSnZ3bzB0WnpkOUhqb2M0VUxGY0FkU3kKemFpZVptMm84SW1uOFVqNlJmSzNxck15ZVNtYUQvSnFJT25sNkp2SWRkQkpoQmJDK1lTQWYvN2NqN0I5ZCt0NgpJSVlwcHZ2M1c4blRPdUZXUC9iQ2FVZnlDdmsxUDE4ZzRtOEI3YnBvUndJREFRQUJvNElCRXpDQ0FROHdMQVlEClZSMGpCQ1V3STZFV3BCUXdFakVRTUE0R0ExVUVBd3dIY205dmRDMWpZWUlKQUttU0FlL0x1Q3BYTUFrR0ExVWQKRXdRQ01BQXdDd1lEVlIwUEJBUURBZ1R3TUlHbkJnTlZIUkVFZ1o4d2daeUNFSEJwYUc5c1pTNXNiMk5oYkdodgpjM1NDRTNOcFkydGphR2xzYkM1c2IyTmhiR2h2YzNTQ0VuQnliM2RzWVhKeUxteHZZMkZzYUc5emRJSVFjbUZrCllYSnlMbXh2WTJGc2FHOXpkSUlUYUdGdVpHSnlZV3RsTG14dlkyRnNhRzl6ZElJT2NHeGxlQzVzYjJOaGJHaHYKYzNTQ0UyUmxiSFZuWlhad2JpNXNiMk5oYkdodmMzU0NFMlJoYzJoaWIyRnlaQzVzYjJOaGJHaHZjM1F3SFFZRApWUjBPQkJZRUZLVlc4dktabWx3aC9TU0plZm9sQndkVWVucEtNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUF1CjlzZ3JtSDJvR01ZS0htNTRob0dUVkFZVnAzL3FTS2RoNUtOYVFDS3oxUnRBNEVTWEFEOHRzNElKakNRWDhielQKdEx4SUo0amhnUkh5eGFLTXNJRVZHbWp5NXpqbEVjM1ltTm1tSVFGQ216b2xQUk90TEYwV0ZTdFdTUk9GQ2c1dApFd05TVjJoNEhIZnVDY2dyanU3VTU3TklXODJJRU8ydU9CRHQ3VFNqNmFFbUF0TWRBY3lLMkQ2STNQWTB4Ym45CjYvZHJPV09YQUszL2pReVdOL29Fam40NlFOeXg0TUVWdUtVVTBXK2lZSnRBalRCWWhUcFR4SUZOS0xoMEM3QmYKdVVyR0RHMjZLN3lXZE45SmE0cnRnUHc1ck9TWjFKYUZnZTZvOG5SOU5McFl6ZmMxbHNDWkxMenVsOGdvOUxOdQpuK2F1eDdJNkZOMG5NcDlkOFgycwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  tls.key: >-
+    LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBbFVPUjkzdjRSRDJIemh1Rkc1MjFmaGsxK01yc3JKalhjODMzSzJzR0hoS3NGVlhwCkwxRkJhNlJnNHgyN0I5Wm84aG5uaTF2NzljOExRazB0T1ZNem1jejArMlNvQ2E5R3JHZzJhS1BESjVSVS9oTEkKOXhNSHJiTzBkTnkwUi9GZWxKOXErRmhLb2JwRmNTcTk2WU5sYjAwMUQxY2V5TmJiNDJEOXNzU0VzVDdKaWtIaQp5M0t3RVhJTUs2L2JHYXNQQ2c0S3poNVNFKzZ2T1h3MEZrc0dxSnZ3bzB0WnpkOUhqb2M0VUxGY0FkU3l6YWllClptMm84SW1uOFVqNlJmSzNxck15ZVNtYUQvSnFJT25sNkp2SWRkQkpoQmJDK1lTQWYvN2NqN0I5ZCt0NklJWXAKcHZ2M1c4blRPdUZXUC9iQ2FVZnlDdmsxUDE4ZzRtOEI3YnBvUndJREFRQUJBb0lCQVFDT1krcEFWQlB2VFY5YgpRQ2VIdzdnYWRnUmx0WGQzNDBwTlgrTjFtT0E2R2dmdFJvcHZxQzBuZWFVdm8vSUN0UWhpUkZIOVFKK295MzFyCkgyS1ArQTRXbjAzbzhBblpTMHE1TjZVSHg0bHBIWGpDODdxZzhKZDNuaUg5QlhvNTAwa3RzTEtEL1A0ZE1Dd0UKbkFpVlZkS1REZTBiR0RuMnovanQvVjJuaHc4cVlVMDk3OVdJM1VuS0M1TmpTNENjd0RZVEViaTJBVFIyNzBidwo5a1N0MExhcnN0R09CRFE5M21aZGQrTkRuN2ZJYnVjRGZBbGQxSXBsT2ZHcGVpb1VCQmExQ0Y5cG5ERnB4RmcxCmQ0Zk1wcHVqSEsrOGx1QlBVVWg0aHkvbUNwcHR1ek92NnFkelhxYVdiTmorK1JjTDdnYVpqOStjYWQxb2RFdTEKSEdmT090YVJBb0dCQU1RM0hqQ3ZlMmx4bkRFRnFneThpbVl0QnJ2c0hFR25oOTM5SkhlbnE1d3J4ZFlWcmhXOQpNKy84MGorRDNGSUF5MG5uMzY5ZXQ1akI5UExnVVh6a1JEQWs4SDkrZUszZmtNQUdXbXE4aktTWmVZUnpPN1pHCk93cUl4VzFzWnFLNFJnYkFYS3lpUGpUZ3I0cHh2ZWR2dnAxNEx5b2k3dm03L2pIYUhpZWppUGNQQW9HQkFNSysKT2FSR09HM1BUdmdNd2l4bEN5QkMzcnJpRlFWYzZZZldGRlorS3p6U1BSZ09XYTVPclhxRHJGUTFsNnhrcXVPQgpXVG10bFBmdC96eWxYNm1EbkRiMUs1blJLdlZndG4vc3FNb3I1ZFM5Si9Oek9iM0J1eGRVR1ZFMVZndjNXVWhOCmEwRytKS1lXYUNIUUExM2p3RUdDTEFxNlFCN0VSeE1lTG0ydGpMdEpBb0dBWlNkdEh2ZzRqVUdPbmc4bmZXMXQKaEFOT1oyN3Zta0U5NEFseTFXVFJLYSsvVEFEZFFFUE1GTHFud1NxL1dGOGtiak5sczhrR3FXL0VVYm1uQ05XOAorWHp4cHlpU0drRVpKSVdoODBqRTBNNTJRUHdQR29iV1JUWUJZY255bDR5Y1BUcktEQTJRT0Q1bEFPQm1ZSHZSCkx1a1lsNFp1NEx3ejdZdGU1RnlBYmEwQ2dZRUFxQ1h0eVZ6a1hsUlF3RGJyOWI4dE15YnAvLzB6MzFTUlE3dGkKQmlpY2xzQ0ZCZDltS2U0L05maTVkR0J0M09seThFdUFTaUFKNzJVdExDVXlpMEJiUXN6QVgrak9LZDdlMVdmMwplZEViZW12MU1leTgzNDZHUjZkUzBONjN0RTlYWk9tTUFkRDIvZjE4M2kwb3F3bjZ0OVY0eDY1M3JOa1c4WGZ1CjZMNmdOQmtDZ1lCM3U3dFlNKzRhUnN1aUV1TVFFMFNaem9GQTVvbzc4RzNlYXNlSjVQSDFrUERCaDE5NklyRFkKUTdWK01GalE3S3cxTEE4MkEwTnRNZU1JYmZPc0JnU3hnT2ZrUGQvaTMxeVpKcURUTVhhTy9oUFhvclZnc0s0bApLUklXVlQ2YVV6YlNhSVFxeS9iWVFYUjMvLzV5ajBSdHZWMjFpODRCb2gxTlNtZEN5c1VCUWc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+type: kubernetes.io/tls
+---
+# Source: home-server/templates/delugevpn/config-map-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: delugevpn-env
+data:
+  DEBUG: 'false'
+  DELUGE_DAEMON_LOG_LEVEL: info
+  DELUGE_ENABLE_WEBUI_PASSWORD: 'yes'
+  DELUGE_WEB_LOG_LEVEL: info
+  ENABLE_PRIVOXY: 'no'
+  LAN_NETWORK: 10.0.0.0/8
+  NAME_SERVERS: 84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1
+  PGID: "1000"
+  PUID: "1000"
+  STRICT_PORT_FORWARD: 'yes'
+  TZ: America/Denver
+  UMASK: '000'
+  VPN_CLIENT: openvpn
+  VPN_ENABLED: 'yes'
+  VPN_PASS: kHnw3B2btE
+  VPN_PROV: pia
+  VPN_USER: p5379764
+---
+# Source: home-server/templates/delugevpn/config-map-openvpn.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: delugevpn-openvpn-volume
+data:
+  ca.rsa.2048.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIFqzCCBJOgAwIBAgIJAKZ7D5Yv87qDMA0GCSqGSIb3DQEBDQUAMIHoMQswCQYD
+    VQQGEwJVUzELMAkGA1UECBMCQ0ExEzARBgNVBAcTCkxvc0FuZ2VsZXMxIDAeBgNV
+    BAoTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMSAwHgYDVQQLExdQcml2YXRlIElu
+    dGVybmV0IEFjY2VzczEgMB4GA1UEAxMXUHJpdmF0ZSBJbnRlcm5ldCBBY2Nlc3Mx
+    IDAeBgNVBCkTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMS8wLQYJKoZIhvcNAQkB
+    FiBzZWN1cmVAcHJpdmF0ZWludGVybmV0YWNjZXNzLmNvbTAeFw0xNDA0MTcxNzM1
+    MThaFw0zNDA0MTIxNzM1MThaMIHoMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0Ex
+    EzARBgNVBAcTCkxvc0FuZ2VsZXMxIDAeBgNVBAoTF1ByaXZhdGUgSW50ZXJuZXQg
+    QWNjZXNzMSAwHgYDVQQLExdQcml2YXRlIEludGVybmV0IEFjY2VzczEgMB4GA1UE
+    AxMXUHJpdmF0ZSBJbnRlcm5ldCBBY2Nlc3MxIDAeBgNVBCkTF1ByaXZhdGUgSW50
+    ZXJuZXQgQWNjZXNzMS8wLQYJKoZIhvcNAQkBFiBzZWN1cmVAcHJpdmF0ZWludGVy
+    bmV0YWNjZXNzLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPXD
+    L1L9tX6DGf36liA7UBTy5I869z0UVo3lImfOs/GSiFKPtInlesP65577nd7UNzzX
+    lH/P/CnFPdBWlLp5ze3HRBCc/Avgr5CdMRkEsySL5GHBZsx6w2cayQ2EcRhVTwWp
+    cdldeNO+pPr9rIgPrtXqT4SWViTQRBeGM8CDxAyTopTsobjSiYZCF9Ta1gunl0G/
+    8Vfp+SXfYCC+ZzWvP+L1pFhPRqzQQ8k+wMZIovObK1s+nlwPaLyayzw9a8sUnvWB
+    /5rGPdIYnQWPgoNlLN9HpSmsAcw2z8DXI9pIxbr74cb3/HSfuYGOLkRqrOk6h4RC
+    OfuWoTrZup1uEOn+fw8CAwEAAaOCAVQwggFQMB0GA1UdDgQWBBQv63nQ/pJAt5tL
+    y8VJcbHe22ZOsjCCAR8GA1UdIwSCARYwggESgBQv63nQ/pJAt5tLy8VJcbHe22ZO
+    sqGB7qSB6zCB6DELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRMwEQYDVQQHEwpM
+    b3NBbmdlbGVzMSAwHgYDVQQKExdQcml2YXRlIEludGVybmV0IEFjY2VzczEgMB4G
+    A1UECxMXUHJpdmF0ZSBJbnRlcm5ldCBBY2Nlc3MxIDAeBgNVBAMTF1ByaXZhdGUg
+    SW50ZXJuZXQgQWNjZXNzMSAwHgYDVQQpExdQcml2YXRlIEludGVybmV0IEFjY2Vz
+    czEvMC0GCSqGSIb3DQEJARYgc2VjdXJlQHByaXZhdGVpbnRlcm5ldGFjY2Vzcy5j
+    b22CCQCmew+WL/O6gzAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBDQUAA4IBAQAn
+    a5PgrtxfwTumD4+3/SYvwoD66cB8IcK//h1mCzAduU8KgUXocLx7QgJWo9lnZ8xU
+    ryXvWab2usg4fqk7FPi00bED4f4qVQFVfGfPZIH9QQ7/48bPM9RyfzImZWUCenK3
+    7pdw4Bvgoys2rHLHbGen7f28knT2j/cbMxd78tQc20TIObGjo8+ISTRclSTRBtyC
+    GohseKYpTS9himFERpUgNtefvYHbn70mIOzfOJFTVqfrptf9jXa9N8Mpy3ayfodz
+    1wiqdteqFXkTYoSDctgKMiZ6GdocK9nMroQipIQtpnwd4yBDWIyC6Bvlkrq5TQUt
+    YDQ8z9v+DMO6iwyIDRiU
+    -----END CERTIFICATE-----
+  crl.rsa.2048.pem: |
+    -----BEGIN X509 CRL-----
+    MIICWDCCAUAwDQYJKoZIhvcNAQENBQAwgegxCzAJBgNVBAYTAlVTMQswCQYDVQQI
+    EwJDQTETMBEGA1UEBxMKTG9zQW5nZWxlczEgMB4GA1UEChMXUHJpdmF0ZSBJbnRl
+    cm5ldCBBY2Nlc3MxIDAeBgNVBAsTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMSAw
+    HgYDVQQDExdQcml2YXRlIEludGVybmV0IEFjY2VzczEgMB4GA1UEKRMXUHJpdmF0
+    ZSBJbnRlcm5ldCBBY2Nlc3MxLzAtBgkqhkiG9w0BCQEWIHNlY3VyZUBwcml2YXRl
+    aW50ZXJuZXRhY2Nlc3MuY29tFw0xNjA3MDgxOTAwNDZaFw0zNjA3MDMxOTAwNDZa
+    MCYwEQIBARcMMTYwNzA4MTkwMDQ2MBECAQYXDDE2MDcwODE5MDA0NjANBgkqhkiG
+    9w0BAQ0FAAOCAQEAQZo9X97ci8EcPYu/uK2HB152OZbeZCINmYyluLDOdcSvg6B5
+    jI+ffKN3laDvczsG6CxmY3jNyc79XVpEYUnq4rT3FfveW1+Ralf+Vf38HdpwB8EW
+    B4hZlQ205+21CALLvZvR8HcPxC9KEnev1mU46wkTiov0EKc+EdRxkj5yMgv0V2Re
+    ze7AP+NQ9ykvDScH4eYCsmufNpIjBLhpLE2cuZZXBLcPhuRzVoU3l7A9lvzG9mjA
+    5YijHJGHNjlWFqyrn1CfYS6koa4TGEPngBoAziWRbDGdhEgJABHrpoaFYaL61zqy
+    MR6jC0K2ps9qyZAN74LEBedEfK7tBOzWMwr58A==
+    -----END X509 CRL-----
+  mexico.ovpn: |
+    client
+    dev tun
+    proto udp
+    remote mexico.privacy.network 1198
+    resolv-retry infinite
+    nobind
+    persist-key
+    cipher aes-128-cbc
+    auth sha1
+    tls-client
+    remote-cert-tls server
+
+    auth-user-pass credentials.conf 
+    compress
+    verb 1
+    <crl-verify>
+    -----BEGIN X509 CRL-----
+    MIICWDCCAUAwDQYJKoZIhvcNAQENBQAwgegxCzAJBgNVBAYTAlVTMQswCQYDVQQI
+    EwJDQTETMBEGA1UEBxMKTG9zQW5nZWxlczEgMB4GA1UEChMXUHJpdmF0ZSBJbnRl
+    cm5ldCBBY2Nlc3MxIDAeBgNVBAsTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMSAw
+    HgYDVQQDExdQcml2YXRlIEludGVybmV0IEFjY2VzczEgMB4GA1UEKRMXUHJpdmF0
+    ZSBJbnRlcm5ldCBBY2Nlc3MxLzAtBgkqhkiG9w0BCQEWIHNlY3VyZUBwcml2YXRl
+    aW50ZXJuZXRhY2Nlc3MuY29tFw0xNjA3MDgxOTAwNDZaFw0zNjA3MDMxOTAwNDZa
+    MCYwEQIBARcMMTYwNzA4MTkwMDQ2MBECAQYXDDE2MDcwODE5MDA0NjANBgkqhkiG
+    9w0BAQ0FAAOCAQEAQZo9X97ci8EcPYu/uK2HB152OZbeZCINmYyluLDOdcSvg6B5
+    jI+ffKN3laDvczsG6CxmY3jNyc79XVpEYUnq4rT3FfveW1+Ralf+Vf38HdpwB8EW
+    B4hZlQ205+21CALLvZvR8HcPxC9KEnev1mU46wkTiov0EKc+EdRxkj5yMgv0V2Re
+    ze7AP+NQ9ykvDScH4eYCsmufNpIjBLhpLE2cuZZXBLcPhuRzVoU3l7A9lvzG9mjA
+    5YijHJGHNjlWFqyrn1CfYS6koa4TGEPngBoAziWRbDGdhEgJABHrpoaFYaL61zqy
+    MR6jC0K2ps9qyZAN74LEBedEfK7tBOzWMwr58A==
+    -----END X509 CRL-----
+    </crl-verify>
+
+    <ca>
+    -----BEGIN CERTIFICATE-----
+    MIIFqzCCBJOgAwIBAgIJAKZ7D5Yv87qDMA0GCSqGSIb3DQEBDQUAMIHoMQswCQYD
+    VQQGEwJVUzELMAkGA1UECBMCQ0ExEzARBgNVBAcTCkxvc0FuZ2VsZXMxIDAeBgNV
+    BAoTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMSAwHgYDVQQLExdQcml2YXRlIElu
+    dGVybmV0IEFjY2VzczEgMB4GA1UEAxMXUHJpdmF0ZSBJbnRlcm5ldCBBY2Nlc3Mx
+    IDAeBgNVBCkTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMS8wLQYJKoZIhvcNAQkB
+    FiBzZWN1cmVAcHJpdmF0ZWludGVybmV0YWNjZXNzLmNvbTAeFw0xNDA0MTcxNzM1
+    MThaFw0zNDA0MTIxNzM1MThaMIHoMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0Ex
+    EzARBgNVBAcTCkxvc0FuZ2VsZXMxIDAeBgNVBAoTF1ByaXZhdGUgSW50ZXJuZXQg
+    QWNjZXNzMSAwHgYDVQQLExdQcml2YXRlIEludGVybmV0IEFjY2VzczEgMB4GA1UE
+    AxMXUHJpdmF0ZSBJbnRlcm5ldCBBY2Nlc3MxIDAeBgNVBCkTF1ByaXZhdGUgSW50
+    ZXJuZXQgQWNjZXNzMS8wLQYJKoZIhvcNAQkBFiBzZWN1cmVAcHJpdmF0ZWludGVy
+    bmV0YWNjZXNzLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPXD
+    L1L9tX6DGf36liA7UBTy5I869z0UVo3lImfOs/GSiFKPtInlesP65577nd7UNzzX
+    lH/P/CnFPdBWlLp5ze3HRBCc/Avgr5CdMRkEsySL5GHBZsx6w2cayQ2EcRhVTwWp
+    cdldeNO+pPr9rIgPrtXqT4SWViTQRBeGM8CDxAyTopTsobjSiYZCF9Ta1gunl0G/
+    8Vfp+SXfYCC+ZzWvP+L1pFhPRqzQQ8k+wMZIovObK1s+nlwPaLyayzw9a8sUnvWB
+    /5rGPdIYnQWPgoNlLN9HpSmsAcw2z8DXI9pIxbr74cb3/HSfuYGOLkRqrOk6h4RC
+    OfuWoTrZup1uEOn+fw8CAwEAAaOCAVQwggFQMB0GA1UdDgQWBBQv63nQ/pJAt5tL
+    y8VJcbHe22ZOsjCCAR8GA1UdIwSCARYwggESgBQv63nQ/pJAt5tLy8VJcbHe22ZO
+    sqGB7qSB6zCB6DELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRMwEQYDVQQHEwpM
+    b3NBbmdlbGVzMSAwHgYDVQQKExdQcml2YXRlIEludGVybmV0IEFjY2VzczEgMB4G
+    A1UECxMXUHJpdmF0ZSBJbnRlcm5ldCBBY2Nlc3MxIDAeBgNVBAMTF1ByaXZhdGUg
+    SW50ZXJuZXQgQWNjZXNzMSAwHgYDVQQpExdQcml2YXRlIEludGVybmV0IEFjY2Vz
+    czEvMC0GCSqGSIb3DQEJARYgc2VjdXJlQHByaXZhdGVpbnRlcm5ldGFjY2Vzcy5j
+    b22CCQCmew+WL/O6gzAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBDQUAA4IBAQAn
+    a5PgrtxfwTumD4+3/SYvwoD66cB8IcK//h1mCzAduU8KgUXocLx7QgJWo9lnZ8xU
+    ryXvWab2usg4fqk7FPi00bED4f4qVQFVfGfPZIH9QQ7/48bPM9RyfzImZWUCenK3
+    7pdw4Bvgoys2rHLHbGen7f28knT2j/cbMxd78tQc20TIObGjo8+ISTRclSTRBtyC
+    GohseKYpTS9himFERpUgNtefvYHbn70mIOzfOJFTVqfrptf9jXa9N8Mpy3ayfodz
+    1wiqdteqFXkTYoSDctgKMiZ6GdocK9nMroQipIQtpnwd4yBDWIyC6Bvlkrq5TQUt
+    YDQ8z9v+DMO6iwyIDRiU
+    -----END CERTIFICATE-----
+    </ca>
+
+    disable-occ
+---
+# Source: home-server/templates/html-stub/config-map-volume.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: html-stub-config-volume
+data:
+  nginx.conf: |
+    user  nginx;
+    worker_processes  auto;
+
+    error_log  /var/log/nginx/error.log notice;
+    pid        /var/run/nginx.pid;
+
+    events {
+      worker_connections  1024;
+    }
+
+    http {
+      server {
+        listen 80;
+        listen 443;
+        server_name localhost;
+        rewrite ^/(.*) https://github.com/nwallace83 redirect;
+      }
+    }
+---
+# Source: home-server/templates/pihole/config-map-custom-list.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-custom-list
+data:
+  custom.list:   |
+    192.168.0.1 router.local
+    192.168.0.5 server.nwallace.io
+    192.168.0.5 server.local
+    192.168.0.5 pihole.nwallace.io
+    192.168.0.5 sickchill.nwallace.io
+    192.168.0.5 prowlarr.nwallace.io
+    192.168.0.5 handbrake.nwallace.io
+    192.168.0.5 plex.nwallace.io
+    192.168.0.5 radarr.nwallace.io
+    192.168.0.5 dashboard.nwallace.io
+    192.168.0.5 delugevpn.nwallace.io
+    192.168.0.5 grafana.nwallace.io
+    192.168.0.5 argocd.nwallace.io
+    192.168.0.5 cockpit.nwallace.io
+---
+# Source: home-server/templates/pihole/config-map-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-env
+data:
+  DNSMASQ_LISTENING: all
+  FTLCONF_LOCAL_IPV4: 192.168.0.5
+  FTLCONF_MAXDBDAYS: '7'
+  IPv6: 'false'
+  PIHOLE_DNS_: 1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76
+  PIHOLE_GID: "1000"
+  PIHOLE_UID: "1000"
+  TZ: America/Denver
+  WEBPASSWORD: pa55word
+---
+# Source: home-server/templates/plex/config-map-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: plex-env
+data:
+  ADVERTISE_IP: >-
+    http://192.168.0.5:32400,http://plex.localhost:32400,http://plex.localhost
+  TZ: America/Denver
+  PGID: "1000"
+  PUID: "1000"
+  VERSION: docker
+---
+# Source: home-server/templates/prowlarr/config-map-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prowlarr-env
+data:
+  PGID: "1000"
+  PUID: "1000"
+  TZ: America/Denver
+---
+# Source: home-server/templates/radarr/config-map-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: radarr-env
+data:
+  PGID: "1000"
+  PUID: "1000"
+  TZ: America/Denver
+---
+# Source: home-server/templates/sickchill/config-map-env.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sickchill-env
+data:
+  PGID: "1000"
+  PUID: "1000"
+  TZ: America/Denver
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tv-shows
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /TV_Shows
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tv-shows2
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /TV_Shows2
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: movies
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /Movies
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: processing
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /processing
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: shared-d
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /D
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: delugevpn-data
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /delugevpn/data
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: delugevpn-config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /delugevpn/config
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: handbrake-config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /handbrake/config
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: handbrake-storage
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /handbrake/storage
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: handbrake-watch
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /handbrake/watch
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: handbrake-output
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /handbrake/output
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /plex/config
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-transcode
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /plex/transcode
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prowlarr-config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /prowlarr/config
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /radarr/config
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sickchill-config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: /sickchill/config
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tv-shows
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2048Gi
+  volumeName: tv-shows
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tv-shows2
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2048Gi
+  volumeName: tv-shows2
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: movies
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2048Gi
+  volumeName: movies
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: processing
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2048Gi
+  volumeName: processing
+---
+# Source: home-server/templates/persistent-volumes/volumes-shared.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-d
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2048Gi
+  volumeName: shared-d
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: delugevpn-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: delugevpn-data
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: delugevpn-config
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: delugevpn-config
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: handbrake-config
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: handbrake-config
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: handbrake-storage
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: handbrake-storage
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: handbrake-watch
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: handbrake-watch
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: handbrake-output
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: handbrake-output
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-config
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: plex-config
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-transcode
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: plex-transcode
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prowlarr-config
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: prowlarr-config
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: radarr-config
+---
+# Source: home-server/templates/persistent-volumes/volumes.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sickchill-config
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: sickchill-config
+---
+# Source: home-server/templates/cron-jobs/update-apps-sa.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: patch-deployment
+rules:
+  - verbs:
+      - patch
+      - get
+    apiGroups:
+      - apps
+    resources:
+      - deployments
+---
+# Source: home-server/templates/cron-jobs/update-apps-sa.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: patch-deployment
+subjects:
+  - kind: ServiceAccount
+    name: patch-deployment-sa
+    namespace: home-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: patch-deployment
+---
+# Source: home-server/templates/delugevpn/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: delugevpn
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8112
+  selector:
+    app: delugevpn
+  type: ClusterIP
+---
+# Source: home-server/templates/handbrake/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: handbrake
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 5800
+  selector:
+    app: handbrake
+  type: ClusterIP
+---
+# Source: home-server/templates/html-stub/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: html-stub
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: html-stub
+---
+# Source: home-server/templates/pihole/service-dns.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-dns
+spec:
+  ports:
+  - name: dns-udp  
+    protocol: UDP
+    port: 53
+    targetPort: 53
+    nodePort: 30053
+  - name: dns-tcp  
+    protocol: TCP
+    port: 53
+    targetPort: 53
+    nodePort: 30054
+  type: NodePort
+  selector:
+    app: pihole
+---
+# Source: home-server/templates/pihole/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: pihole
+---
+# Source: home-server/templates/plex/service-tcp.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-tcp
+spec:
+  ports:
+    - name: plex-tcp
+      protocol: TCP
+      port: 32400
+      targetPort: 32400
+      nodePort: 32400
+  type: NodePort
+  selector:
+    app: plex
+---
+# Source: home-server/templates/plex/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 32400
+  selector:
+    app: plex
+  type: ClusterIP
+---
+# Source: home-server/templates/prowlarr/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 9696
+  selector:
+    app: prowlarr
+  type: ClusterIP
+---
+# Source: home-server/templates/radarr/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 7878
+  selector:
+    app: radarr
+  type: ClusterIP
+---
+# Source: home-server/templates/sickchill/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sickchill
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+  selector:
+    app: sickchill
+  type: ClusterIP
+---
+# Source: home-server/templates/delugevpn/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delugevpn
+  labels:
+    app: delugevpn
+spec:
+  replicas: 1
+  strategy: 
+    type: Recreate
+  selector:
+    matchLabels:
+      app: delugevpn
+  template:
+    metadata:
+      labels:
+        app: delugevpn
+    spec:
+      volumes:
+      - name: ca-crt
+        configMap:
+          name: delugevpn-openvpn-volume
+          items:
+            - key: ca.rsa.2048.crt
+              path: ca.rsa.2048.crt
+      - name: crl-pem
+        configMap:
+          name: delugevpn-openvpn-volume
+          items:
+            - key: crl.rsa.2048.pem
+              path: crl.rsa.2048.pem
+      - name: mexico-ovpn
+        configMap:
+          name: delugevpn-openvpn-volume
+          items:
+            - key: mexico.ovpn
+              path: mexico.ovpn
+      - name: delugevpn-data
+        persistentVolumeClaim:
+          claimName: delugevpn-data
+      - name: delugevpn-config
+        persistentVolumeClaim:
+          claimName: delugevpn-config
+      - name: movies
+        persistentVolumeClaim:
+          claimName: movies
+      - name: tv-shows
+        persistentVolumeClaim:
+          claimName: tv-shows
+      - name: tv-shows2
+        persistentVolumeClaim:
+          claimName: tv-shows2
+      - name: processing
+        persistentVolumeClaim:
+          claimName: processing
+      - name: shared-d
+        persistentVolumeClaim:
+          claimName: shared-d
+      containers:
+        - name: delugevpn
+          image: binhex/arch-delugevpn:latest
+          ports:
+            - containerPort: 8112
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: delugevpn-env
+                optional: false
+          volumeMounts:
+          - name: ca-crt
+            mountPath: /config/openvpn/ca.rsa.2048.crt
+            subPath: ca.rsa.2048.crt
+          - name: crl-pem
+            mountPath: /config/openvpn/crl.rsa.2048.pem
+            subPath: crl.rsa.2048.pem
+          - name: mexico-ovpn
+            mountPath: /config/openvpn/mexico.ovpn
+            subPath: mexico.ovpn
+          - name: delugevpn-data
+            mountPath: /data
+          - name: delugevpn-config
+            mountPath: /config
+          - name: movies
+            mountPath: /movies
+          - name: tv-shows
+            mountPath: /tv
+          - name: tv-shows2
+            mountPath: /tv2
+          - name: processing
+            mountPath: /processing
+          - name: shared-d
+            mountPath: /D
+          imagePullPolicy: Always
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+---
+# Source: home-server/templates/handbrake/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handbrake
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handbrake
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: handbrake
+    spec:
+      volumes:
+        - name: handbrake-config
+          persistentVolumeClaim:
+            claimName: handbrake-config
+        - name: handbrake-storage
+          persistentVolumeClaim:
+            claimName: handbrake-storage
+        - name: handbrake-watch
+          persistentVolumeClaim:
+            claimName: handbrake-watch
+        - name: handbrake-output
+          persistentVolumeClaim:
+            claimName: handbrake-output
+        - name: shared-d
+          persistentVolumeClaim:
+            claimName: shared-d
+      containers:
+        - name: handbrake
+          image: jlesage/handbrake:latest
+          ports:
+            - containerPort: 5800
+              protocol: TCP
+          env:
+            - name: TZ
+              value: America/Denver
+          volumeMounts:
+            - name: handbrake-config
+              mountPath: /config
+            - name: handbrake-storage
+              mountPath: /storage
+            - name: handbrake-watch
+              mountPath: /watch
+            - name: handbrake-output
+              mountPath: /output
+            - name: shared-d
+              mountPath: /D
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5800
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5800
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+---
+# Source: home-server/templates/html-stub/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: html-stub
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: html-stub
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: html-stub
+    spec:
+      volumes:
+        - name: html-stub-config-volume
+          configMap:
+            name: html-stub-config-volume
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+      containers:
+        - name: html-stub
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: html-stub-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+---
+# Source: home-server/templates/pihole/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pihole
+    spec:
+      volumes:
+        - name: custom-list
+          configMap:
+            name: pihole-custom-list
+            items:
+              - key: custom.list
+                path: custom.list
+            defaultMode: 420
+            optional: false
+        - name: etc-pihole
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+        - name: etc-dnsmasq-d
+          emptyDir:
+            medium: Memory
+            sizeLimit: 512Mi
+      containers:
+        - name: pihole
+          image: pihole/pihole:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 53
+              protocol: TCP
+            - containerPort: 53
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: pihole-env
+                optional: false
+          resources: {}
+          volumeMounts:
+            - name: etc-pihole
+              mountPath: /etc/pihole
+              mountPropagation: None
+            - name: etc-dnsmasq-d
+              mountPath: /etc/dnsmasq.d
+              mountPropagation: None
+            - name: custom-list
+              mountPath: /etc/pihole/custom.list
+              subPath: custom.list
+              mountPropagation: None
+          livenessProbe:
+            httpGet:
+              path: /admin
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /admin
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - '-c'
+                  - >-
+                    sleep 20 && sqlite3 /etc/pihole/gravity.db "INSERT INTO
+                    adlist (address, enabled, comment) VALUES
+                    ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',
+                    1, '');" && sqlite3 /etc/pihole/gravity.db "INSERT INTO
+                    adlist (address, enabled, comment) VALUES
+                    ('https://dbl.oisd.nl', 1, '');" && pihole updateGravity
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+  progressDeadlineSeconds: 600
+---
+# Source: home-server/templates/plex/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      volumes:
+        - name: plex-config
+          persistentVolumeClaim:
+            claimName: plex-config
+        - name: plex-transcode
+          persistentVolumeClaim:
+            claimName: plex-transcode
+        - name: tv-shows
+          persistentVolumeClaim:
+            claimName: tv-shows
+        - name: tv-shows2
+          persistentVolumeClaim:
+            claimName: tv-shows2
+        - name: movies
+          persistentVolumeClaim:
+            claimName: movies
+      containers:
+        - name: plex
+          image: plexinc/pms-docker:latest
+          ports:
+            - containerPort: 32400
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: plex-env
+                optional: false
+          volumeMounts:
+            - name: plex-config
+              mountPath: /config
+            - name: plex-transcode
+              mountPath: /transcode
+            - name: tv-shows
+              mountPath: /tv
+            - name: tv-shows2
+              mountPath: /tv2
+            - name: movies
+              mountPath: /movies
+          livenessProbe:
+            httpGet:
+              path: /web/index.html
+              port: 32400
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /web/index.html
+              port: 32400
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+---
+# Source: home-server/templates/prowlarr/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prowlarr
+  labels:
+    app: prowlarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prowlarr
+  template:
+    metadata:
+      labels:
+        app: prowlarr
+    spec:
+      volumes:
+        - name: prowlarr-config
+          persistentVolumeClaim:
+            claimName: prowlarr-config
+      containers:
+        - name: prowlarr
+          image: linuxserver/prowlarr:latest
+          ports:
+            - containerPort: 9696
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: prowlarr-env
+                optional: false
+          resources: {}
+          volumeMounts:
+            - name: prowlarr-config
+              mountPath: /config
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9696
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9696
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+  progressDeadlineSeconds: 600
+---
+# Source: home-server/templates/radarr/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: radarr
+    spec:
+      volumes:
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config
+        - name: movies
+          persistentVolumeClaim:
+            claimName: movies
+        - name: processing
+          persistentVolumeClaim:
+            claimName: processing
+      containers:
+        - name: radarr
+          image: linuxserver/radarr:latest
+          ports:
+            - containerPort: 7878
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: radarr-env
+                optional: false
+          volumeMounts:
+            - name: radarr-config
+              mountPath: /config
+            - name: movies
+              mountPath: /movies
+            - name: processing
+              mountPath: /processing
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 7878
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 7878
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+---
+# Source: home-server/templates/sickchill/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sickchill
+  labels:
+    app: sickchill
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sickchill
+  template:
+    metadata:
+      labels:
+        app: sickchill
+    spec:
+      volumes:
+        - name: sickchill-config
+          persistentVolumeClaim:
+            claimName: sickchill-config
+        - name: tv-shows
+          persistentVolumeClaim:
+            claimName: tv-shows
+        - name: tv-shows2
+          persistentVolumeClaim:
+            claimName: tv-shows2
+        - name: processing
+          persistentVolumeClaim:
+            claimName: processing
+      containers:
+        - name: sickchill
+          image: linuxserver/sickchill:latest
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "sickchill-env"
+                optional: false
+          volumeMounts:
+            - name: sickchill-config
+              mountPath: /config
+            - name: tv-shows
+              mountPath: /tv
+            - name: tv-shows2
+              mountPath: /tv2
+            - name: processing
+              mountPath: /processing
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          imagePullPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
+  revisionHistoryLimit: 0
+---
+# Source: home-server/templates/cron-jobs/update-apps.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: update-apps
+spec:
+  schedule: 1 3 * * 0
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: update-app-handbrake
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - handbrake
+              imagePullPolicy: IfNotPresent
+            - name: update-app-sickchill
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - sickchill
+              imagePullPolicy: IfNotPresent
+            - name: update-app-delugevpn
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - delugevpn
+              imagePullPolicy: IfNotPresent
+            - name: update-app-plex
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - plex
+              imagePullPolicy: IfNotPresent
+            - name: update-app-prowlarr
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - prowlarr
+              imagePullPolicy: IfNotPresent
+            - name: update-app-radarr
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - radarr
+              imagePullPolicy: IfNotPresent
+          serviceAccountName: patch-deployment-sa
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+---
+# Source: home-server/templates/cron-jobs/update-pihole.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: update-pihole
+spec:
+  schedule: 1 3 1 * *
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: update-app-pihole
+              image: bitnami/kubectl
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - pihole
+              imagePullPolicy: IfNotPresent
+          serviceAccountName: patch-deployment-sa
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+---
+# Source: home-server/templates/delugevpn/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: delugevpn
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.localhost"
+      secretName: localhost-tls-secret
+  rules:
+    - host: delugevpn.localhost
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: delugevpn
+                port:
+                  number: 80
+---
+# Source: home-server/templates/handbrake/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: handbrake
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - '*.localhost'
+      secretName: localhost-tls-secret
+  rules:
+    - host: handbrake.localhost
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: handbrake
+                port:
+                  number: 80
+---
+# Source: home-server/templates/html-stub/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: html-stub
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - '*.localhost'
+      secretName: localhost-tls-secret
+    - hosts:
+      - localhost
+      secretName: localhost-root-tls-secret
+  rules:
+    - host: 'localhost'
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: html-stub
+                port:
+                  number: 80
+    - host: '*.localhost'
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: html-stub
+                port:
+                  number: 80
+---
+# Source: home-server/templates/pihole/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pihole
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/configuration-snippet: if ($uri = /) {return 302 /admin;}
+    nginx.ingress.kubernetes.io/session-cookie-max-age: '3600'
+    nginx.ingress.kubernetes.io/session-cookie-name: INGRESSCOOKIE
+    nginx.ingress.kubernetes.io/session-cookie-path: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - '*.localhost'
+      secretName: localhost-tls-secret
+  rules:
+    - host: pihole.localhost
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: pihole
+                port:
+                  number: 80
+---
+# Source: home-server/templates/plex/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plex
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - '*.localhost'
+      secretName: localhost-tls-secret
+  rules:
+    - host: plex.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: plex
+                port:
+                  number: 80
+---
+# Source: home-server/templates/prowlarr/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prowlarr
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.localhost"
+      secretName: localhost-tls-secret
+  rules:
+    - host: prowlarr.localhost
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: prowlarr
+                port:
+                  number: 80
+---
+# Source: home-server/templates/radarr/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: radarr
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.localhost"
+      secretName: localhost-tls-secret
+  rules:
+    - host: radarr.localhost
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: radarr
+                port:
+                  number: 80
+---
+# Source: home-server/templates/sickchill/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sickchill
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.localhost"
+      secretName: localhost-tls-secret
+  rules:
+    - host: sickchill.localhost
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: sickchill
+                port:
+                  number: 80
+
