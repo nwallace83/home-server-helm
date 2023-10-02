@@ -1,5 +1,6 @@
 {{- range .Values.applications }}
 {{- range .volumes }}
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -20,12 +21,11 @@ spec:
     - noresvport
   persistentVolumeReclaimPolicy: Retain
 {{- end }}
-{{- end }}
-
----
+{{ end }}
 
 {{- range .Values.applications }}
 {{- range .volumes }}
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -33,7 +33,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
   resources:
     requests:
       storage: {{ .size }}
