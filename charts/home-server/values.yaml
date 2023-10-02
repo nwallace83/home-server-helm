@@ -6,48 +6,48 @@ localIP: ""
 localUID: ""
 localGID: ""
 
-volumesShared: []
+volumesShared: {}
 
 applications:
   sickchill:
     replicas: 1
     appName: sickchill
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
   radarr:
     replicas: 1
     appName: radarr
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
   prowlarr:
     replicas: 1
     appName: prowlarr
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
   delugevpn:
     vpnUsername: ''
     vpnPassword: ''
     replicas: 1
     appName: delugevpn
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
   handbrake:
     replicas: 1
     appName: handbrake
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
   plex:
     replicas: 1
     appName: plex
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
   htmlstub:
     replicas: 2
     appName: html-stub
   pihole:
     replicas: 2
-    volumes: []
-    sharedVolumes: []
+    volumes: {}
+    sharedVolumes: {}
     appName: pihole
     dnsOrigins: 1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76
     webPassword: password
