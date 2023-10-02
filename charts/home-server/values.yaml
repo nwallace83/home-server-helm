@@ -6,9 +6,6 @@ localIP: ""
 localUID: ""
 localGID: ""
 
-delugevpnUsername: ""
-delugevpnPassword: ""
-
 volumesShared: []
 
 applications:
@@ -28,7 +25,7 @@ applications:
     volumes: []
     sharedVolumes: []
   delugevpn:
-    vpnUsname: ''
+    vpnUsername: ''
     vpnPassword: ''
     replicas: 1
     appName: delugevpn
