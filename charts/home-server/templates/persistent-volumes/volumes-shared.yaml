@@ -1,16 +1,16 @@
-{{- range .Values.volumesShared }}
+{{- range $v := .Values.volumesShared }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .name }}
+  name: {{ $v.name }}
 spec:
   capacity:
-    storage: {{ .size }}
+    storage: {{ $v.size }}
   accessModes:
     - ReadWriteMany
   nfs:
     server: server.local
-    path: {{ .nfs_path }}
+    path: {{ $v.nfs_path }}
   mountOptions:
     - nfsvers=4.2
     - hard
@@ -22,17 +22,17 @@ spec:
 
 ---
 
-{{- range .Values.volumesShared }}
+{{- range $v := .Values.volumesShared }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .name }}
+  name: {{ $v.name }}
 spec:
   accessModes:
     - ReadWriteMany
   storageClassName: ""
   resources:
     requests:
-      storage: {{ .size }}
-  volumeName: {{ .name }}
+      storage: {{ $v.size }}
+  volumeName: {{ $v.name }}
 {{- end }}
