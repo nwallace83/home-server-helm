@@ -1,38 +1,39 @@
+{{- with  .Values.plex }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.plex.appName }}
+  name: {{ .appName }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.plex.appName }}
+      app: {{ .appName }}
   template:
     metadata:
       labels:
-        app: {{ .Values.plex.appName }}
+        app: {{ .appName }}
     spec:
-      {{- if .Values.plex.volumes  }}
+      {{- if .volumes  }}
       volumes:
-      {{- range .Values.plex.volumes }}
+      {{- range .volumes }}
         - name: {{ .name }}
-          hostPath:
-            path: {{ .host_path }}
+          persistentVolumeClaim:
+            claimName: {{ .pvc_name }}
       {{- end }}
       {{- end }}
       containers:
-        - name: {{ .Values.plex.appName }}
+        - name: {{ .appName }}
           image: plexinc/pms-docker:latest
           ports:
             - containerPort: 32400
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .Values.plex.appName }}-env
+                name: {{ .appName }}-env
                 optional: false
-          {{- if .Values.plex.volumes  }}
+          {{- if .volumes  }}
           volumeMounts:
-          {{- range .Values.plex.volumes }}
+          {{- range .volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
           {{- end }}
@@ -65,3 +66,4 @@ spec:
       maxUnavailable: 0
       maxSurge: 1
   revisionHistoryLimit: 0
+{{- end }}
