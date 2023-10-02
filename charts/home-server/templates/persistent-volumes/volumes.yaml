@@ -19,9 +19,13 @@ spec:
     - retrans=2
     - noresvport
   persistentVolumeReclaimPolicy: Retain
+{{- end }}
+{{- end }}
 
-####################################################################################################
+---
 
+{{- range .Values.applications }}
+{{- range .volumes }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
