@@ -1,7 +1,8 @@
+{{- with .Values.applications.pihole }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.pihole.appName }}
+  name: {{ .appName }}
 spec:
   ports:
     - name: http
@@ -9,4 +10,5 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: {{ .Values.pihole.appName }}
+    app: {{ .appName }}
+{{- end }}

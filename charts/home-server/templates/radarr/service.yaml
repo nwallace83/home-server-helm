@@ -1,7 +1,8 @@
+{{- with .Values.applications.radarr }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.radarr.appName }}
+  name: {{ .appName }}
 spec:
   ports:
     - name: http
@@ -9,5 +10,6 @@ spec:
       port: 80
       targetPort: 7878
   selector:
-    app: {{ .Values.radarr.appName }}
+    app: {{ .appName }}
   type: ClusterIP
+{{- end }}

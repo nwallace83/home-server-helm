@@ -1,0 +1,38 @@
+{{- range .Values.applications }}
+{{- range .volumes }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .name }}
+spec:
+  capacity:
+    storage: {{ .size }}
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: server.local
+    path: {{ .nfs_path }}
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+  persistentVolumeReclaimPolicy: Retain
+
+####################################################################################################
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: {{ .size }}
+  volumeName: {{ .name }}
+{{- end }}
+{{- end }}

@@ -1,9 +1,13 @@
+{{- with .Values.applications.plex }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.plex.appName }}-env
+  name: {{ .appName }}-env
 data:
   ADVERTISE_IP: >-
-    http://{{ .Values.localIP }}:32400,http://plex.{{ .Values.domain }}:32400,http://plex.{{ .Values.domain }}
-  TZ: {{ .Values.timezone }}
+    http://{{ $.Values.localIP }}:32400,http://plex.{{ $.Values.domain }}:32400,http://plex.{{ $.Values.domain }}
+  TZ: {{ $.Values.timezone }}
+  PGID: "{{ $.Values.localGID }}"
+  PUID: "{{ $.Values.localUID }}"
   VERSION: docker
+{{- end }}

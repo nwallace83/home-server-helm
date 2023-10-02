@@ -1,7 +1,8 @@
+{{- with .Values.applications.pihole }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.pihole.appName }}-dns
+  name: {{ .appName }}-dns
 spec:
   ports:
     - name: dns-tcp
@@ -16,4 +17,5 @@ spec:
       nodePort: 30053
   type: NodePort
   selector:
-    app: {{ .Values.pihole.appName }}
+    app: {{ .appName }}
+{{- end }}

@@ -1,22 +1,23 @@
+{{- with .Values.applications.pihole }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.pihole.appName }}
+  name: {{ .appName }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: {{ .Values.pihole.appName }}
+      app: {{ .appName }}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Values.pihole.appName }}
+        app: {{ .appName }}
     spec:
       volumes:
         - name: custom-list
           configMap:
-            name: {{ .Values.pihole.appName }}-custom-list
+            name: {{ .appName }}-custom-list
             items:
               - key: custom.list
                 path: custom.list
@@ -30,8 +31,18 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 512Mi
+        {{- range .volumes  }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+        {{- range .sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
       containers:
-        - name: {{ .Values.pihole.appName }}
+        - name: {{ .appName }}
           image: pihole/pihole:latest
           ports:
             - containerPort: 80
@@ -42,7 +53,7 @@ spec:
               protocol: UDP
           envFrom:
             - configMapRef:
-                name: {{ .Values.pihole.appName }}-env
+                name: {{ .appName }}-env
                 optional: false
           resources: {}
           volumeMounts:
@@ -56,6 +67,14 @@ spec:
               mountPath: /etc/pihole/custom.list
               subPath: custom.list
               mountPropagation: None
+            {{- range .volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+            {{- range .sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /admin
@@ -96,3 +115,4 @@ spec:
       maxSurge: 2
   revisionHistoryLimit: 0
   progressDeadlineSeconds: 600
+{{- end }}

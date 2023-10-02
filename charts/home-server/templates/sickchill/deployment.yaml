@@ -1,43 +1,53 @@
+{{- with .Values.applications.sickchill }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.sickchill.appName }}
+  name: {{ .appName }}
   labels:
-    app: {{ .Values.sickchill.appName }}
+    app: {{ .appName }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.sickchill.appName }}
+      app: {{ .appName }}
   template:
     metadata:
       labels:
-        app: {{ .Values.sickchill.appName }}
+        app: {{ .appName }}
     spec:
-      {{- if .Values.sickchill.volumes  }}
+      {{- if or .volumes .sharedVolumes }}
       volumes:
-      {{- range .Values.sickchill.volumes }}
+        {{- range .volumes  }}
         - name: {{ .name }}
-          hostPath:
-            path: {{ .host_path }}
-      {{- end }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+        {{- range .sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
       {{- end }}
       containers:
-        - name: {{ .Values.sickchill.appName }}
+        - name: {{ .appName }}
           image: linuxserver/sickchill:latest
           ports:
             - containerPort: 8081
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: "{{ .Values.sickchill.appName }}-env"
+                name: "{{ .appName }}-env"
                 optional: false
-          {{- if .Values.sickchill.volumes  }}
+          {{- if or .volumes .sharedVolumes }}
           volumeMounts:
-          {{- range .Values.sickchill.volumes }}
+            {{- range .volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
-          {{- end }}
+            {{- end }}
+            {{- range .sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
           {{- end }}
           livenessProbe:
             httpGet:
@@ -66,3 +76,4 @@ spec:
       maxUnavailable: 0
       maxSurge: 1
   revisionHistoryLimit: 0
+{{- end }}

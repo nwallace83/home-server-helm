@@ -1,7 +1,8 @@
+{{- with .Values.applications.delugevpn }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.delugevpn.appName }}
+  name: {{ .appName }}
 spec:
   ports:
     - name: http
@@ -9,5 +10,6 @@ spec:
       port: 80
       targetPort: 8112
   selector:
-    app: {{ .Values.delugevpn.appName }}
+    app: {{ .appName }}
   type: ClusterIP
+{{- end }}

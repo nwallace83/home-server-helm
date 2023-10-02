@@ -1,4 +1,4 @@
-{{- with  .Values.plex }}
+{{- with .Values.applications.plex }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,13 +13,18 @@ spec:
       labels:
         app: {{ .appName }}
     spec:
-      {{- if .volumes  }}
+      {{- if or .volumes .sharedVolumes }}
       volumes:
-      {{- range .volumes }}
+        {{- range .volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
-            claimName: {{ .pvc_name }}
-      {{- end }}
+            claimName: {{ .name }}
+        {{- end }}
+        {{- range .sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
       {{- end }}
       containers:
         - name: {{ .appName }}
@@ -31,12 +36,16 @@ spec:
             - configMapRef:
                 name: {{ .appName }}-env
                 optional: false
-          {{- if .volumes  }}
+          {{- if or .volumes .sharedVolumes }}
           volumeMounts:
-          {{- range .volumes }}
+            {{- range .volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
-          {{- end }}
+            {{- end }}
+            {{- range .sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
           {{- end }}
           livenessProbe:
             httpGet:

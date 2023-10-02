@@ -1,7 +1,8 @@
+{{- with .Values.applications.delugevpn }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.delugevpn.appName }}-env
+  name: {{ .appName }}-env
 data:
   DEBUG: 'false'
   DELUGE_DAEMON_LOG_LEVEL: info
@@ -10,13 +11,14 @@ data:
   ENABLE_PRIVOXY: 'no'
   LAN_NETWORK: 10.0.0.0/8
   NAME_SERVERS: 84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1
-  PGID: "{{ .Values.localGID }}"
-  PUID: "{{ .Values.localUID }}"
+  PGID: "{{ $.Values.localGID }}"
+  PUID: "{{ $.Values.localUID }}"
   STRICT_PORT_FORWARD: 'yes'
-  TZ: {{ .Values.timezone }}
+  TZ: {{ $.Values.timezone }}
   UMASK: '000'
   VPN_CLIENT: openvpn
   VPN_ENABLED: 'yes'
-  VPN_PASS: {{ .Values.delugevpnPassword }}
+  VPN_PASS: {{ .delugevpnPassword }}
   VPN_PROV: pia
-  VPN_USER: {{ .Values.delugevpnUsername }}
+  VPN_USER: {{ .delugevpnUsername }}
+{{- end }}

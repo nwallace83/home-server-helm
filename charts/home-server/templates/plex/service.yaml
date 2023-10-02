@@ -1,7 +1,8 @@
+{{- with .Values.applications.plex }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.plex.appName }}
+  name: {{ .appName }}
 spec:
   ports:
     - name: http
@@ -9,5 +10,6 @@ spec:
       port: 80
       targetPort: 32400
   selector:
-    app: {{ .Values.plex.appName }}
+    app: {{ .appName }}
   type: ClusterIP
+{{- end }}

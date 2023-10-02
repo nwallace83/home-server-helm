@@ -1,7 +1,8 @@
+{{- with .Values.applications.pihole }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.pihole.appName }}
+  name: {{ .appName }}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/affinity: cookie
@@ -15,16 +16,17 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - '*.{{ .Values.domain }}'
-      secretName: {{ .Values.domain }}-tls-secret
+        - '*.{{ $.Values.domain }}'
+      secretName: {{ $.Values.domain }}-tls-secret
   rules:
-    - host: {{ .Values.pihole.appName }}.{{ .Values.domain }}
+    - host: {{ .appName }}.{{ $.Values.domain }}
       http:
         paths:
           - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: {{ .Values.pihole.appName }}
+                name: {{ .appName }}
                 port:
                   number: 80
+{{- end }}

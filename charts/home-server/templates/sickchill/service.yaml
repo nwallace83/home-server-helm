@@ -1,7 +1,8 @@
+{{- with .Values.applications.sickchill }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.sickchill.appName }}
+  name: {{ .appName }}
 spec:
   ports:
     - name: http
@@ -9,5 +10,6 @@ spec:
       port: 80
       targetPort: 8081
   selector:
-    app: {{ .Values.sickchill.appName }}
+    app: {{ .appName }}
   type: ClusterIP
+{{- end }}

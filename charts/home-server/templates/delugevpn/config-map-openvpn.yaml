@@ -1,7 +1,8 @@
+{{- with .Values.applications.delugevpn }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.delugevpn.appName }}-openvpn-volume
+  name: {{ .appName }}-openvpn-volume
 data:
   ca.rsa.2048.crt: |
     -----BEGIN CERTIFICATE-----
@@ -124,3 +125,4 @@ data:
     </ca>
 
     disable-occ
+{{- end }}

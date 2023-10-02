@@ -1,28 +1,34 @@
+{{- with .Values.applications.handbrake }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.handbrake.appName }}
+  name: {{ .appName }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.handbrake.appName }}
+      app: {{ .appName }}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Values.handbrake.appName }}
+        app: {{ .appName }}
     spec:
-      {{- if .Values.handbrake.volumes  }}
+      {{- if or .volumes .sharedVolumes }}
       volumes:
-      {{- range .Values.handbrake.volumes }}
+        {{- range .volumes  }}
         - name: {{ .name }}
-          hostPath:
-            path: {{ .host_path }}
-      {{- end }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+        {{- range .sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
       {{- end }}
       containers:
-        - name: {{ .Values.handbrake.appName }}
+        - name: {{ .appName }}
           image: jlesage/handbrake:latest
           ports:
             - containerPort: 5800
@@ -30,12 +36,16 @@ spec:
           env:
             - name: TZ
               value: America/Denver
-          {{- if .Values.handbrake.volumes  }}
+          {{- if or .volumes .sharedVolumes }}
           volumeMounts:
-          {{- range .Values.handbrake.volumes }}
+            {{- range .volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
-          {{- end }}
+            {{- end }}
+            {{- range .sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
           {{- end }}
           livenessProbe:
             httpGet:
@@ -64,3 +74,4 @@ spec:
       maxUnavailable: 0
       maxSurge: 1
   revisionHistoryLimit: 0
+{{- end }}

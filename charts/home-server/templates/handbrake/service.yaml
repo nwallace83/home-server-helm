@@ -1,7 +1,8 @@
+{{- with .Values.applications.handbrake }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.handbrake.appName }}
+  name: {{ .appName }}
 spec:
   ports:
     - name: http
@@ -9,5 +10,6 @@ spec:
       port: 80
       targetPort: 5800
   selector:
-    app: {{ .Values.handbrake.appName }}
+    app: {{ .appName }}
   type: ClusterIP
+{{- end }}
