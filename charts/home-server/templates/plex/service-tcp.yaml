@@ -5,6 +5,7 @@ metadata:
   name: {{ .appName }}-tcp
 spec:
   ports:
+    - name: {{ .appName }}-tcp
       protocol: TCP
       port: 32400
       targetPort: 32400
