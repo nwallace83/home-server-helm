@@ -16,7 +16,6 @@ spec:
       labels:
         app: {{ .appName }}
     spec:
-      {{- if or .volumes .sharedVolumes }}
       volumes:
         {{- range .volumes  }}
         - name: {{ .name }}
@@ -28,7 +27,6 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-      {{- end }}
       containers:
         - name: radarr
           image: linuxserver/radarr:latest
@@ -39,7 +37,6 @@ spec:
             - configMapRef:
                 name: {{ .appName }}-env
                 optional: false
-          {{- if or .volumes .sharedVolumes }}
           volumeMounts:
             {{- range .volumes }}
             - name: {{ .name }}
@@ -49,7 +46,6 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
-          {{- end }}
           livenessProbe:
             httpGet:
               path: /
