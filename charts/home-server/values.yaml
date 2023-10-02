@@ -13,30 +13,37 @@ volumesShared: []
 
 applications:
   sickchill:
+    replicas: 1
     appName: sickchill
     volumes: []
     sharedVolumes: []
   radarr:
+    replicas: 1
     appName: radarr
     volumes: []
     sharedVolumes: []
   prowlarr:
+    replicas: 1
     appName: prowlarr
     volumes: []
     sharedVolumes: []
   delugevpn:
+    replicas: 1
     appName: delugevpn
     volumes: []
     sharedVolumes: []
   handbrake:
+    replicas: 1
     appName: handbrake
     volumes: []
     sharedVolumes: []
   plex:
+    replicas: 1
     appName: plex
     volumes: []
     sharedVolumes: []
   pihole:
+    replicas: 2
     volumes: []
     sharedVolumes: []
     appName: pihole
