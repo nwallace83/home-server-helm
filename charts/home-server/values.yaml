@@ -41,6 +41,9 @@ applications:
     appName: plex
     volumes: []
     sharedVolumes: []
+  htmlstub:
+    replicas: 2
+    appName: html-stub
   pihole:
     replicas: 2
     volumes: []

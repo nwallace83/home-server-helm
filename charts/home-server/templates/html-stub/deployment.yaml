@@ -1,33 +1,34 @@
+{{- with .Values.applications.htmlstub }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: html-stub
+  name: {{ .appName }}
 spec:
-  replicas: 2
+  replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: html-stub
+      app: {{ .appName }}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: html-stub
+        app: {{ .appName }}
     spec:
       volumes:
-        - name: config-volume
+        - name: {{ .appName }}-config-volume
           configMap:
-            name: config-volume
+            name: {{ .appName }}-config-volume
             items:
               - key: nginx.conf
                 path: nginx.conf
       containers:
-        - name: html-stub
+        - name: {{ .appName }}
           image: nginx:latest
           ports:
             - containerPort: 80
               protocol: TCP
           volumeMounts:
-            - name: config-volume
+            - name: {{ .appName }}-config-volume
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
           livenessProbe:
@@ -53,5 +54,6 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 0
-      maxSurge: 2
+      maxSurge: 100%
   revisionHistoryLimit: 0
+{{- end }}

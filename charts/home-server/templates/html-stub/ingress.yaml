@@ -1,7 +1,8 @@
+{{- with .Values.applications.htmlstub }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: html-stub
+  name: {{ .appName }}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
@@ -10,29 +11,30 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - '*.{{ .Values.domain }}'
-      secretName: {{ .Values.domain }}-tls-secret
+      - '*.{{ $.Values.domain }}'
+      secretName: {{ $.Values.domain }}-tls-secret
     - hosts:
-      - {{ .Values.domain }}
-      secretName: {{ .Values.domain }}-root-tls-secret
+      - {{ $.Values.domain }}
+      secretName: {{ $.Values.domain }}-root-tls-secret
   rules:
-    - host: '{{ .Values.domain }}'
+    - host: '{{ $.Values.domain }}'
       http:
         paths:
           - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: html-stub
+                name: {{ .appName }}
                 port:
                   number: 80
-    - host: '*.{{ .Values.domain }}'
+    - host: '*.{{ $.Values.domain }}'
       http:
         paths:
           - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: html-stub
+                name: {{ .appName }}
                 port:
                   number: 80
+{{- end }}

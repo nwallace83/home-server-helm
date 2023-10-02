@@ -1,7 +1,8 @@
+{{- with .Values.applications.htmlstub }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: html-stub-config-volume
+  name: {{ .appName }}-config-volume
 data:
   nginx.conf: |
     user  nginx;
@@ -18,7 +19,8 @@ data:
       server {
         listen 80;
         listen 443;
-        server_name {{ .Values.domain }};
+        server_name {{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
     }   
+{{- end }}
