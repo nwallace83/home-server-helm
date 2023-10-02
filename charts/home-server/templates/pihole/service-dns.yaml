@@ -5,10 +5,16 @@ metadata:
   name: {{ .appName }}-dns
 spec:
   ports:
-      protocol: UDP
-      port: 53
-      targetPort: 53
-      nodePort: 30053
+  - name: dns-udp  
+    protocol: UDP
+    port: 53
+    targetPort: 53
+    nodePort: 30053
+  - name: dns-tcp  
+    protocol: TCP
+    port: 53
+    targetPort: 53
+    nodePort: 30054
   type: NodePort
   selector:
     app: {{ .appName }}
