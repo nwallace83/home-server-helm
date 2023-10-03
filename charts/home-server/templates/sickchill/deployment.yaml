@@ -68,10 +68,7 @@ spec:
             successThreshold: 1
             failureThreshold: 12
           imagePullPolicy: Always
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 100%
+  strategy: 
+    type: Recreate
   revisionHistoryLimit: 0
 {{- end }}
