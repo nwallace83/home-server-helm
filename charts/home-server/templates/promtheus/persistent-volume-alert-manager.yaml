@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   nfs:
     server: server.local
-    path: /prometheus/alert-manager
+    path: /prometheus
   mountOptions:
     - nfsvers=4.2
     - hard
