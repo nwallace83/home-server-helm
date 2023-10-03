@@ -4,9 +4,9 @@ metadata:
   name: alert-manager-pv
 spec:
   capacity:
-    storage: 30Gi
+    storage: 50Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   nfs:
     server: server.local
     path: /prometheus/alert-manager
