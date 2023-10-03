@@ -34,6 +34,10 @@ spec:
           env:
             - name: TZ
               value: America/Denver
+            - name: PGID
+              value: {{ $.Values.localGID }}
+            - name: PUID
+              value: {{ $.Values.localUID }}
           volumeMounts:
             {{- range .volumes }}
             - name: {{ .name }}
