@@ -4,9 +4,9 @@ metadata:
   name: prometheus-pv
 spec:
   capacity:
-    storage: 50Gi
+    storage: 30Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   nfs:
     server: server.local
     path: /prometheus/prometheus
