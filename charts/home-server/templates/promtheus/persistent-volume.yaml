@@ -4,9 +4,9 @@ metadata:
   name: kube-prometheus-stack-pv
 spec:
   capacity:
-    storage: 10Gi
+    storage: 50Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   nfs:
     server: server.local
     path: /prometheus

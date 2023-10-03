@@ -5,8 +5,8 @@ metadata:
   namespace: monitoring
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 50Gi
   volumeName: kube-prometheus-stack-pv
