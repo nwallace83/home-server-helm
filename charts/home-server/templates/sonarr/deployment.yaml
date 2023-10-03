@@ -1,0 +1,73 @@
+{{- with .Values.applications.sonarr }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  labels:
+    app: {{ .appName }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .appName }}
+    spec:
+      volumes:
+        {{- range .volumes  }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+        {{- range .sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+      containers:
+        - name: sonarr
+          image: linuxserver/sonarr:latest
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .appName }}-env
+                optional: false
+          volumeMounts:
+            {{- range .volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+            {{- range .sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8989
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 12
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8989
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 12
+          imagePullPolicy: Always
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0
+{{- end }}

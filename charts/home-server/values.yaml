@@ -19,6 +19,11 @@ applications:
     appName: radarr
     volumes: []
     sharedVolumes: []
+  sonarr:
+    replicas: 1
+    appName: sonarr
+    volumes: []
+    sharedVolumes: []
   prowlarr:
     replicas: 1
     appName: prowlarr
