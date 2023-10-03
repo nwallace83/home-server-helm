@@ -66,6 +66,7 @@ applications:
       192.168.0.5 handbrake.nwallace.io
       192.168.0.5 plex.nwallace.io
       192.168.0.5 radarr.nwallace.io
+      192.168.0.5 sonarr.nwallace.io
       192.168.0.5 dashboard.nwallace.io
       192.168.0.5 delugevpn.nwallace.io
       192.168.0.5 grafana.nwallace.io
