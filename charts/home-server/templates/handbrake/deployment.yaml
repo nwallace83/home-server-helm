@@ -52,7 +52,6 @@ spec:
               path: /
               port: 5800
               scheme: HTTP
-            initialDelaySeconds: 60
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
@@ -62,7 +61,6 @@ spec:
               path: /
               port: 5800
               scheme: HTTP
-            initialDelaySeconds: 60
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
