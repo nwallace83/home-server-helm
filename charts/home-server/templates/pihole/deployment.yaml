@@ -102,7 +102,7 @@ spec:
                   - sh
                   - '-c'
                   - >-
-                    sleep 20 && sqlite3 /etc/pihole/gravity.db "INSERT INTO
+                    sleep 120 && sqlite3 /etc/pihole/gravity.db "INSERT INTO
                     adlist (address, enabled, comment) VALUES
                     ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',
                     1, '');" && sqlite3 /etc/pihole/gravity.db "INSERT INTO
