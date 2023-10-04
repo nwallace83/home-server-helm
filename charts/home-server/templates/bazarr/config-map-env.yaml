@@ -1,0 +1,10 @@
+{{- with .Values.applications.bazarr }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .appName }}-env
+data:
+  PGID: "{{ $.Values.localGID }}"
+  PUID: "{{ $.Values.localUID }}"
+  TZ: {{ $.Values.timezone }}
+{{- end }}
