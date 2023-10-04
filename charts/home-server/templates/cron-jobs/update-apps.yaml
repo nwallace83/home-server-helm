@@ -7,63 +7,73 @@ spec:
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         spec:
           containers:
             - name: update-app-handbrake
               image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
               command:
                 - kubectl
                 - rollout
                 - restart
                 - deployment
                 - handbrake
-              imagePullPolicy: IfNotPresent
-            - name: update-app-sickchill
-              image: bitnami/kubectl
-              command:
-                - kubectl
-                - rollout
-                - restart
-                - deployment
-                - sickchill
-              imagePullPolicy: IfNotPresent
             - name: update-app-delugevpn
               image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
               command:
                 - kubectl
                 - rollout
                 - restart
                 - deployment
                 - delugevpn
-              imagePullPolicy: IfNotPresent
             - name: update-app-plex
               image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
               command:
                 - kubectl
                 - rollout
                 - restart
                 - deployment
                 - plex
-              imagePullPolicy: IfNotPresent
             - name: update-app-prowlarr
               image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
               command:
                 - kubectl
                 - rollout
                 - restart
                 - deployment
                 - prowlarr
-              imagePullPolicy: IfNotPresent
             - name: update-app-radarr
               image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
               command:
                 - kubectl
                 - rollout
                 - restart
                 - deployment
                 - radarr
+            - name: update-app-bazarr
+              image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - bazarr
+            - name: update-app-sonarr
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - sonarr
           serviceAccountName: patch-deployment-sa
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
