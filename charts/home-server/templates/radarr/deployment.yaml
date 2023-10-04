@@ -32,7 +32,6 @@ spec:
           image: linuxserver/radarr:latest
           ports:
             - containerPort: 7878
-              hostPort: 8989
               protocol: TCP
           envFrom:
             - configMapRef:
