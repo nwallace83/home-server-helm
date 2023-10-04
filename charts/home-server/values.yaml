@@ -61,7 +61,6 @@ applications:
       192.168.0.5 server.nwallace.io
       192.168.0.5 server.local
       192.168.0.5 pihole.nwallace.io
-      192.168.0.5 sickchill.nwallace.io
       192.168.0.5 prowlarr.nwallace.io
       192.168.0.5 handbrake.nwallace.io
       192.168.0.5 plex.nwallace.io
