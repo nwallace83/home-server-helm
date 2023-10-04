@@ -12,7 +12,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - '*.{{ $.Values.domain }}'
+      - '*.{{ $.Values.domain }}'
       secretName: {{ $.Values.domain }}-tls-secret
   rules:
     - host: argocd.{{ $.Values.domain }}

@@ -11,8 +11,8 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "*.{{ $.Values.domain }}"
-      secretName: {{ $.Values.domain }}-tls-secret
+      - {{ .appName }}.{{ $.Values.domain }}
+      secretName: {{ .appName }}-{{ $.Values.domain }}-tls-secret
   rules:
     - host: {{ .appName }}.{{ $.Values.domain }}
       http:
