@@ -32,6 +32,7 @@ spec:
           image: linuxserver/sonarr:latest
           ports:
             - containerPort: 8989
+              hostPort: 80
               protocol: TCP
           envFrom:
             - configMapRef:

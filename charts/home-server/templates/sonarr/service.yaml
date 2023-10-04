@@ -8,7 +8,6 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 8989
   selector:
     app: {{ .appName }}
   type: ClusterIP
