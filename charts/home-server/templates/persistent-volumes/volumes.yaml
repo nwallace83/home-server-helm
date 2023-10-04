@@ -15,7 +15,7 @@ spec:
     path: {{ .nfs_path }}
   mountOptions:
     - nfsvers=4.2
-    - hard
+    - soft
     - timeo=600
     - retrans=2
     - noresvport
