@@ -9,16 +9,19 @@ do
   sleep 1
 done
 
-echo "Found /etc/pihole/gravity.db, inserting adlists"
+echo "Found /etc/pihole/gravity.db, waiting a while before inserting adlists"
+
+sleep 60
 
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',1,'');"
 echo "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt done"
 
+sleep 5
 
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://dbl.oisd.nl',1,'');"
 echo "https://dbl.oisd.nl done"
 
-sleep 60
+sleep 10
 echo "Updating gravity"
 pihole updateGravity
 
