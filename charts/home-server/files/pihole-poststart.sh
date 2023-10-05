@@ -1,8 +1,14 @@
 #!/bin/bash
 
-while [ ! -f "/etc/pihole/gravity.db" ]
+export PATH="PATH=/opt/pihole:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+COUNT=1
+GRAVITY_FILE="/etc/pihole/gravity.db"
+while [ ! -f $GRAVITY_FILE ]
 do
+  echo "Attempt #$COUNT"
   echo "Waiting for /etc/pihole/gravity.db to exist"
+  COUNT=$(expr $COUNT + 1)
   sleep 1
 done
 
@@ -33,13 +39,4 @@ done
 echo "https://dbl.oisd.nl done"
 
 echo "Updating gravity"
-
-RESULT=1
-COUNT=1
-while [ "$RESULT" != "0" ]
-do
-  echo "Attempt #$COUNT"
-  RESULT=$(pihole updateGravity)
-  COUNT=$(expr $COUNT + 1)
-  sleep 1
-done
+pihole updateGravity

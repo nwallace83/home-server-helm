@@ -105,12 +105,9 @@ spec:
             postStart:
               exec:
                 command:
-                  - nohup
                   - sh
-                  - '/tmp/poststart.sh'
-                  - '>'
-                  - '/proc/1/fd/1'
-                  - '2>&1'
+                  - -c
+                  - 'nohup sh /tmp/poststart.sh > /proc/1/fd/1 2>&1 &'
   strategy:
     type: RollingUpdate
     rollingUpdate:
