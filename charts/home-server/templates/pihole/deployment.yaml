@@ -23,6 +23,12 @@ spec:
                 path: custom.list
             defaultMode: 420
             optional: false
+        - name: poststart-script
+          configMap:
+            name: {{ .appName }}-poststart-script
+            items:
+              - key: poststart.sh
+                value: poststart.sh
         - name: etc-pihole
           emptyDir:
             medium: Memory
@@ -59,14 +65,14 @@ spec:
           volumeMounts:
             - name: etc-pihole
               mountPath: /etc/pihole
-              mountPropagation: None
             - name: etc-dnsmasq-d
               mountPath: /etc/dnsmasq.d
-              mountPropagation: None
             - name: custom-list
               mountPath: /etc/pihole/custom.list
               subPath: custom.list
-              mountPropagation: None
+            - name: {{ .appName }}-poststart-script
+              mountPath: /tmp/poststart.sh
+              subPath: poststart.sh
             {{- range .volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
@@ -100,14 +106,7 @@ spec:
               exec:
                 command:
                   - sh
-                  - '-c'
-                  - >-
-                    sleep 30 && sqlite3 /etc/pihole/gravity.db "INSERT INTO
-                    adlist (address, enabled, comment) VALUES
-                    ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',
-                    1, '');" && sqlite3 /etc/pihole/gravity.db "INSERT INTO
-                    adlist (address, enabled, comment) VALUES
-                    ('https://dbl.oisd.nl', 1, '');" && pihole updateGravity
+                  - '/tmp/poststart.sh'
   strategy:
     type: RollingUpdate
     rollingUpdate:

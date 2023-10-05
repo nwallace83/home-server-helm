@@ -1,0 +1,9 @@
+{{- with .Values.applications.pihole }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .appName }}-poststart-script
+data:
+  poststart.sh: |
+{{ $.Files.Get "files/pihole-poststart.sh" | indent 4 }}
+{{- end }}
