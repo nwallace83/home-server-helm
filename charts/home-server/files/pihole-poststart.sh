@@ -18,7 +18,7 @@ COUNT=1
 while [ $RESULT -ne 0 ]
 do 
   echo "Attempt #$COUNT"
-  $(sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',1,'');")
+  sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',1,'');"
   RESULT=$?
   COUNT=$(expr $COUNT + 1)
   sleep 1
@@ -31,7 +31,7 @@ COUNT=1
 while [ $RESULT -ne 0 ]
 do
   echo "Attempt #$COUNT"
-  $(sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://dbl.oisd.nl',1,'');")
+  sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://dbl.oisd.nl',1,'');"
   RESULT=RESULT=$?
   COUNT=$(expr $COUNT + 1)
   sleep 1
