@@ -28,7 +28,7 @@ spec:
             name: {{ .appName }}-poststart-script
             items:
               - key: poststart.sh
-                value: poststart.sh
+                path: poststart.sh
         - name: etc-pihole
           emptyDir:
             medium: Memory
