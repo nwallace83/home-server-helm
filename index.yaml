@@ -3,6 +3,16 @@ entries:
   home-server:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-10-05T08:00:25.408258766Z"
+    description: Nate's home server of overkill
+    digest: d03d00a28c3188e172ccafef48ea2c070fc0a1550131b1895040496769235cf7
+    name: home-server
+    type: application
+    urls:
+    - https://github.com/nwallace83/home-server-helm/releases/download/home-server-1.0.90/home-server-1.0.90.tgz
+    version: 1.0.90
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-10-05T06:51:39.111410307Z"
     description: Nate's home server of overkill
     digest: c4e3e4dcd851e7dcfc2fe2459c97fe68dc7cbf79b10fa7de8f965d94c987da8e
@@ -902,4 +912,4 @@ entries:
     urls:
     - https://github.com/nwallace83/home-server-helm/releases/download/home-server-helm-1.0.1/home-server-helm-1.0.1.tgz
     version: 1.0.1
-generated: "2023-10-05T06:51:39.111863602Z"
+generated: "2023-10-05T08:00:25.408572768Z"
