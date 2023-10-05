@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export PATH="PATH=/opt/pihole:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
 COUNT=1
 GRAVITY_FILE="/etc/pihole/gravity.db"
 while [ ! -f $GRAVITY_FILE ]
@@ -16,7 +14,7 @@ echo "Found /etc/pihole/gravity.db, inserting adlists"
 
 RESULT=1
 COUNT=1
-while [ "$RESULT" != "0" ]
+while [ $RESULT -ne 0 ]
 do 
   echo "Attempt #$COUNT"
   RESULT=$(sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',1,'');")
@@ -28,7 +26,7 @@ echo "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.
 
 RESULT=1
 COUNT=1
-while [ "$RESULT" != "0" ]
+while [ $RESULT != 0 ]
 do
   echo "Attempt #$COUNT"
   RESULT=$(sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://dbl.oisd.nl',1,'');")
