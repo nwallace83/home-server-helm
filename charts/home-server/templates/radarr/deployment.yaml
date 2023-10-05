@@ -29,7 +29,7 @@ spec:
         {{- end }}
       containers:
         - name: radarr
-          image: linuxserver/radarr:latest
+          image: harbor.nwallace.io/home-server/radarr:latest
           ports:
             - containerPort: 7878
               protocol: TCP

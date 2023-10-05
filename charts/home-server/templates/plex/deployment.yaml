@@ -26,7 +26,7 @@ spec:
         {{- end }}
       containers:
         - name: {{ .appName }}
-          image: plexinc/pms-docker:latest
+          image: harbor.nwallace.io/home-server/pms-docker:latest
           ports:
             - containerPort: 32400
               protocol: TCP

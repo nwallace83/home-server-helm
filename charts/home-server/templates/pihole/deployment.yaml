@@ -43,7 +43,7 @@ spec:
         {{- end }}
       containers:
         - name: {{ .appName }}
-          image: pihole/pihole:latest
+          image: harbor.nwallace.io/home-server/pihole:latest
           ports:
             - containerPort: 80
               protocol: TCP
