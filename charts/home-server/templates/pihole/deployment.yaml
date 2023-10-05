@@ -23,7 +23,7 @@ spec:
                 path: custom.list
             defaultMode: 420
             optional: false
-        - name: poststart-script
+        - name: {{ .appName }}-poststart-script
           configMap:
             name: {{ .appName }}-poststart-script
             items:
