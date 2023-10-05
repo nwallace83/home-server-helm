@@ -12,6 +12,8 @@ done
 
 echo "Found /etc/pihole/gravity.db, inserting adlists"
 
+sleep 5
+
 RESULT=1
 COUNT=1
 while [ $RESULT -ne 0 ]
