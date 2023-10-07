@@ -1,4 +1,5 @@
 {{- range .Values.applications }}
+---
 {{- range .volumes }}
 apiVersion: v1
 kind: PersistentVolumeClaim

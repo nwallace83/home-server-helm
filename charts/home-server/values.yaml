@@ -57,7 +57,7 @@ applications:
     volumes: []
     sharedVolumes: []
   pihole:
-    replicas: 3
+    replicas: 1
     volumes: []
     sharedVolumes: []
     appName: pihole

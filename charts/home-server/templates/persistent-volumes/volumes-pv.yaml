@@ -1,4 +1,5 @@
 {{- range .Values.applications }}
+---
 {{- range .volumes }}
 apiVersion: v1
 kind: PersistentVolume
@@ -10,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /kubernetes/{{ .host_path }}
+    path: /kubernetes{{ .host_path }}
   persistentVolumeReclaimPolicy: Retain
 {{- end }}
 {{ end }}
