@@ -29,7 +29,7 @@ spec:
         {{- end }}
       containers:
         - name: sonarr
-          image: harbor.nwallace.io/home-server/sonarr:latest
+          image: linuxserver/sonarr:latest
           ports:
             - containerPort: 8989
               protocol: TCP

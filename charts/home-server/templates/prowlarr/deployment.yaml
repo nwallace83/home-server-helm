@@ -28,7 +28,7 @@ spec:
         {{- end }}
       containers:
         - name: {{ .appName }}
-          image: harbor.nwallace.io/home-server/prowlarr:latest
+          image: linuxserver/prowlarr:latest
           ports:
             - containerPort: 9696
               protocol: TCP

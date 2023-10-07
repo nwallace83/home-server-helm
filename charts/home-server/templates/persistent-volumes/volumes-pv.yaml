@@ -1,0 +1,17 @@
+{{- range .Values.applications }}
+{{- range .volumes }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .name }}
+spec:
+  capacity:
+    storage: {{ .size }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /kubernetes/{{ .host_path }}
+  persistentVolumeReclaimPolicy: Retain
+{{- end }}
+{{ end }}
+
