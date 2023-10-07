@@ -7,13 +7,6 @@ spec:
     storage: 50Gi
   accessModes:
     - ReadWriteMany
-  nfs:
-    server: server.local
-    path: /harbor
-  mountOptions:
-    - nfsvers=4.2
-    - hard
-    - timeo=600
-    - retrans=2
-    - noresvport
+  hostPath:
+    path: /kubernetes/harbor
   persistentVolumeReclaimPolicy: Retain
