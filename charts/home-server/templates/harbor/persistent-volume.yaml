@@ -2,11 +2,18 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: harbor-pv
-spec:
+spec: 
   capacity:
     storage: 50Gi
   accessModes:
     - ReadWriteMany
-  hostPath:
-    path: /kubernetes/harbor
+  nfs:
+    server: server.local
+    path: /harbor
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
   persistentVolumeReclaimPolicy: Retain
