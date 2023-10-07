@@ -7,6 +7,6 @@ spec:
     storage: 50Gi
   accessModes:
     - ReadWriteMany
-    hostPath:
-      path: "/kubernetes/harbor"
+  hostPath:
+    path: /kubernetes/harbor
   persistentVolumeReclaimPolicy: Retain
