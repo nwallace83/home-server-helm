@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gitlab-redis-pv
 spec: 
-  storageClassName: gitlab
+  storageClassName: gitlab-redis
   capacity:
     storage: 8Gi
   accessModes:

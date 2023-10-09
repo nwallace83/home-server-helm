@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gitlab-database-pv
 spec: 
-  storageClassName: gitlab
+  storageClassName: gitlab-database
   capacity:
     storage: 8Gi
   accessModes:

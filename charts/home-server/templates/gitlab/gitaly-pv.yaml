@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gitlab-gitaly-pv
 spec: 
-  storageClassName: gitlab
+  storageClassName: gitlab-gitaly
   capacity:
     storage: 50Gi
   accessModes:

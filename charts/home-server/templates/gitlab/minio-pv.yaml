@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gitlab-minio-pv
 spec: 
-  storageClassName: gitlab
+  storageClassName: gitlab-minio
   capacity:
     storage: 10Gi
   accessModes:
