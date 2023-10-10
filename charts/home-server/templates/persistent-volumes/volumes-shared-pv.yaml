@@ -9,8 +9,15 @@ spec:
     storage: {{ .size }}
   accessModes:
     - ReadWriteMany
-  hostPath:
-    path: /kubernetes{{ .host_path }}
+  nfs:
+    server: server.local
+    path: {{ .nfs_path }}
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
   persistentVolumeReclaimPolicy: Retain
 {{- end }}
 
