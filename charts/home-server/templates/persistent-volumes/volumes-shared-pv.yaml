@@ -9,15 +9,8 @@ spec:
     storage: {{ .size }}
   accessModes:
     - ReadWriteMany
-  nfs:
-    server: server.local
-    path: {{ .nfs_path }}
-  mountOptions:
-    - nfsvers=4.2
-    - hard
-    - timeo=600
-    - retrans=2
-    - noresvport
+  hostPath:
+    path: {{ .host_path }}
   persistentVolumeReclaimPolicy: Retain
 {{- end }}
 
