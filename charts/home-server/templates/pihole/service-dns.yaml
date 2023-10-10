@@ -13,7 +13,6 @@ spec:
     protocol: TCP
     port: 53
     targetPort: 53
-  type: NodePort
   selector:
     app: {{ .appName }}
 {{- end }}
