@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /kubernetes/{{ .host_path }}
+    path: /kubernetes{{ .host_path }}
   persistentVolumeReclaimPolicy: Retain
 {{- end }}
 
