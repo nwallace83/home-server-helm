@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: udp-services
+  namespace: ingress-nginx
+data:
+  53: {{ .Release.Namespace }}/{{ .Values.applications.pihole.appName }}-dns:53
