@@ -11,3 +11,53 @@ spec:
   hostPath:
     path: /kubernetes/gitlab/database
   persistentVolumeReclaimPolicy: Retain
+
+
+
+
+
+
+# certmanager-issuer:
+#   email: nathan.wallace114@gmail.com
+
+# nginx:
+#   enabled: false
+
+# global:
+#   ingress:
+#     class: nginx
+#     tls:
+#       secretName: nwallace.io-tls-secret
+
+# gitlab:
+#   gitaly:
+#     persistence:
+#       storageClass: gitlab-gitaly
+#       size: 50Gi
+
+# minio:
+#   persistence:
+#     storageClass: gitlab-minio
+#     size: 10Gi
+
+# redis:
+#   master:
+#     persistence:
+#       storageClass: gitlab-redis
+#       size: 5Gi
+
+# postgresql:
+#   image:
+#     debug: true
+#   primary:
+#     resources:
+#       requests:
+#         cpu: 4000m
+#         memory: 512Mi
+#     readinessProbe:
+#       failureThreshold: 30
+#     livenessProbe:
+#       failureThreshold: 30
+#     persistence:
+#       storageClass: gitlab-database
+#       size: 8Gi

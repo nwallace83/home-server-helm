@@ -8,13 +8,6 @@ spec:
     storage: 50Gi
   accessModes:
     - ReadWriteOnce
-  nfs:
-    server: server.local
-    path: /gitlab/gitaly
-  mountOptions:
-    - nfsvers=4.2
-    - hard
-    - timeo=600
-    - retrans=2
-    - noresvport
+  hostPath:
+    path: /kubernetes/gitlab/gitaly
   persistentVolumeReclaimPolicy: Retain

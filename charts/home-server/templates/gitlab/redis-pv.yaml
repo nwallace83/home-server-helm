@@ -8,13 +8,6 @@ spec:
     storage: 8Gi
   accessModes:
     - ReadWriteOnce
-  nfs:
-    server: server.local
-    path: /gitlab/redis
-  mountOptions:
-    - nfsvers=4.2
-    - hard
-    - timeo=600
-    - retrans=2
-    - noresvport
+  hostPath:
+    path: /kubernetes/gitlab/redis
   persistentVolumeReclaimPolicy: Retain
