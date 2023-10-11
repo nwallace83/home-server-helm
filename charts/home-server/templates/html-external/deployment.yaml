@@ -29,7 +29,7 @@ spec:
             secretName: www.{{ $.Values.domain }}-tls-secret
       containers:
         - name: {{ .appName }}
-          image: nginx:latest
+          image: harbor.nwallace.io/home-server/nginx:latest
           ports:
             - containerPort: 80
               protocol: TCP

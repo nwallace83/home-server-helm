@@ -27,7 +27,7 @@ spec:
         {{- end }}
       containers:
         - name: {{ .appName }}
-          image: jlesage/handbrake:latest
+          image: harbor.nwallace.io/home-server/handbrake:latest
           ports:
             - containerPort: 5800
               protocol: TCP

@@ -29,7 +29,7 @@ spec:
         {{- end }}
       containers:
         - name: bazarr
-          image: linuxserver/bazarr:latest
+          image: harbor.nwallace.io/home-server/bazarr:latest
           ports:
             - containerPort: 6767
               protocol: TCP
