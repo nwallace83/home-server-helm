@@ -36,6 +36,6 @@ volumeBindingMode: WaitForFirstConsumer
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: gitlab-toolbox
+  name: gitlab-toolbox-backup
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer

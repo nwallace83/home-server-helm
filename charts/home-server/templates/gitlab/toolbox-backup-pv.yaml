@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: gitlab-toolbox-backup-pv
 spec: 
-  storageClassName: gitlab-toolbox
+  storageClassName: gitlab-toolbox-backup
   capacity:
     storage: 10Gi
   accessModes:
