@@ -76,7 +76,7 @@ applications:
       192.168.0.5 grafana.nwallace.io
       192.168.0.5 argocd.nwallace.io
       192.168.0.5 cockpit.nwallace.io
+      192.168.0.5 harbor.nwallace.io
       192.168.0.6 gitlab.nwallace.io
-      192.168.0.6 registry.nwallace.io
       192.168.0.6 minio.nwallace.io
       192.168.0.6 kas.nwallace.io

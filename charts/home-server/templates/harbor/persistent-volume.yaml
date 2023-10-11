@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: harbor-pv
+spec: 
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /kubernetes/harbor
+  persistentVolumeReclaimPolicy: Retain
