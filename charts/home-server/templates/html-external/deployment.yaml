@@ -48,21 +48,19 @@ spec:
               path: /
               port: 443
               scheme: HTTP
-            initialDelaySeconds: 30
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
-            failureThreshold: 12
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /
               port: 443
               scheme: HTTP
-            initialDelaySeconds: 30
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
-            failureThreshold: 12
+            failureThreshold: 3
           imagePullPolicy: Always
   strategy:
     type: RollingUpdate
