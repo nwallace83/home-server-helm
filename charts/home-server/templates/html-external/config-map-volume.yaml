@@ -13,15 +13,13 @@ data:
       worker_connections  1024;
     }
 
-    http-root {
+    http {
       server {
         listen 80;
         server_name {{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
-    }
 
-    https-root {
       server {
         listen 443;
         ssl_certificate     /etc/ssl/root/tls.crt;
@@ -31,17 +29,13 @@ data:
         server_name {{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
-    }
 
-    http-www {
       server {
         listen 80;
         server_name www.{{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
-    }
 
-    https-www {
       server {
         listen 443;
         ssl_certificate     /etc/ssl/www/tls.crt;
@@ -51,5 +45,5 @@ data:
         server_name www.{{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
-    }    
+    }
 {{- end }}
