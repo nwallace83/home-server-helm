@@ -3,11 +3,11 @@ kind: PersistentVolume
 metadata:
   name: gitlab-toolbox-pv
 spec: 
-  storageClassName: gitlab-toolbix
+  storageClassName: gitlab-toolbox
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /disk2/backup/gitlab
+    path: /kubernetes/gitlab/toolbox
   persistentVolumeReclaimPolicy: Retain
