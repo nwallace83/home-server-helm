@@ -6,5 +6,4 @@ metadata:
 spec:
   addresses:
     - 192.168.0.5/32
-    - 192.168.0.6/32
   autoAssign: false
