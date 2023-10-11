@@ -51,6 +51,9 @@ applications:
     appName: plex
     volumes: []
     sharedVolumes: []
+  htmlExternal:
+    replicas: 2
+    appName: html-external
   pihole:
     replicas: 1
     volumes: []
