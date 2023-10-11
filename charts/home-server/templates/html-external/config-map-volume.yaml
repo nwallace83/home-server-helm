@@ -26,6 +26,7 @@ data:
         ssl_certificate_key /etc/ssl/root/tls.key;
         ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers         HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers off;
         server_name {{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
@@ -40,8 +41,9 @@ data:
         listen 443;
         ssl_certificate     /etc/ssl/www/tls.crt;
         ssl_certificate_key /etc/ssl/www/tls.key;
-        ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+        ssl_protocols       TLSv1.1 TLSv1.2;
         ssl_ciphers         HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers off;
         server_name www.{{ $.Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
