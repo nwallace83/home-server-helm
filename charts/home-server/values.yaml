@@ -60,7 +60,7 @@ applications:
     sharedVolumes: []
     appName: pihole
     dnsOrigins: 1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76
-    webPassword: password
+    webPassword: changeThisPassword
     customList: |
       192.168.0.1 router.local
       192.168.0.5 server.nwallace.io
@@ -68,13 +68,12 @@ applications:
       192.168.0.5 pihole.nwallace.io
       192.168.0.5 prowlarr.nwallace.io
       192.168.0.5 handbrake.nwallace.io
+      192.168.0.5 delugevpn.nwallace.io
       192.168.0.5 plex.nwallace.io
       192.168.0.5 radarr.nwallace.io
       192.168.0.5 sonarr.nwallace.io
       192.168.0.5 bazarr.nwallace.io
-      192.168.0.5 dashboard.nwallace.io
-      192.168.0.5 delugevpn.nwallace.io
       192.168.0.5 grafana.nwallace.io
       192.168.0.5 argocd.nwallace.io
-      192.168.0.5 harbor.nwallace.io
       192.168.0.5 cockpit.nwallace.io
+      192.168.0.6 gitlab.nwallace.io
