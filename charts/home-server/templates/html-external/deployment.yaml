@@ -46,7 +46,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 443
+              port: 80
               scheme: HTTP
             timeoutSeconds: 1
             periodSeconds: 10
@@ -55,7 +55,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 443
+              port: 80
               scheme: HTTP
             timeoutSeconds: 1
             periodSeconds: 10

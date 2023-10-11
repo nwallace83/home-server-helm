@@ -21,7 +21,7 @@ data:
       }
 
       server {
-        listen 443;
+        listen 443 ssl;
         ssl_certificate     /etc/ssl/root/tls.crt;
         ssl_certificate_key /etc/ssl/root/tls.key;
         server_name {{ $.Values.domain }};
@@ -35,7 +35,7 @@ data:
       }
 
       server {
-        listen 443;
+        listen 443 ssl;
         ssl_certificate     /etc/ssl/www/tls.crt;
         ssl_certificate_key /etc/ssl/www/tls.key;
         server_name www.{{ $.Values.domain }};
