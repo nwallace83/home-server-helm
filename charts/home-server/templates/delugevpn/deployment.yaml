@@ -49,9 +49,6 @@ spec:
             mountPath: {{ .container_path }}
           {{- end }}
           imagePullPolicy: Always
-          sysctls:
-            - name: net.ipv4.conf.all.src_valid_mark
-              value: 1
           securityContext:
             privileged: true
 {{- end }}
