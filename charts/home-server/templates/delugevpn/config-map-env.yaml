@@ -6,7 +6,7 @@ metadata:
 data:
   DEBUG: 'false'
   DELUGE_DAEMON_LOG_LEVEL: info
-  DELUGE_ENABLE_WEBUI_PASSWORD: 'yes'
+  DELUGE_ENABLE_WEBUI_PASSWORD: 'no'
   DELUGE_WEB_LOG_LEVEL: info
   ENABLE_PRIVOXY: 'no'
   LAN_NETWORK: 10.0.0.0/8
@@ -16,7 +16,7 @@ data:
   STRICT_PORT_FORWARD: 'yes'
   TZ: {{ $.Values.timezone }}
   UMASK: '000'
-  VPN_CLIENT: openvpn
+  VPN_CLIENT: wireguard
   VPN_ENABLED: 'yes'
   VPN_PASS: {{ .vpnPassword }}
   VPN_PROV: pia

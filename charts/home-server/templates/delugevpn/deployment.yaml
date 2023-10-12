@@ -19,24 +19,6 @@ spec:
         app: {{ .appName }}
     spec:
       volumes:
-      - name: ca-crt
-        configMap:
-          name: {{ .appName }}-openvpn-volume
-          items:
-            - key: ca.rsa.2048.crt
-              path: ca.rsa.2048.crt
-      - name: crl-pem
-        configMap:
-          name: {{ .appName }}-openvpn-volume
-          items:
-            - key: crl.rsa.2048.pem
-              path: crl.rsa.2048.pem
-      - name: mexico-ovpn
-        configMap:
-          name: {{ .appName }}-openvpn-volume
-          items:
-            - key: mexico.ovpn
-              path: mexico.ovpn
       {{- range .volumes  }}
       - name: {{ .name }}
         persistentVolumeClaim:
@@ -58,15 +40,6 @@ spec:
                 name: {{ .appName }}-env
                 optional: false
           volumeMounts:
-          - name: ca-crt
-            mountPath: /config/openvpn/ca.rsa.2048.crt
-            subPath: ca.rsa.2048.crt
-          - name: crl-pem
-            mountPath: /config/openvpn/crl.rsa.2048.pem
-            subPath: crl.rsa.2048.pem
-          - name: mexico-ovpn
-            mountPath: /config/openvpn/mexico.ovpn
-            subPath: mexico.ovpn
           {{- range .volumes }}
           - name: {{ .name }}
             mountPath: {{ .container_path }}
@@ -76,8 +49,9 @@ spec:
             mountPath: {{ .container_path }}
           {{- end }}
           imagePullPolicy: Always
+          sysctls:
+            - name: net.ipv4.conf.all.src_valid_mark
+              value: 1
           securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
+            privileged: true
 {{- end }}
