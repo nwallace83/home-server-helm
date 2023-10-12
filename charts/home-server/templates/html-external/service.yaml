@@ -9,13 +9,12 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 31080
     - name: https
       protocol: TCP
       port: 443
       targetPort: 443
-      nodePort: 31443
-  type: NodePort
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.7
   selector:
     app: {{ .appName }}
 {{- end }}
