@@ -60,6 +60,7 @@ applications:
   plex:
     replicas: 1
     appName: plex
+    loadBalancerIP: ""
     volumes: []
     sharedVolumes: []
   htmlExternal:

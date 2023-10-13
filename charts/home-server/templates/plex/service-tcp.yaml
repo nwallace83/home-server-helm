@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: {{ .appName }}-tcp
 spec:
+type: LoadBalancer
+  loadBalancerIP: {{ .loadBalancerIP }}
   ports:
     - name: {{ .appName }}-tcp
       protocol: TCP
