@@ -4,13 +4,13 @@ kind: Service
 metadata:
   name: {{ .appName }}-tcp
 spec:
-type: LoadBalancer
+  type: LoadBalancer
   loadBalancerIP: {{ .loadBalancerIP }}
   ports:
-    - name: {{ .appName }}-tcp
-      protocol: TCP
-      port: 32400
-      targetPort: 32400
+  - name: {{ .appName }}-tcp
+    protocol: TCP
+    port: 32400
+    targetPort: 32400
   selector:
     app: {{ .appName }}
 {{- end }}
