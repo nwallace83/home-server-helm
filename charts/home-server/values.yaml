@@ -29,6 +29,11 @@ applications:
     appName: bazarr
     volumes: []
     sharedVolumes: []
+  wireguard:
+    replicas: 1
+    appName: wireguard
+    volumes: []
+    sharedVolumes: []
   prowlarr:
     replicas: 1
     appName: prowlarr

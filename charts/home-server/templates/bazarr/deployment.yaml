@@ -12,7 +12,6 @@ spec:
       app: {{ .appName }}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: {{ .appName }}
     spec:

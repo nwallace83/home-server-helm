@@ -1,0 +1,14 @@
+{{- with .Values.applications.wireguard }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .appName }}
+spec:
+  ports:
+    - protocol: UDP
+      port: 51820
+      targetPort: 51820
+  selector:
+    app: {{ .appName }}
+  type: ClusterIP
+{{- end }}
