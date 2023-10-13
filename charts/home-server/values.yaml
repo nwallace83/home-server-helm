@@ -36,6 +36,8 @@ applications:
   wireguard:
     replicas: 1
     appName: wireguard
+    allowedIPs: ""
+    peerDNS: ""
     volumes: []
     sharedVolumes: []
   prowlarr:
