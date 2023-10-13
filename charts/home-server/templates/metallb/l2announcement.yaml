@@ -1,13 +1,10 @@
 {{- with .Values.metallb }}
 apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
+kind: L2Advertisement
 metadata:
   name: {{ .ipPoolName }}
   namespace: metallb
 spec:
-  addresses:
-  {{- range .adresses }}
-  - {{ . }}
-  {{- end }}
-  autoAssign: false
+  ipAddressPools:
+  - {{ .ipPoolName }}
 {{- end }}

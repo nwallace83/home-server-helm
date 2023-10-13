@@ -13,6 +13,10 @@ aws:
   accessKeyId: ''
   secretAccessKey: ''
 
+metallb:
+  ipPoolName: server-address-pool
+  adresses: []
+
 applications:
   radarr:
     replicas: 1
