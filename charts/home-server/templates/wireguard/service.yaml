@@ -12,5 +12,4 @@ spec:
       targetPort: 51820
   selector:
     app: {{ .appName }}
-  type: ClusterIP
 {{- end }}
