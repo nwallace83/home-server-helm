@@ -65,6 +65,7 @@ applications:
     appName: html-external
   pihole:
     replicas: 1
+    loadBalancerIP: ""
     volumes: []
     sharedVolumes: []
     appName: pihole

@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: {{ .appName }}-dns
 spec:
+  type: LoadBalancer
+  loadBalancerIP: {{ .loadBalancerIP }}
   ports:
   - name: dns-udp  
     protocol: UDP
