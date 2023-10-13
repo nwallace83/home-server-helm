@@ -5,7 +5,7 @@ metadata:
   name: {{ .appName }}-env
 data:
   ADVERTISE_IP: >-
-    http://{{ $.Values.localIP }}:32400,http://plex.{{ $.Values.domain }}:32400
+    http://{{ .loadBalancerIP }}:32400,https://plex.{{ $.Values.domain }}
   TZ: {{ $.Values.timezone }}
   PGID: "{{ $.Values.localGID }}"
   PUID: "{{ $.Values.localUID }}"
