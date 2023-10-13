@@ -8,8 +8,10 @@ data:
   PUID: "{{ $.Values.localUID }}"
   TZ: {{ $.Values.timezone }}
   SERVERURL: nwallace.io
-  PEERS: "5"
-  LOG_CONFS: "true"
-  SERVERPORT: "51820"
-  LOG_CONFS: "true"
+  PEERS: 5
+  LOG_CONFS: true
+  SERVERPORT: 51820
+  LOG_CONFS: true
+  ALLOWEDIPS: 192.168.0.0/24
+  PEERDNS: 192.168.0.5
 {{- end }}
