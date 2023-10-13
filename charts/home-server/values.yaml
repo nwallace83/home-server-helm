@@ -35,6 +35,7 @@ applications:
     sharedVolumes: []
   wireguard:
     replicas: 1
+    loadBalancerIP: ""
     appName: wireguard
     allowedIPs: ""
     peerDNS: ""

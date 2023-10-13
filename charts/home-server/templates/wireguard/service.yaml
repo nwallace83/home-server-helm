@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: {{ .appName }}
 spec:
+  type: LoadBalancer
+  loadBalancerIP: {{ .loadBalancerIP }}
   ports:
     - protocol: UDP
       port: 51820
