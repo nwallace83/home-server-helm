@@ -74,6 +74,15 @@ spec:
                 - restart
                 - deployment
                 - sonarr
+            - name: update-app-wireguard
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - wireguard
           serviceAccountName: patch-deployment-sa
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
