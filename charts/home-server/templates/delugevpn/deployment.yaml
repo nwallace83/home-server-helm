@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ $appName }}
 spec:
-  replicas: {{ .replicas }}
+  replicas: {{ .Values.delugevpn.replicas }}
   revisionHistoryLimit: 0
   strategy: 
     type: Recreate

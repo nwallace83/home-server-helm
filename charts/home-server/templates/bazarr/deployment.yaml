@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ $appName }}
 spec:
-  replicas: {{ .replicas }}
+  replicas: {{ .Values.bazarr.replicas }}
   selector:
     matchLabels:
       app: {{ $appName }}
