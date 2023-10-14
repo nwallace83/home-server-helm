@@ -7,7 +7,7 @@ data:
   PGID: {{ .Values.localGID | quote }}
   PUID: {{ .Values.localUID | quote }}
   TZ: {{ .Values.timezone | quote }}
-  SERVERURL: {{ .Values.domain }}
+  SERVERURL: {{ print "wireguard." .Values.domain }}
   PEERS: {{ .Values.wireguard.peers | default "5" | quote }}
   LOG_CONFS: {{ .Values.wireguard.logConfs | default "true" | quote }}
   SERVERPORT: {{ .Values.wireguard.serverPort | default "51820" | quote }}
