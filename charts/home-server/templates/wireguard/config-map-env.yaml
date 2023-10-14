@@ -14,4 +14,3 @@ data:
   LOG_CONFS: {{ .Values.wireguard.logConfs | default "true" | quote }}
   ALLOWEDIPS: {{ .Values.wireguard.allowedIPs | quote }}
   PEERDNS: {{ .Values.wireguard.peerDNS | quote }}
-  PERSISTENTKEEPALIVE_PEERS: {{ .Values.wireguard.persistentKeepAlivePeers | default "" | quote }}
