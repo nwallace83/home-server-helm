@@ -39,11 +39,11 @@ spec:
               value: {{ .Values.localUID | quote }}
           volumeMounts:
             {{- range .Values.handbrake.volumes }}
-            - name: {{ .name | quote }}
+            - name: {{ .name }}
               mountPath: {{ .container_path | quote }}
             {{- end }}
-            {{- range .Values.handbrake.volumes }}
-            - name: {{ .name | quote }}
+            {{- range .Values.handbrake.sharedVolumes }}
+            - name: {{ .name }}
               mountPath: {{ .container_path | quote }}
             {{- end }}
           livenessProbe:
@@ -51,7 +51,7 @@ spec:
               path: /
               port: 5800
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
@@ -61,7 +61,7 @@ spec:
               path: /
               port: 5800
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
