@@ -1,8 +1,8 @@
-{{- with .Values.applications.bazarr }}
+{{- $appName := "bazarr" }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
@@ -11,17 +11,16 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - {{ .appName }}.{{ $.Values.domain }}
-      secretName: {{ .appName }}-{{ $.Values.domain }}-tls-secret
+      - {{ print $appName "." .Values.domain }}
+      secretName: {{ print $appName "-" .Values.domain "-tls-secret"}}
   rules:
-    - host: {{ .appName }}.{{ $.Values.domain }}
+    - host: {{ print $appName "." .Values.domain }}
       http:
         paths:
           - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: {{ .appName }}
+                name: {{ $appName }}
                 port:
                   number: 80
-{{- end }}

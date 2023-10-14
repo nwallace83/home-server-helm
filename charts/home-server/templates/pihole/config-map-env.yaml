@@ -1,16 +1,15 @@
-{{- with .Values.applications.pihole }}
+{{- $appName := "pihole" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .appName }}-env
+  name: {{ print $appName "-env" }}
 data:
-  DNSMASQ_LISTENING: all
-  FTLCONF_LOCAL_IPV4: {{ $.Values.localIP }}
-  FTLCONF_MAXDBDAYS: '7'
-  IPv6: 'false'
-  PIHOLE_DNS_: {{ .dnsOrigins }}
-  PIHOLE_GID: "{{ $.Values.localGID }}"
-  PIHOLE_UID: "{{ $.Values.localUID }}"
-  TZ: {{ $.Values.timezone }}
-  WEBPASSWORD: {{ .webPassword }}
-{{- end }}
+  DNSMASQ_LISTENING: {{ .Values.pihole.dnsMasqListening | default "all" | quote }}
+  FTLCONF_LOCAL_IPV4: {{ .Values.localIP }}
+  FTLCONF_MAXDBDAYS: {{ .Values.pihole.ftlConfMaxDBDays | default "7" | quote }}
+  IPv6: {{ .Values.pihole.ipv6 | default "false" | quote }}
+  PIHOLE_DNS_: {{ .Values.pihole.dnsOrigins | default "1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76" | quote }}
+  PIHOLE_GID: {{ .Values.localGID | quote }}
+  PIHOLE_UID: {{ .Values.localUID | quote }}
+  TZ: {{ .Values.timezone | quote }}
+  WEBPASSWORD: {{ .webPassword | quote }}

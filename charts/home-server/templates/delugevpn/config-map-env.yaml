@@ -1,24 +1,23 @@
-{{- with .Values.applications.delugevpn }}
+{{- $appName := "delugevpn" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .appName }}-env
+  name: {{ $appName }}-env
 data:
-  DEBUG: 'false'
-  DELUGE_DAEMON_LOG_LEVEL: info
-  DELUGE_ENABLE_WEBUI_PASSWORD: 'yes'
-  DELUGE_WEB_LOG_LEVEL: info
-  ENABLE_PRIVOXY: 'no'
-  LAN_NETWORK: 10.0.0.0/8
-  NAME_SERVERS: 84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1
-  PGID: "{{ $.Values.localGID }}"
-  PUID: "{{ $.Values.localUID }}"
-  STRICT_PORT_FORWARD: 'yes'
-  TZ: {{ $.Values.timezone }}
-  UMASK: '000'
-  VPN_CLIENT: wireguard
-  VPN_ENABLED: 'yes'
-  VPN_PASS: {{ .vpnPassword }}
-  VPN_PROV: pia
-  VPN_USER: {{ .vpnUsername }}
-{{- end }}
+  DEBUG: {{ .Values.delugevpn.debug | default "false" | quote }}
+  DELUGE_DAEMON_LOG_LEVEL: {{ .Values.delugevpn.delugeDaemonLogLevel | default "info" | quote }}
+  DELUGE_ENABLE_WEBUI_PASSWORD: {{ .Values.delugevpn.delugeEnableWebUIPassword | default "yes" | quote }}
+  DELUGE_WEB_LOG_LEVEL: {{ .Values.delugevpn.delugeWebLogLevel | default "info" | quote }}
+  ENABLE_PRIVOXY: {{ .Values.delugevpn.enablePrivoxy | default "no" | quote }}
+  LAN_NETWORK: {{ .Values.delugevpn.lanNetwork | default "10.0.0.0/8" | quote }}
+  NAME_SERVERS: {{ .Values.delugevpn.nameServers | default "84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1" | quote }}
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
+  STRICT_PORT_FORWARD: {{ .Values.delugevpn.strictPortForward | default "yes" | quote }}
+  TZ: {{ .Values.timezone }}
+  UMASK: {{ .Values.delugevpn.umask | default "000" | quote }}
+  VPN_CLIENT: {{ .Values.delugevpn.vpnClient | default "wireguard" | quote }}
+  VPN_ENABLED: {{ .Values.delugevpn.vpnEnabled | default "yes" | quote}}
+  VPN_PASS: {{ .Values.delugevpn.vpnPassword }}
+  VPN_PROV: {{ .Values.delugevpn.vpnProv | default "pia" | quote }}
+  VPN_USER: {{ .Values.delugevpn.vpnUsername }}

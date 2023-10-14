@@ -1,8 +1,8 @@
-{{- with .Values.applications.prowlarr }}
+{{- $appName := "prowlarr" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
 spec:
   ports:
     - name: http
@@ -10,6 +10,4 @@ spec:
       port: 80
       targetPort: 9696
   selector:
-    app: {{ .appName }}
-  type: ClusterIP
-{{- end }}
+    app: {{ $appName }}

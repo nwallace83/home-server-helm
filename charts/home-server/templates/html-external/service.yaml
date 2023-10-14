@@ -1,8 +1,9 @@
-{{- with .Values.applications.htmlExternal }}
+{{- if eq .Values.environment "production" }}
+{{- $appName := "html-external" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
 spec:
   ports:
     - name: http
@@ -14,7 +15,7 @@ spec:
       port: 443
       targetPort: 443
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.7
+  loadBalancerIP: {{ .Values.htmlExternal.loadBalancerIP | quote }}
   selector:
-    app: {{ .appName }}
+    app: {{ $appName }}
 {{- end }}

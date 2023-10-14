@@ -1,8 +1,9 @@
-{{- with .Values.applications.htmlExternal }}
+{{- if eq .Values.environment "production" }}
+{{- $appName := "html-external" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .appName }}-config-volume
+  name: {{ print $appName "-config-volume" }}
 data:
   nginx.conf: |
     user  nginx;
@@ -16,7 +17,7 @@ data:
     http {
       server {
         listen 80;
-        server_name {{ $.Values.domain }};
+        server_name {{ .Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
 
@@ -24,13 +25,13 @@ data:
         listen 443 ssl;
         ssl_certificate     /etc/ssl/root/tls.crt;
         ssl_certificate_key /etc/ssl/root/tls.key;
-        server_name {{ $.Values.domain }};
+        server_name {{ .Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
 
       server {
         listen 80;
-        server_name www.{{ $.Values.domain }};
+        server_name www.{{ .Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
 
@@ -38,7 +39,7 @@ data:
         listen 443 ssl;
         ssl_certificate     /etc/ssl/www/tls.crt;
         ssl_certificate_key /etc/ssl/www/tls.key;
-        server_name www.{{ $.Values.domain }};
+        server_name www.{{ .Values.domain }};
         rewrite ^/(.*) https://github.com/nwallace83 redirect;
       }
     }

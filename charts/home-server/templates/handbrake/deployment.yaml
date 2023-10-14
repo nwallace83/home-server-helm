@@ -1,51 +1,50 @@
-{{- with .Values.applications.handbrake }}
+{{- $appName := "handbrake" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
 spec:
   replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
-        {{- range .volumes  }}
+        {{- range .Values.handbrake.volumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-        {{- range .sharedVolumes }}
+        {{- range .Values.handbrake.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
       containers:
-        - name: {{ .appName }}
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/handbrake:latest
           ports:
             - containerPort: 5800
               protocol: TCP
           env:
             - name: TZ
-              value: America/Denver
+              value: {{ .Values.timezone | quote }}
             - name: PGID
-              value: "{{ $.Values.localGID }}"
+              value: {{ .Values.localGID | quote }}
             - name: PUID
-              value: "{{ $.Values.localUID }}"
+              value: {{ .Values.localUID | quote }}
           volumeMounts:
-            {{- range .volumes }}
-            - name: {{ .name }}
-              mountPath: {{ .container_path }}
+            {{- range .Values.handbrake.volumes }}
+            - name: {{ .name | quote }}
+              mountPath: {{ .container_path | quote }}
             {{- end }}
-            {{- range .sharedVolumes }}
-            - name: {{ .name }}
-              mountPath: {{ .container_path }}
+            {{- range .Values.handbrake.volumes }}
+            - name: {{ .name | quote }}
+              mountPath: {{ .container_path | quote }}
             {{- end }}
           livenessProbe:
             httpGet:
@@ -71,4 +70,3 @@ spec:
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
-{{- end }}

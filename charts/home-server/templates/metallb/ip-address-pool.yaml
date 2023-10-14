@@ -1,12 +1,12 @@
-{{- with .Values.metallb }}
+{{- if eq .Values.environment "production" }}
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: {{ .ipPoolName }}
+  name: {{ .Values.metallb.ipPoolName }}
   namespace: metallb
 spec:
   addresses:
-  {{- range .adresses }}
+  {{- range .Values.metallb.adresses }}
   - {{ . }}
   {{- end }}
   autoAssign: false

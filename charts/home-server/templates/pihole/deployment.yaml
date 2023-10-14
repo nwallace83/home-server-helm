@@ -1,31 +1,29 @@
-{{- with .Values.applications.pihole }}
+{{- $appName := "pihole" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
 spec:
-  replicas: {{ .replicas }}
+  replicas: {{ .Values.pihole.replicas }}
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
         - name: custom-list
           configMap:
-            name: {{ .appName }}-custom-list
+            name: {{ print $appName "-custom-list" }}
             items:
               - key: custom.list
                 path: custom.list
             defaultMode: 420
-            optional: false
-        - name: {{ .appName }}-poststart-script
+        - name: {{ print $appName "-poststart-script" }}
           configMap:
-            name: {{ .appName }}-poststart-script
+            name: {{ print $appName "-poststart-script" }}
             items:
               - key: poststart.sh
                 path: poststart.sh
@@ -37,18 +35,8 @@ spec:
           emptyDir:
             medium: Memory
             sizeLimit: 512Mi
-        {{- range .volumes  }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .name }}
-        {{- end }}
-        {{- range .sharedVolumes }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .name }}
-        {{- end }}
       containers:
-        - name: {{ .appName }}
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/pihole:latest
           ports:
             - containerPort: 80
@@ -59,9 +47,7 @@ spec:
               protocol: UDP
           envFrom:
             - configMapRef:
-                name: {{ .appName }}-env
-                optional: false
-          resources: {}
+                name: {{ print $appName "-env" }}
           volumeMounts:
             - name: etc-pihole
               mountPath: /etc/pihole
@@ -70,17 +56,9 @@ spec:
             - name: custom-list
               mountPath: /etc/pihole/custom.list
               subPath: custom.list
-            - name: {{ .appName }}-poststart-script
+            - name: {{ print $appName "-poststart-script" }}
               mountPath: /tmp/poststart.sh
               subPath: poststart.sh
-            {{- range .volumes }}
-            - name: {{ .name }}
-              mountPath: {{ .container_path }}
-            {{- end }}
-            {{- range .sharedVolumes }}
-            - name: {{ .name }}
-              mountPath: {{ .container_path }}
-            {{- end }}
           livenessProbe:
             httpGet:
               path: /admin
@@ -114,5 +92,3 @@ spec:
       maxUnavailable: 0
       maxSurge: 100%
   revisionHistoryLimit: 0
-  progressDeadlineSeconds: 600
-{{- end }}

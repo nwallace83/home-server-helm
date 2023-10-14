@@ -1,3 +1,4 @@
+{{- if eq .Values.environment "production" }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -12,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - argocd.{{ $.Values.domain }}
-      secretName: argocd-{{ $.Values.domain }}-tls-secret
+      - {{ print "argocd." .Values.domain }}
+      secretName: {{ print "argocd-" .Values.domain "-tls-secret" }}
   rules:
-    - host: argocd.{{ $.Values.domain }}
+    - host: {{ print "argocd." .Values.domain }}
       http:
         paths:
           - path: /(.*)
@@ -25,3 +26,4 @@ spec:
                 name: argo-cd-argocd-server
                 port:
                   number: 80
+{{- end }}

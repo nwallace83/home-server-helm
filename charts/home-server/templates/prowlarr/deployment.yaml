@@ -1,48 +1,46 @@
-{{- with .Values.applications.prowlarr }}
+{{- $appName := "prowlarr" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
   labels:
-    app: {{ .appName }}
+    app: {{ $appName }}
 spec:
-  replicas: {{ .replicas }}
+  replicas: {{ .Values.prowlarr.replicas }}
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
-        {{- range .volumes  }}
+        {{- range .Values.prowlarr.volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-        {{- range .sharedVolumes }}
+        {{- range .Values.prowlarr.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
       containers:
-        - name: {{ .appName }}
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/prowlarr:latest
           ports:
             - containerPort: 9696
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .appName }}-env
-                optional: false
-          resources: {}
+                name: {{ print $appName "-env" }}
           volumeMounts:
-            {{- range .volumes }}
+            {{- range .Values.prowlarr.volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
-            {{- range .sharedVolumes }}
+            {{- range .Values.prowlarr.sharedVolumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
@@ -69,5 +67,3 @@ spec:
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
-  progressDeadlineSeconds: 600
-{{- end }}

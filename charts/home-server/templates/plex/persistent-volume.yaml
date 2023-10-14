@@ -1,14 +1,15 @@
-{{- if eq .Values.environment "production" }}
+{{- range .Values.plex.volumes }}
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: harbor-pv
-spec: 
+  name: {{ .name }}
+spec:
   capacity:
-    storage: 50Gi
+    storage: {{ .size }}
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /kubernetes/harbor
+    path: {{ print "/kubernetes" .host_path }}
   persistentVolumeReclaimPolicy: Retain
 {{- end }}

@@ -1,3 +1,4 @@
+{{- if eq .Values.environment "production" }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -10,3 +11,4 @@ spec:
   hostPath:
     path: /kubernetes/harbor
   persistentVolumeReclaimPolicy: Retain
+{{- end }}

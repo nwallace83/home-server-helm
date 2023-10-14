@@ -10,87 +10,65 @@ localGID: ""
 volumesShared: []
 
 aws:
-  accessKeyId: ''
-  secretAccessKey: ''
+  accessKeyId: ""
+  secretAccessKey: ""
 
 metallb:
-  ipPoolName: server-address-pool
+  ipPoolName: ""
   adresses: []
 
-applications:
-  radarr:
+bazarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
+delugevpn:
+    vpnUsername: ""
+    vpnPassword: ""
     replicas: 1
-    appName: radarr
     volumes: []
     sharedVolumes: []
-  sonarr:
-    replicas: 1
-    appName: sonarr
-    volumes: []
-    sharedVolumes: []
-  bazarr:
-    replicas: 1
-    appName: bazarr
-    volumes: []
-    sharedVolumes: []
-  wireguard:
-    replicas: 1
-    loadBalancerIP: ""
-    appName: wireguard
-    allowedIPs: ""
-    peerDNS: ""
-    volumes: []
-    sharedVolumes: []
-  prowlarr:
-    replicas: 1
-    appName: prowlarr
-    volumes: []
-    sharedVolumes: []
-  delugevpn:
-    vpnUsername: ''
-    vpnPassword: ''
-    replicas: 1
-    appName: delugevpn
-    volumes: []
-    sharedVolumes: []
-  handbrake:
-    replicas: 1
-    appName: handbrake
-    volumes: []
-    sharedVolumes: []
-  plex:
-    replicas: 1
-    appName: plex
-    loadBalancerIP: ""
-    volumes: []
-    sharedVolumes: []
-  htmlExternal:
-    replicas: 2
-    appName: html-external
-  pihole:
-    replicas: 1
-    loadBalancerIP: ""
-    volumes: []
-    sharedVolumes: []
-    appName: pihole
-    dnsOrigins: 1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76
-    webPassword: changeThisPassword
-    customList: |
-      192.168.0.1 router.local
-      192.168.0.5 server.nwallace.io
-      192.168.0.5 server.local
-      192.168.0.5 pihole.nwallace.io
-      192.168.0.5 prowlarr.nwallace.io
-      192.168.0.5 handbrake.nwallace.io
-      192.168.0.5 delugevpn.nwallace.io
-      192.168.0.5 plex.nwallace.io
-      192.168.0.5 radarr.nwallace.io
-      192.168.0.5 sonarr.nwallace.io
-      192.168.0.5 bazarr.nwallace.io
-      192.168.0.5 grafana.nwallace.io
-      192.168.0.5 argocd.nwallace.io
-      192.168.0.5 cockpit.nwallace.io
-      192.168.0.5 harbor.nwallace.io
-      192.168.0.6 gitlab.nwallace.io
-      192.168.0.6 minio.nwallace.io
-      192.168.0.6 kas.nwallace.io
+
+handbrake:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
+htmlExternal:
+  replicas: 2
+  loadBalancerIP: ""
+
+radarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
+sonarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
+wireguard:
+  replicas: 1
+  loadBalancerIP: ""
+  allowedIPs: ""
+  peerDNS: ""
+  volumes: []
+  sharedVolumes: []
+
+prowlarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
+plex:
+  replicas: 1
+  loadBalancerIP: ""
+  volumes: []
+  sharedVolumes: []
+
+pihole:
+  replicas: 1
+  loadBalancerIP: ""
+  webPassword: changeThisPassword
+  customList: ""

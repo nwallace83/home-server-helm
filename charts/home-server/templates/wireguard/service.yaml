@@ -1,15 +1,14 @@
-{{- with .Values.applications.wireguard }}
+{{- $appName := "wireguard" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
 spec:
   type: LoadBalancer
-  loadBalancerIP: {{ .loadBalancerIP }}
+  loadBalancerIP: {{ .Values.wireguard.loadBalancerIP }}
   ports:
     - protocol: UDP
       port: 51820
       targetPort: 51820
   selector:
-    app: {{ .appName }}
-{{- end }}
+    app: {{ $appName }}

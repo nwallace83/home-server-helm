@@ -1,16 +1,15 @@
-{{- with .Values.applications.plex }}
+{{- $appName := "plex" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .appName }}-tcp
+  name: {{ print $appName "-tcp" }}
 spec:
   type: LoadBalancer
-  loadBalancerIP: {{ .loadBalancerIP }}
+  loadBalancerIP: {{ .Values.plex.loadBalancerIP }}
   ports:
-  - name: {{ .appName }}-tcp
+  - name: {{ print $appName "-tcp" }}
     protocol: TCP
     port: 32400
     targetPort: 32400
   selector:
-    app: {{ .appName }}
-{{- end }}
+    app: {{ $appName }}

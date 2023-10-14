@@ -1,5 +1,4 @@
-{{- range .Values.applications }}
-{{- range .volumes }}
+{{- range .Values.radarr.volumes }}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -11,8 +10,6 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /kubernetes{{ .host_path }}
+    path: {{ print "/kubernetes" .host_path }}
   persistentVolumeReclaimPolicy: Retain
 {{- end }}
-{{ end }}
-

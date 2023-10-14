@@ -1,3 +1,4 @@
+{{- if eq .Values.environment "production" }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -11,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - grafana.{{ $.Values.domain }}
-      secretName: grafana-{{ $.Values.domain }}-tls-secret
+      - {{ print "grafana." .Values.domain }}
+      secretName: {{ print "grafana-" .Values.domain "-tls-secret" }}
   rules:
-    - host: grafana.{{ $.Values.domain }}
+    - host: {{ print "grafana." .Values.domain }}
       http:
         paths:
           - path: /
@@ -24,3 +25,4 @@ spec:
                 name: kube-prometheus-stack-grafana
                 port:
                   number: 80
+{{- end }}

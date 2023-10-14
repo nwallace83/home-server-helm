@@ -1,13 +1,12 @@
-{{- with .Values.applications.plex }}
+{{- $appName := "plex" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .appName }}-env
+  name: {{ print $appName "-env"}}
 data:
   ADVERTISE_IP: >-
-    http://{{ .loadBalancerIP }}:32400,http://plex.{{ $.Values.domain }}:32400
-  TZ: {{ $.Values.timezone }}
-  PGID: "{{ $.Values.localGID }}"
-  PUID: "{{ $.Values.localUID }}"
-  VERSION: docker
-{{- end }}
+    {{ print "http://" .Values.plex.loadBalancerIP ":32400,http://plex." .Values.domain ":32400"}}
+  TZ: {{ .Values.timezone | quote }}
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
+  VERSION: {{ .Values.plex.version | default "docker" | quote }}

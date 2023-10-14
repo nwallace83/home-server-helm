@@ -1,10 +1,10 @@
-{{- with .Values.applications.delugevpn }}
+{{- $appName := "delugevpn" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
   labels:
-    app: {{ .appName }}
+    app: {{ $appName }}
 spec:
   replicas: {{ .replicas }}
   revisionHistoryLimit: 0
@@ -12,43 +12,41 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
-      {{- range .volumes  }}
+      {{- range .Values.delugevpn.volumes  }}
       - name: {{ .name }}
         persistentVolumeClaim:
           claimName: {{ .name }}
       {{- end }}
-      {{- range .sharedVolumes }}
+      {{- range .Values.delugevpn.sharedVolumes }}
       - name: {{ .name }}
         persistentVolumeClaim:
           claimName: {{ .name }}
       {{- end }}
       containers:
-        - name: {{ .appName }}
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/arch-delugevpn:latest
           ports:
             - containerPort: 8112
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .appName }}-env
-                optional: false
+                name: {{ $appName }}-env
           volumeMounts:
-          {{- range .volumes }}
+          {{- range .Values.delugevpn.volumes }}
           - name: {{ .name }}
             mountPath: {{ .container_path }}
           {{- end }}
-          {{- range .sharedVolumes }}
+          {{- range .Values.delugevpn.sharedVolumes }}
           - name: {{ .name }}
             mountPath: {{ .container_path }}
           {{- end }}
           imagePullPolicy: Always
           securityContext:
             privileged: true
-{{- end }}

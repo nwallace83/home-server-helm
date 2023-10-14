@@ -1,47 +1,46 @@
-{{- with .Values.applications.bazarr }}
+{{- $appName := "bazarr" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
   labels:
-    app: {{ .appName }}
+    app: {{ $appName }}
 spec:
   replicas: {{ .replicas }}
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
-        {{- range .volumes  }}
+        {{- range .Values.bazarr.volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-        {{- range .sharedVolumes }}
+        {{- range .Values.bazarr.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
       containers:
-        - name: bazarr
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/bazarr:latest
           ports:
             - containerPort: 6767
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .appName }}-env
-                optional: false
+                name: {{ $appName }}-env
           volumeMounts:
-            {{- range .volumes }}
+            {{- range .Values.bazarr.volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
-            {{- range .sharedVolumes }}
+            {{- range .Values.bazarr.sharedVolumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
@@ -50,7 +49,7 @@ spec:
               path: /
               port: 6767
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
@@ -60,7 +59,7 @@ spec:
               path: /
               port: 6767
               scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 10
             successThreshold: 1
@@ -69,4 +68,3 @@ spec:
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
-{{- end }}

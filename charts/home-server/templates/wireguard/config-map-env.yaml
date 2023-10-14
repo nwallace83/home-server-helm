@@ -1,18 +1,17 @@
-{{- with .Values.applications.wireguard }}
+{{- $appName := "wireguard" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .appName }}-env
+  name: {{ print $appName "-env" }}
 data:
-  PGID: "{{ $.Values.localGID }}"
-  PUID: "{{ $.Values.localUID }}"
-  TZ: {{ $.Values.timezone }}
-  SERVERURL: {{ $.Values.domain }}
-  PEERS: "5"
-  LOG_CONFS: "true"
-  SERVERPORT: "51820"
-  LOG_CONFS: "true"
-  ALLOWEDIPS: {{ .allowedIPs }}
-  PEERDNS: {{ .peerDNS }}
-  PERSISTENTKEEPALIVE_PEERS: all
-{{- end }}
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
+  TZ: {{ .Values.timezone | quote }}
+  SERVERURL: {{ .Values.domain }}
+  PEERS: {{ .Values.wireguard.peers | default "5" | quote }}
+  LOG_CONFS: {{ .Values.wireguard.logConfs | default "true" | quote }}
+  SERVERPORT: {{ .Values.wireguard.serverPort | default "51820" | quote }}
+  LOG_CONFS: {{ .Values.wireguard.logConfs | default "true" | quote }}
+  ALLOWEDIPS: {{ .Values.wireguard.allowedIPs | default "192.168.0.0/16" | quote }}
+  PEERDNS: {{ .Values.wireguard.peerDNS | default "1.1.1.1" | quote }}
+  PERSISTENTKEEPALIVE_PEERS: {{ .Values.wireguard.persistentKeepAlivePeers | default "all" | quote }}

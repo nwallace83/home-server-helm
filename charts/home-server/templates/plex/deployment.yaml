@@ -1,45 +1,44 @@
-{{- with .Values.applications.plex }}
+{{- $appName := "plex" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
 spec:
-  replicas: {{ .replicas }}
+  replicas: {{ .Values.plex.replicas }}
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
-        {{- range .volumes  }}
+        {{- range .Values.plex.volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-        {{- range .sharedVolumes }}
+        {{- range .Values.plex.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
       containers:
-        - name: {{ .appName }}
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/pms-docker:latest
           ports:
             - containerPort: 32400
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .appName }}-env
-                optional: false
+                name: {{ print $appName "-env" }}
           volumeMounts:
-            {{- range .volumes }}
+            {{- range .Values.plex.volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
-            {{- range .sharedVolumes }}
+            {{- range .Values.plex.sharedVolumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
@@ -62,8 +61,6 @@ spec:
             successThreshold: 1
             failureThreshold: 18
           imagePullPolicy: Always
-      restartPolicy: Always
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
-{{- end }}

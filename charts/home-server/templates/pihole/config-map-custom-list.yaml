@@ -1,8 +1,7 @@
-{{- with .Values.applications.pihole }}
+{{- $appName := "pihole" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .appName }}-custom-list
+  name: {{ print $appName "-custom-list" }}
 data:
-  custom.list: {{ .customList | toYaml | indent 2 }}
-{{- end }}
+  custom.list: {{ .Values.pihole.customList | toYaml | indent 2 }}

@@ -1,5 +1,4 @@
-{{- range .Values.applications }}
-{{- range .volumes }}
+{{- range .Values.plex.volumes }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -12,5 +11,4 @@ spec:
     requests:
       storage: {{ .size }}
   volumeName: {{ .name }}
-{{- end }}
 {{- end }}

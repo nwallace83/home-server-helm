@@ -1,28 +1,27 @@
-{{- with .Values.applications.radarr }}
+{{- $appName := "radarr" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .appName }}
+  name: {{ $appName }}
   labels:
-    app: {{ .appName }}
+    app: {{ $appName }}
 spec:
-  replicas: {{ .replicas }}
+  replicas: {{ .Values.radarr.replicas }}
   selector:
     matchLabels:
-      app: {{ .appName }}
+      app: {{ $appName }}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: {{ .appName }}
+        app: {{ $appName }}
     spec:
       volumes:
-        {{- range .volumes  }}
+        {{- range .Values.radarr.volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-        {{- range .sharedVolumes }}
+        {{- range .Values.radarr.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
@@ -35,14 +34,13 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ .appName }}-env
-                optional: false
+                name: {{ $appName }}-env
           volumeMounts:
-            {{- range .volumes }}
+            {{- range .Values.radarr.volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
-            {{- range .sharedVolumes }}
+            {{- range .Values.radarr.sharedVolumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
@@ -70,4 +68,3 @@ spec:
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
-{{- end }}
