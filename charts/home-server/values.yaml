@@ -51,8 +51,8 @@ sonarr:
 wireguard:
   replicas: 1
   loadBalancerIP: ""
-  allowedIPs: ""
-  peerDNS: ""
+  allowedIPs: 
+  peerDNS: 
   volumes: []
   sharedVolumes: []
 
