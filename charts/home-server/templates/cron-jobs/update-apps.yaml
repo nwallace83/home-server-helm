@@ -4,6 +4,7 @@ metadata:
   name: update-apps
 spec:
   schedule: 1 3 * * 0
+  timeZone: {{ .Values.timezone }}
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
