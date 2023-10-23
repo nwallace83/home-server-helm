@@ -1,4 +1,4 @@
-{{- $appName := "sonarr" }}
+{{- $appName := "vaultwarden" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ $appName }}
 spec:
-  replicas: {{ .Values.sonarr.replicas }}
+  replicas: {{ .Values.vaultwarden.replicas }}
   selector:
     matchLabels:
       app: {{ $appName }}
@@ -16,38 +16,29 @@ spec:
         app: {{ $appName }}
     spec:
       volumes:
-        {{- range .Values.sonarr.volumes  }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .name }}
-        {{- end }}
-        {{- range .Values.sonarr.sharedVolumes }}
+        {{- range .Values.vaultwarden.volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
       containers:
         - name: {{ $appName }}
-          image: harbor.nwallace.io/home-server/sonarr:latest
+          image: harbor.nwallace.io/home-server/vaultwarden/server:latest
           ports:
-            - containerPort: 8989
+            - containerPort: 80
               protocol: TCP
           envFrom:
             - configMapRef:
                 name: {{ print $appName "-env"}}
           volumeMounts:
-            {{- range .Values.sonarr.volumes }}
-            - name: {{ .name }}
-              mountPath: {{ .container_path }}
-            {{- end }}
-            {{- range .Values.sonarr.sharedVolumes }}
+            {{- range .Values.vaultwarden.volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
           livenessProbe:
             httpGet:
               path: /
-              port: 8989
+              port: 80
               scheme: HTTP
             initialDelaySeconds: 10
             timeoutSeconds: 1
@@ -57,7 +48,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 8989
+              port: 80
               scheme: HTTP
             initialDelaySeconds: 10
             timeoutSeconds: 1

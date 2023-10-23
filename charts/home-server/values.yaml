@@ -61,6 +61,10 @@ prowlarr:
   volumes: []
   sharedVolumes: []
 
+vaultwarden:
+  replicas: 1
+  volumes: []
+
 plex:
   replicas: 1
   loadBalancerIP: ""

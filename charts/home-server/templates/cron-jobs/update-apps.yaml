@@ -30,6 +30,15 @@ spec:
                 - restart
                 - deployment
                 - delugevpn
+            - name: update-app-vaultwarden
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command:
+                - kubectl
+                - rollout
+                - restart
+                - deployment
+                - vaultwarden
             - name: update-app-plex
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent

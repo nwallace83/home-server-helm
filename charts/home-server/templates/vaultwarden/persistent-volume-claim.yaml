@@ -1,0 +1,14 @@
+{{- range .Values.vaultwarden.volumes }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .size }}
+  volumeName: {{ .name }}
+{{- end }}

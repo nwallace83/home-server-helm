@@ -27,7 +27,7 @@ spec:
             claimName: {{ .name }}
         {{- end }}
       containers:
-        - name: radarr
+        - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/radarr:latest
           ports:
             - containerPort: 7878
