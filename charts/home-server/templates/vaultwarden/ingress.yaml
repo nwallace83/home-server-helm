@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
-  ingressClassName: nginx-ext
+  ingressClassName: nginx
   tls:
     - hosts:
       - {{ print $appName "." .Values.domain }}
