@@ -14,8 +14,6 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 443
-  type: LoadBalancer
-  loadBalancerIP: {{ .Values.htmlExternal.loadBalancerIP | quote }}
   selector:
     app: {{ $appName }}
 {{- end }}
