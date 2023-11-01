@@ -37,7 +37,7 @@ spec:
             sizeLimit: 512Mi
       containers:
         - name: {{ $appName }}
-          image: harbor.nwallace.io/home-server/pihole:latest
+          image: pihole/pihole:latest
           ports:
             - containerPort: 80
               protocol: TCP
