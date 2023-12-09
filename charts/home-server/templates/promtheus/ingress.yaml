@@ -1,28 +1,28 @@
-{{- if eq .Values.environment "production" }}
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: kube-prometheus-stack-grafana
-  namespace: monitoring
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/use-regex: 'true'
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-      - {{ print "grafana." .Values.domain }}
-      secretName: {{ print "grafana-" .Values.domain "-tls-secret" }}
-  rules:
-    - host: {{ print "grafana." .Values.domain }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: kube-prometheus-stack-grafana
-                port:
-                  number: 80
-{{- end }}
+# {{- if eq .Values.environment "production" }}
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: kube-prometheus-stack-grafana
+#   namespace: monitoring
+#   annotations:
+#     cert-manager.io/cluster-issuer: letsencrypt-prod
+#     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+#     nginx.ingress.kubernetes.io/use-regex: 'true'
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#     - hosts:
+#       - {{ print "grafana." .Values.domain }}
+#       secretName: {{ print "grafana-" .Values.domain "-tls-secret" }}
+#   rules:
+#     - host: {{ print "grafana." .Values.domain }}
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: kube-prometheus-stack-grafana
+#                 port:
+#                   number: 80
+# {{- end }}
