@@ -21,6 +21,9 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
+      sysctls:
+      - name: net.ipv4.conf.all.src_valid_mark
+        value: "1"
       containers:
         - name: wireguard
           image: harbor.nwallace.io/home-server/wireguard:latest
@@ -37,11 +40,9 @@ spec:
             {{- end }}
           imagePullPolicy: Always
           securityContext:
-            sysctls:
-              - name: net.ipv4.conf.all.src_valid_mark
-                value: "1"
             capabilities:
-              add: ["NET_ADMIN"]
+              add: 
+              - NET_ADMIN
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
