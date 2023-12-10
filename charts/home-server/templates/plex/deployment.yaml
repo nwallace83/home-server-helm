@@ -30,8 +30,10 @@ spec:
           resources:
             limits:
               cpu: 4000m
+              gpu.intel.com/i915: "1"
             requests:
               cpu: 0
+              gpu.intel.com/i915: "1"
           ports:
             - containerPort: 32400
               protocol: TCP
