@@ -13,6 +13,15 @@ spec:
       labels:
         app: {{ $appName }}
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: intel.feature.node.kubernetes.io/gpu
+                operator: In
+                values:
+                - "true"
       volumes:
         {{- range .Values.plex.volumes  }}
         - name: {{ .name }}
