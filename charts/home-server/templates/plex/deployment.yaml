@@ -29,7 +29,9 @@ spec:
           image: harbor.nwallace.io/home-server/plex:latest
           resources:
             limits:
-              cpu: "4000m"
+              cpu: 4000m
+            requests:
+              cpu: 0
           ports:
             - containerPort: 32400
               protocol: TCP
