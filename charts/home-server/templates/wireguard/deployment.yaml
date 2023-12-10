@@ -21,9 +21,10 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-      sysctls:
-      - name: net.ipv4.conf.all.src_valid_mark
-        value: "1"
+      securityContext:
+        sysctls:
+        - name: net.ipv4.conf.all.src_valid_mark
+          value: "1"
       containers:
         - name: wireguard
           image: harbor.nwallace.io/home-server/wireguard:latest
