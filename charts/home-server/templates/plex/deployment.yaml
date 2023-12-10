@@ -27,6 +27,9 @@ spec:
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/plex:latest
+          resources:
+            limits:
+              cpu: "4000m"
           ports:
             - containerPort: 32400
               protocol: TCP
