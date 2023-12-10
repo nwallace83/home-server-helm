@@ -37,6 +37,9 @@ spec:
             {{- end }}
           imagePullPolicy: Always
           securityContext:
+            sysctls:
+            - name: net.ipv4.conf.all.src_valid_mark
+              value: 1
             capabilities:
               add: ["NET_ADMIN"]
   strategy: 
