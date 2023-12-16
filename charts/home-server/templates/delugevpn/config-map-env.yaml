@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ $appName }}-env
 data:
+  VPN_INPUT_PORTS: {{ .Values.delugevpn.vpnInputPorts | default "" | quote}}
   DEBUG: {{ .Values.delugevpn.debug | default "false" | quote }}
   DELUGE_DAEMON_LOG_LEVEL: {{ .Values.delugevpn.delugeDaemonLogLevel | default "info" | quote }}
   DELUGE_ENABLE_WEBUI_PASSWORD: {{ .Values.delugevpn.delugeEnableWebUIPassword | default "yes" | quote }}
