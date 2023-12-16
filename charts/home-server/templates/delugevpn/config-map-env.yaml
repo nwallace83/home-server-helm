@@ -10,7 +10,7 @@ data:
   DELUGE_ENABLE_WEBUI_PASSWORD: {{ .Values.delugevpn.delugeEnableWebUIPassword | default "yes" | quote }}
   DELUGE_WEB_LOG_LEVEL: {{ .Values.delugevpn.delugeWebLogLevel | default "info" | quote }}
   ENABLE_PRIVOXY: {{ .Values.delugevpn.enablePrivoxy | default "yes" | quote }}
-  LAN_NETWORK: {{ .Values.delugevpn.lanNetwork | default "10.0.0.0/8" | quote }}
+  LAN_NETWORK: {{ .Values.delugevpn.lanNetwork | default "10.0.0.0/8,192.168.0.0/16" | quote }}
   NAME_SERVERS: {{ .Values.delugevpn.nameServers | default "84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1" | quote }}
   PGID: {{ .Values.localGID | quote }}
   PUID: {{ .Values.localUID | quote }}
