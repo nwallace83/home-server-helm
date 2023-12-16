@@ -65,6 +65,9 @@ vaultwarden:
   adminToken: ""
   volumes: []
 
+flaresolverr:
+  replicas: 1
+
 plex:
   replicas: 1
   loadBalancerIP: ""
