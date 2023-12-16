@@ -25,7 +25,7 @@ spec:
       volumes:
         - name: plex-transcode
           emptyDir:
-            medium: memory
+            medium: Memory
             sizeLimit: 2Gi
         {{- range .Values.plex.volumes  }}
         - name: {{ .name }}
