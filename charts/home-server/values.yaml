@@ -23,11 +23,12 @@ bazarr:
   sharedVolumes: []
 
 delugevpn:
-    vpnUsername: ""
-    vpnPassword: ""
-    replicas: 1
-    volumes: []
-    sharedVolumes: []
+  loadBalancerIPPrivoxy: ""
+  vpnUsername: ""
+  vpnPassword: ""
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
 
 handbrake:
   replicas: 1

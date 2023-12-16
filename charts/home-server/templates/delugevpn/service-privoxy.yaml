@@ -1,0 +1,17 @@
+{{- $appName := "delugevpn" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ print $appName "-privoxy"}}
+  annotations:
+    metallb.universe.tf/allow-shared-ip: ip-5
+spec:
+  type: LoadBalancer
+  loadBalancerIP: {{ .Values.delugevpn.loadBalancerIPPrivoxy }}
+  ports:
+  - name: privoxy
+    protocol: TCP
+    port: 8118
+    targetPort: 8118
+  selector:
+    app: {{ $appName }}
