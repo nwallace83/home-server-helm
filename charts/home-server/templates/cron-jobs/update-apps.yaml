@@ -48,6 +48,10 @@ spec:
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment wireguard"]
+            - name: update-app-flaresolverr
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment flaresolverr"]
           serviceAccountName: patch-deployment-sa
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
