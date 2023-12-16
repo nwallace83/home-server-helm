@@ -9,5 +9,9 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 8112
+    - name: privoxy
+      protocol: TCP
+      port: 8118
+      targetPort: 8118
   selector:
     app: {{ $appName }}
