@@ -23,6 +23,10 @@ spec:
                 values:
                 - "true"
       volumes:
+        - name: plex-transcode
+          emptyDir:
+            medium: memory
+            sizeLimit: 2Gi
         {{- range .Values.plex.volumes  }}
         - name: {{ .name }}
           persistentVolumeClaim:
@@ -50,6 +54,8 @@ spec:
             - configMapRef:
                 name: {{ print $appName "-env" }}
           volumeMounts:
+            - name: plex-transcode
+              mountPath: /transcode
             {{- range .Values.plex.volumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
