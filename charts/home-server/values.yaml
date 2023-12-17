@@ -3,7 +3,6 @@ domain: localhost
 timezone: America/Denver
 email: ''
 
-localIP: ""
 localUID: ""
 localGID: ""
 
