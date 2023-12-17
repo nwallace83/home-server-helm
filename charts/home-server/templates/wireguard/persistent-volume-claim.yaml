@@ -1,14 +1,14 @@
-# {{- range .Values.wireguard.volumes }}
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: {{ .name }}
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   resources:
-#     requests:
-#       storage: {{ .size }}
-#   volumeName: {{ .name }}
-# {{- end }}
+{{- range .Values.wireguard.volumes }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .size }}
+  volumeName: {{ .name }}
+{{- end }}
