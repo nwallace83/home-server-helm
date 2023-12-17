@@ -1,50 +1,50 @@
-# {{- $appName := "wireguard" }}
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: {{ $appName }}
-#   labels:
-#     app: {{ $appName }}
-# spec:
-#   replicas: {{ .Values.wireguard.replicas }}
-#   selector:
-#     matchLabels:
-#       app: {{ $appName }}
-#   template:
-#     metadata:
-#       labels:
-#         app: {{ $appName }}
-#     spec:
-#       volumes:
-#         {{- range .Values.wireguard.volumes  }}
-#         - name: {{ .name }}
-#           persistentVolumeClaim:
-#             claimName: {{ .name }}
-#         {{- end }}
-#       securityContext:
-#         sysctls:
-#         - name: net.ipv4.conf.all.src_valid_mark
-#           value: "1"
-#       containers:
-#         - name: wireguard
-#           image: harbor.nwallace.io/home-server/wireguard:latest
-#           ports:
-#             - containerPort: 51820
-#               protocol: UDP
-#           envFrom:
-#             - configMapRef:
-#                 name: {{ print $appName "-env"}}
-#           volumeMounts:
-#             {{- range .Values.wireguard.volumes }}
-#             - name: {{ .name }}
-#               mountPath: {{ .container_path }}
-#             {{- end }}
-#           imagePullPolicy: Always
-#           securityContext:
-#             privileged: true
-#             capabilities:
-#               add: 
-#               - NET_ADMIN
-#   strategy: 
-#     type: Recreate
-#   revisionHistoryLimit: 0
+{{- $appName := "wireguard" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: {{ .Values.wireguard.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      volumes:
+        {{- range .Values.wireguard.volumes  }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+      securityContext:
+        sysctls:
+        - name: net.ipv4.conf.all.src_valid_mark
+          value: "1"
+      containers:
+        - name: wireguard
+          image: harbor.nwallace.io/home-server/wireguard:latest
+          ports:
+            - containerPort: 51820
+              protocol: UDP
+          envFrom:
+            - configMapRef:
+                name: {{ print $appName "-env"}}
+          volumeMounts:
+            {{- range .Values.wireguard.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+            capabilities:
+              add: 
+              - NET_ADMIN
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0

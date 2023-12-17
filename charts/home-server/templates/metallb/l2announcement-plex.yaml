@@ -2,11 +2,11 @@
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: server-address
+  name: plex-address
   namespace: metallb
 spec:
   ipAddressPools:
-  - server-address
+  - plex-address
   nodeSelectors:
   - matchLabels:
       kubernetes.io/hostname: server

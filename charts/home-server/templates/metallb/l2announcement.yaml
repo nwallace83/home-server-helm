@@ -7,7 +7,4 @@ metadata:
 spec:
   ipAddressPools:
   - {{ .Values.metallb.ipPoolName }}
-  nodeSelectors:
-  - matchLabels:
-      kubernetes.io/hostname: server
 {{- end }}

@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ print $appName "-privoxy"}}
   annotations:
-    metallb.universe.tf/allow-shared-ip: ip-5
+    metallb.universe.tf/allow-shared-ip: shared-ip
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.delugevpn.loadBalancerIPPrivoxy }}
