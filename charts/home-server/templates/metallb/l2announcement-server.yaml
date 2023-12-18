@@ -1,0 +1,13 @@
+{{- if eq .Values.environment "production" }}
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: server-address
+  namespace: metallb
+spec:
+  ipAddressPools:
+  - server-address
+  nodeSelectors:
+  - matchLabels:
+      kubernetes.io/hostname: server
+{{- end }}
