@@ -36,6 +36,7 @@ handbrake:
 
 htmlExternal:
   replicas: 2
+  loadBalancerIP: ""
 
 radarr:
   replicas: 1
