@@ -49,6 +49,9 @@ spec:
           - name: {{ .name }}
             mountPath: {{ .container_path }}
           {{- end }}
+          resources:
+            limits:
+              memory: 4096M
           imagePullPolicy: Always
           securityContext:
             privileged: true
