@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: {{ print $appName "-tcp" }}
 spec:
+  externalTrafficPolicy: Local
   type: LoadBalancer
   loadBalancerIP: {{ .Values.plex.loadBalancerIP }}
   ports:
