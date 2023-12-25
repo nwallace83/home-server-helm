@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "10"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-ext
   tls:
     - hosts:
       - {{ print $appName "." .Values.domain }}
@@ -18,6 +18,13 @@ spec:
     - host: {{ print $appName "." .Values.domain }}
       http:
         paths:
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: blackhole
+                port:
+                  number: 80
           - path: /(.*)
             pathType: Prefix
             backend:
