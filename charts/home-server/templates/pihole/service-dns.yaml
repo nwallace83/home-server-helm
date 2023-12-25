@@ -7,7 +7,6 @@ metadata:
     metallb.universe.tf/allow-shared-ip: shared-ip
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
   loadBalancerIP: {{ .Values.pihole.loadBalancerIP }}
   ports:
   - name: dns-udp
