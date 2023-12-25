@@ -5,8 +5,6 @@ kind: Service
 metadata:
   name: {{ $appName }}
 spec:
-  externalTrafficPolicy: Local
-  type: NodePort
   ports:
     - name: http
       protocol: TCP
