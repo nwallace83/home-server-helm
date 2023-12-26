@@ -16,9 +16,11 @@ spec:
         app: {{ $appName }}
     spec:
       volumes:
-        - name: {{ $appName }}-config
-          secret: 
-            secretName: {{ $appName }}-config
+        {{- range .Values.rclone.volumes  }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
         {{- range .Values.rclone.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
@@ -40,9 +42,10 @@ spec:
             - configMapRef:
                 name: {{ $appName }}-env
           volumeMounts:
-            - name: {{ $appName }}-config
-              readOnly: true
-              mountPath: /rclone
+            {{- range .Values.rclone.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
             {{- range .Values.rclone.sharedVolumes }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
