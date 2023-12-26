@@ -17,7 +17,8 @@ spec:
     spec:
       volumes:
         - name: {{ $appName }}-config
-          secret: {{ $appName }}-config
+          secret: 
+            secretName: {{ $appName }}-config
         {{- range .Values.rclone.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
