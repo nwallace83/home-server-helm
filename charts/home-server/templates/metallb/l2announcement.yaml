@@ -1,10 +1,13 @@
 {{- if eq .Values.environment "production" }}
+{{- range .Values.metallb.adresses }}
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: {{ .Values.metallb.ipPoolName }}
+  name: {{ regexReplaceAll "/[0-9]{1,3}" . "" }}
   namespace: metallb
 spec:
   ipAddressPools:
-  - {{ .Values.metallb.ipPoolName }}
+  - {{ regexReplaceAll "/[0-9]{1,3}" . "" }}
+---
+{{- end }}
 {{- end }}
