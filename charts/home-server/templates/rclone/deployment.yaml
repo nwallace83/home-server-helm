@@ -51,6 +51,11 @@ spec:
               mountPath: {{ .container_path }}
             {{- end }}
           imagePullPolicy: Always
+          resources:
+            limits:
+              smarter-devices/fuse: 1
+            requests:
+              smarter-devices/fuse: 1
   strategy: 
     type: Recreate
   revisionHistoryLimit: 0
