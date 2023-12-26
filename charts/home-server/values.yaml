@@ -79,3 +79,10 @@ pihole:
   loadBalancerIP: ""
   webPassword: changeThisPassword
   customList: ""
+
+rclone:
+  client_id: ""
+  client_secret: ""
+  root_folder_id: ""
+  token: ""
+  sharedVolumes: []

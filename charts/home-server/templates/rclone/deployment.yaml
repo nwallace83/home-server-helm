@@ -1,0 +1,52 @@
+{{- $appName := "rclone" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      volumes:
+        - name: {{ $appName }}-config
+          secret: {{ $appName }}-config
+        {{- range .Values.rclone.sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+      {{- end }}
+      containers:
+        - name: {{ $appName }}
+          image: harbor.nwallace.io/home-server/rclone:latest
+          args:
+          - "mount"
+          - "--config=/rclone/rclone.conf"
+          - "gdrive"
+          - "/backup"
+          - "--allow-other"
+          - "--cache-db-purge"
+          - "--fast-list"
+          - "--poll-interval 10m"
+          envFrom:
+            - configMapRef:
+                name: {{ $appName }}-env
+          volumeMounts:
+            - name: {{ $appName }}-config
+              readOnly: true
+              mountPath: /rclone
+            {{- range .Values.rclone.sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+          imagePullPolicy: Always
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0
