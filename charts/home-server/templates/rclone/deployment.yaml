@@ -43,6 +43,9 @@ spec:
               mountPath: {{ .container_path }}
             {{- end }}
           imagePullPolicy: Always
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
           resources:
             limits:
               smarter-devices/fuse: 1
