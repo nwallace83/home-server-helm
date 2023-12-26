@@ -29,15 +29,7 @@ spec:
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/rclone:latest
-          args:
-          - "mount"
-          - "--config=/rclone/rclone.conf"
-          - "gdrive:"
-          - "/backup"
-          - "--allow-other"
-          - "--cache-db-purge"
-          - "--fast-list"
-          - "--poll-interval=10m"
+          command: ["sh", "-c", "/rclone/start.sh"]
           envFrom:
             - configMapRef:
                 name: {{ $appName }}-env
