@@ -35,7 +35,7 @@ spec:
           - "--allow-other"
           - "--cache-db-purge"
           - "--fast-list"
-          - "--poll-interval 10m"
+          - "--poll-interval=10m"
           envFrom:
             - configMapRef:
                 name: {{ $appName }}-env
