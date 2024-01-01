@@ -18,8 +18,8 @@ echo "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.
 
 sleep 5
 
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://dbl.oisd.nl',1,'');"
-echo "https://dbl.oisd.nl done"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://big.oisd.nl',1,'');"
+echo "https://big.oisd.nl done"
 
 sleep 10
 echo "Updating gravity"
