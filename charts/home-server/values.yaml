@@ -68,6 +68,12 @@ vaultwarden:
 flaresolverr:
   replicas: 1
 
+socks5:
+  replicas: 1
+  username: ""
+  password: ""
+  loadBalancerIP: ""
+
 plex:
   replicas: 1
   loadBalancerIP: ""

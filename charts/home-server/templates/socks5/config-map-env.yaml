@@ -1,0 +1,10 @@
+{{- $appName := "socks5" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $appName }}-env
+data:
+  PROXY_SERVER: 0.0.0.0:1080
+  PROXY_USER: {{ .Values.socks5.username }}
+  PROXY_PASSWORD: {{ .Values.socks5.password }}
+  TZ: {{ .Values.timezone }}
