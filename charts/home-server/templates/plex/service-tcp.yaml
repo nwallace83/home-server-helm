@@ -8,7 +8,6 @@ metadata:
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.plex.loadBalancerIP }}
-  externalTrafficPolicy: Local
   ports:
   - name: {{ print $appName "-tcp" }}
     protocol: TCP

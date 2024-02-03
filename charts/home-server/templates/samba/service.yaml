@@ -8,7 +8,6 @@ metadata:
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.samba.loadBalancerIP }}
-  externalTrafficPolicy: Local
   ports:
     - name: {{ print $appName "-139" }}
       protocol: TCP
