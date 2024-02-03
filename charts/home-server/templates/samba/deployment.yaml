@@ -1,0 +1,51 @@
+{{- $appName := "samba" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: {{ .Values.samba.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: server
+      volumes:
+        - name: smb-config
+          configMap:
+            name: {{print $appName "-smb-config"}}
+        {{- range .Values.samba.sharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+      containers:
+        - name: {{ $appName }}
+          image: harbor.nwallace.io/home-server/samba:latest
+          command: ["-I", "/app/smb.conf", "-r"]
+          ports:
+            - containerPort: 139
+              protocol: TCP
+            - containerPort: 445
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ $appName }}-env
+          volumeMounts:
+            - name: {{print $appName "-smb-config"}}
+              mountPath: /app
+            {{- range .Values.samba.sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+          imagePullPolicy: Always
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0

@@ -74,6 +74,11 @@ socks5:
   password: ""
   loadBalancerIP: ""
 
+samba:
+  replicas: 1
+  sharedVolumes: []
+  loadBalancerIP: ""
+
 plex:
   replicas: 1
   loadBalancerIP: ""

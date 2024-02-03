@@ -1,0 +1,10 @@
+{{- $appName := "samba" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $appName }}-env
+data:
+  USERID: 1000
+  GROUPID: 1000
+  TZ: {{ .Values.timezone }}
+  INCLUDE: /app/smb.conf
