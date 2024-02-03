@@ -18,9 +18,9 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: server
       volumes:
-        - name: smb-config
+        - name: {{ print $appName "-smb-config" }}
           configMap:
-            name: {{print $appName "-smb-config"}}
+            name: {{ print $appName "-smb-config" }}
         {{- range .Values.samba.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
@@ -39,7 +39,7 @@ spec:
             - configMapRef:
                 name: {{ $appName }}-env
           volumeMounts:
-            - name: {{print $appName "-smb-config"}}
+            - name: {{ print $appName "-smb-config" }}
               mountPath: /app
             {{- range .Values.samba.sharedVolumes }}
             - name: {{ .name }}
