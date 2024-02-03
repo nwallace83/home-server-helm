@@ -29,7 +29,7 @@ spec:
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/samba:latest
-          command: ["-I", "/app/smb.conf", "-r"]
+          args: ["-I", "/app/smb.conf", "-r"]
           ports:
             - containerPort: 139
               protocol: TCP
