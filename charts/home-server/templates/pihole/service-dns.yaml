@@ -3,11 +3,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ print $appName "-dns"}}
-  annotations:
-    metallb.universe.tf/allow-shared-ip: shared-ip
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.pihole.loadBalancerIP }}
+  externalTrafficPolicy: local
   ports:
   - name: dns-udp
     protocol: UDP
