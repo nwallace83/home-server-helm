@@ -7,36 +7,36 @@ data:
   smb.conf: |
     [shared]
       path = /shared
-      writable = yes
+      read only = no
       guest ok = yes
       guest only = yes
 
     [images]
       path = /images
-      writable = yes
+      read only = no
       guest ok = yes
       guest only = yes
 
     [backup]
       path = /backup
-      writable = yes
+      read only = no
       guest ok = yes
       guest only = yes
 
     [Media]
       path = /media
-      writable = yes
+      read only = no
       guest ok = yes
       guest only = yes
 
     [Media2]
       path = /media2
-      writable = yes
+      read only = no
       guest ok = yes
       guest only = yes
 
     [Media3]
       path = /media3
-      writable = yes
+      read only = no
       guest ok = yes
       guest only = yes
