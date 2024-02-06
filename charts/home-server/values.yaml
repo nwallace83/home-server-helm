@@ -28,6 +28,7 @@ readarr:
 
 delugevpn:
   loadBalancerIPPrivoxy: ""
+  vpnInputPorts: "8118"
   vpnUsername: ""
   vpnPassword: ""
   replicas: 1
