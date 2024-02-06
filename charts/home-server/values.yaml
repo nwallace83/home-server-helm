@@ -21,6 +21,11 @@ bazarr:
   volumes: []
   sharedVolumes: []
 
+readarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
 delugevpn:
   loadBalancerIPPrivoxy: ""
   vpnUsername: ""
