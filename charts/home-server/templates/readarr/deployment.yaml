@@ -28,7 +28,7 @@ spec:
         {{- end }}
       containers:
         - name: {{ $appName }}
-          image: harbor.nwallace.io/home-server/readarr:latest
+          image: harbor.nwallace.io/home-server/readarr:develop
           ports:
             - containerPort: 8787
               protocol: TCP
