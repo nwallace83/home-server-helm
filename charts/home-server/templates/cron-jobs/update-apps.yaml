@@ -44,14 +44,30 @@ spec:
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment sonarr"]
-            # - name: update-app-wireguard
-            #   image: bitnami/kubectl
-            #   imagePullPolicy: IfNotPresent
-            #   command: ["/bin/bash","-c","kubectl rollout restart deployment wireguard"]
+            - name: update-app-wireguard
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment wireguard"]
             - name: update-app-flaresolverr
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment flaresolverr"]
+            - name: update-app-readarr
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment readarr"]
+            - name: update-app-html-external
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment html-external"]
+            - name: update-app-rclone
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment rclone"]
+            - name: update-app-samba
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment samba"]
           serviceAccountName: patch-deployment-sa
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
