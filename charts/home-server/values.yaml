@@ -95,3 +95,7 @@ rclone:
   configFileEncoded: ""
   sharedVolumes: []
   volumes: []
+
+homeassistant:
+  replicas: 1
+  volumes: []

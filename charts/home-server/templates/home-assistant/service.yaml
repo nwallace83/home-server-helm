@@ -1,0 +1,13 @@
+{{- $appName := "homeassistant" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $appName }}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8123
+  selector:
+    app: {{ $appName }}

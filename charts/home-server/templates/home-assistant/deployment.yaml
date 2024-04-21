@@ -1,0 +1,61 @@
+{{- $appName := "homeassistant" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: {{ .Values.homeassistant.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      volumes:
+        {{- range .Values.homeassistant.volumes  }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+      containers:
+        - name: {{ $appName }}
+          image: harbor.nwallace.io/home-server/home-assistant:latest
+          ports:
+            - containerPort: 8123
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ $appName }}-env
+          volumeMounts:
+            {{- range .Values.homeassistant.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8123
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 12
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8123
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 12
+          imagePullPolicy: Always
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0
