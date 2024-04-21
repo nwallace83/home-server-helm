@@ -2,21 +2,29 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $appName }}
+  name: {{ $appName }}-ext
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/limit-rps: "5"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-ext
   tls:
     - hosts:
       - {{ print $appName "." .Values.domain }}
-      secretName: {{ print $appName "-" .Values.domain "-tls-secret" }}
+      secretName: {{ print $appName "." .Values.domain "-tls-secret"}}
   rules:
     - host: {{ print $appName "." .Values.domain }}
       http:
         paths:
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: blackhole
+                port:
+                  number: 80
           - path: /(.*)
             pathType: Prefix
             backend:
