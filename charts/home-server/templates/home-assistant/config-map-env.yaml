@@ -5,3 +5,5 @@ metadata:
   name: {{ $appName }}-env
 data:
   TZ: {{ .Values.timezone }}
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
