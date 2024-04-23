@@ -1,0 +1,15 @@
+{{- if eq .Values.environment "production" }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vault-data-pv
+spec: 
+  storageClassName: vault-data
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kubernetes/vault
+  persistentVolumeReclaimPolicy: Retain
+{{- end }}
