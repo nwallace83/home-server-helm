@@ -68,7 +68,6 @@ spec:
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment samba"]
-          serviceAccountName: patch-deployment-sa
             - name: update-app-homeassistant
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
