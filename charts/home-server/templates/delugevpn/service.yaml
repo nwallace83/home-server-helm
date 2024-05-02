@@ -13,5 +13,9 @@ spec:
       protocol: TCP
       port: 8118
       targetPort: 8118
+    - name: api
+      protocol: TCP
+      port: 58846
+      targetPort: 58846
   selector:
     app: {{ $appName }}
