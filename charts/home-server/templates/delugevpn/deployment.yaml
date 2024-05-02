@@ -37,6 +37,8 @@ spec:
               protocol: TCP
             - containerPort: 8118
               protocol: TCP
+            - containerPort: 58846
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: {{ $appName }}-env
