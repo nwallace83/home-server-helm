@@ -7,8 +7,6 @@ metadata:
 spec:
   ipAddressPools:
   - server-address
-  interfaces:
-  - eth0enp0s31f6
   nodeSelectors:
   - matchLabels:
       kubernetes.io/hostname: server
@@ -23,8 +21,6 @@ metadata:
 spec:
   ipAddressPools:
   - server-address-15
-  interfaces:
-  - eth0enp0s31f6
   nodeSelectors:
   - matchLabels:
       kubernetes.io/hostname: server
