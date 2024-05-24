@@ -13,19 +13,3 @@ spec:
   - matchLabels:
       kubernetes.io/hostname: server
 {{- end }}
----
-{{- if eq .Values.environment "production" }}
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: server-address-15
-  namespace: metallb
-spec:
-  ipAddressPools:
-  - server-address-15
-  interfaces:
-  - enp0s31f6
-  nodeSelectors:
-  - matchLabels:
-      kubernetes.io/hostname: server
-{{- end }}
