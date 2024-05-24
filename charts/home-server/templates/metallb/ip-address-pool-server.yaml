@@ -7,6 +7,18 @@ metadata:
 spec:
   addresses:
   - 192.168.0.5/32
+  autoAssign: false
+  avoidBuggyIPs: false
+{{- end }}
+---
+{{- if eq .Values.environment "production" }}
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: server-address-15
+  namespace: metallb
+spec:
+  addresses:
   - 192.168.0.15/32
   autoAssign: false
   avoidBuggyIPs: false
