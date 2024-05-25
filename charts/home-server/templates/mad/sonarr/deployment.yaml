@@ -21,7 +21,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .name }}
         {{- end }}
-        {{- range .Values.madSonarr.madSharedVolumes }}
+        {{- range .Values.madSonarr.sharedVolumes }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
