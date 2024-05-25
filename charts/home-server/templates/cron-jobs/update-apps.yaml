@@ -20,6 +20,10 @@ spec:
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment delugevpn"]
+            - name: update-app-mad-delugevpn
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment mad-delugevpn"]
             - name: update-app-vaultwarden
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
@@ -36,14 +40,26 @@ spec:
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment radarr"]
+            - name: update-app-mad-radarr
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment mad-radarr"]
             - name: update-app-bazarr
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","sleep 180 && kubectl rollout restart deployment bazarr"]
+            - name: update-app-mad-bazarr
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","sleep 180 && kubectl rollout restart deployment mad-bazarr"]
             - name: update-app-sonarr
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
               command: ["/bin/bash","-c","kubectl rollout restart deployment sonarr"]
+            - name: update-app-mad-sonarr
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/bash","-c","kubectl rollout restart deployment mad-sonarr"]
             - name: update-app-wireguard
               image: bitnami/kubectl
               imagePullPolicy: IfNotPresent
