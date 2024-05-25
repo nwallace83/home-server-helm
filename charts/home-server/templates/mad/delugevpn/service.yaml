@@ -1,0 +1,17 @@
+{{- $appName := "mad-delugevpn" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $appName }}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8112
+    - name: api
+      protocol: TCP
+      port: 58846
+      targetPort: 58846
+  selector:
+    app: {{ $appName }}

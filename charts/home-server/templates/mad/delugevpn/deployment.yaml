@@ -1,0 +1,57 @@
+{{- $appName := "mad-delugevpn" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: {{ .Values.madDelugevpn.replicas }}
+  revisionHistoryLimit: 0
+  strategy: 
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      volumes:
+      {{- range .Values.madDelugevpn.volumes  }}
+      - name: {{ .name }}
+        persistentVolumeClaim:
+          claimName: {{ .name }}
+      {{- end }}
+      {{- range .Values.madDelugevpn.sharedVolumes }}
+      - name: {{ .name }}
+        persistentVolumeClaim:
+          claimName: {{ .name }}
+      {{- end }}
+      containers:
+        - name: {{ $appName }}
+          image: harbor.nwallace.io/home-server/arch-delugevpn:latest
+          ports:
+            - containerPort: 8112
+              protocol: TCP
+            - containerPort: 58846
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ $appName }}-env
+          volumeMounts:
+          {{- range .Values.madDelugevpn.volumes }}
+          - name: {{ .name }}
+            mountPath: {{ .container_path }}
+          {{- end }}
+          {{- range .Values.madDelugevpn.sharedVolumes }}
+          - name: {{ .name }}
+            mountPath: {{ .container_path }}
+          {{- end }}
+          resources:
+            limits:
+              memory: 4096M
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
