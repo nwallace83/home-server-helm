@@ -7,6 +7,7 @@ localUID: ""
 localGID: ""
 
 volumesShared: []
+madVolumesShared: []
 
 aws:
   accessKeyId: ""
@@ -44,6 +45,11 @@ htmlExternal:
   replicas: 2
 
 radarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
+madRadarr:
   replicas: 1
   volumes: []
   sharedVolumes: []
