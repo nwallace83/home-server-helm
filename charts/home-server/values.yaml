@@ -22,6 +22,11 @@ bazarr:
   volumes: []
   sharedVolumes: []
 
+madBazarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
 readarr:
   replicas: 1
   volumes: []
