@@ -21,6 +21,11 @@ sleep 5
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://big.oisd.nl',1,'');"
 echo "https://big.oisd.nl done"
 
+sleep 5
+
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt',1,'');"
+echo "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt done"
+
 sleep 10
 echo "Updating gravity"
 pihole updateGravity
