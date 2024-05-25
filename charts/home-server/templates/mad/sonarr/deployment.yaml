@@ -1,0 +1,70 @@
+{{- $appName := "mad-sonarr" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: {{ .Values.madSonarr.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      volumes:
+        {{- range .Values.madSonarr.volumes  }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+        {{- range .Values.madSonarr.madSharedVolumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+        {{- end }}
+      containers:
+        - name: {{ $appName }}
+          image: harbor.nwallace.io/home-server/sonarr:latest
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ print $appName "-env"}}
+          volumeMounts:
+            {{- range .Values.madSonarr.volumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+            {{- range .Values.madSonarr.sharedVolumes }}
+            - name: {{ .name }}
+              mountPath: {{ .container_path }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8989
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 12
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8989
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 12
+          imagePullPolicy: Always
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0

@@ -53,6 +53,11 @@ sonarr:
   volumes: []
   sharedVolumes: []
 
+madSonarr:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+
 wireguard:
   replicas: 1
   loadBalancerIP: ""
