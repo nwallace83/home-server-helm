@@ -15,7 +15,7 @@ spec:
       labels:
         app: {{ $appName }}
     spec:
-     affinity:
+      affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
