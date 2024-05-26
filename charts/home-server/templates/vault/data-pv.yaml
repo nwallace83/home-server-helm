@@ -1,8 +1,9 @@
 {{- if eq .Values.environment "production" }}
+{{- range $i := 3 }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: vault-data-pv
+  name: vault-data-pv-{{ $i }}
 spec: 
   storageClassName: vault-data
   capacity:
@@ -10,6 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /kubernetes/vault
+    path: /kubernetes/vault-{{ $i }}
   persistentVolumeReclaimPolicy: Retain
+{{- end }}
 {{- end }}
