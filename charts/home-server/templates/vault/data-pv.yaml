@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /kubernetes/vault-{{ $i }}
+    path: /kubernetes/vault/vault-{{ $i }}
   persistentVolumeReclaimPolicy: Retain
 ---
 {{- end }}
