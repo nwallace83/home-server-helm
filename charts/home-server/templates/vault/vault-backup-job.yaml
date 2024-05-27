@@ -13,21 +13,17 @@ spec:
       template:
         spec:
           volumes:
-          {{- range .Values.vault.sharedVolumes }}
-          - name: {{ .name }}
+          - name: vault-backup
             persistentVolumeClaim:
-              claimName: {{ .name }}
-          {{- end }}
+              claimName: vault-backup
           containers:
             - name: backup-vault
               image: harbor.nwallace.io/home-server/vault:latest
               imagePullPolicy: Always
               command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault/vault-backup-$(date +%Y-%m-%d_%H-%m).snap && find /backup/vault -name vault-backup*.snap -mtime +30 -exec rm -f {} \\;"]
               volumeMounts:
-              {{- range .Values.vault.sharedVolumes }}
-              - name: {{ .name }}
-                mountPath: {{ .container_path }}
-              {{- end }}
+              - name: vault-backup
+                mountPath: /backup
               env:
                 - name: VAULT_ADDR
                   value: http://vault-active:8200
@@ -36,6 +32,9 @@ spec:
                     secretKeyRef:
                       name: vault-backup-secret
                       key: rootToken
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 0
