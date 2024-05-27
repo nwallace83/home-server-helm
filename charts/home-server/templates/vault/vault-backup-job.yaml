@@ -38,4 +38,4 @@ spec:
                       key: rootToken
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 0
