@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-vault
+  namespace: vault
+spec:
+  schedule: "*/1 * * * *"
+  timeZone: {{ .Values.timezone }}
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+            - name: backup-vault
+              image: harbor.nwallace.io/vault:latest
+              imagePullPolicy: Always
+              command: ["/bin/sh","-c","vault operator raft snapshot save /vault-backup-$(date +%Y-%m-%d_%H-%m).snap"]
+              env:
+                - name: VAULT_ADDR
+                  value: http://vault:8200
+                - name: VAULT_TOKEN
+                  VALUE: {{ .Values.vault.rootToken }}
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
