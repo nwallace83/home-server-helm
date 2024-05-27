@@ -20,7 +20,7 @@ spec:
             - name: backup-vault
               image: harbor.nwallace.io/home-server/vault:latest
               imagePullPolicy: Always
-              command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault-backup-$(date +%Y-%m-%d_%H-%m).snap && find /backup -name vault-backup*.snap -mtime +30 -exec rm -f {} \\;"]
+              command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap && find /backup -name vault-backup*.snap -mtime +30 -exec rm -f {} \\;"]
               volumeMounts:
               - name: vault-backup
                 mountPath: /backup
