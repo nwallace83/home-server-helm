@@ -122,3 +122,7 @@ rclone:
 homeassistant:
   replicas: 1
   volumes: []
+
+vault:
+  unsealKey: ""
+  rootToken: ""
