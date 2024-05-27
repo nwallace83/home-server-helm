@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $appName }}
-  namespace: vault
   labels:
     app: {{ $appName }}
 spec:
