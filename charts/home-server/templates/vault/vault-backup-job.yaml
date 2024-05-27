@@ -4,7 +4,7 @@ metadata:
   name: backup-vault
   namespace: vault
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "1 * * * *"
   timeZone: {{ .Values.timezone }}
   concurrencyPolicy: Replace
   jobTemplate:
