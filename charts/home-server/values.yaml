@@ -125,4 +125,3 @@ homeassistant:
 
 vault:
   unsealKey: ""
-  rootToken: ""

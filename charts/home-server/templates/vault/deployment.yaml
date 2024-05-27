@@ -1,0 +1,26 @@
+{{- $appName := "vault-auto-unsealer" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      containers:
+        - name: {{ $appName }}
+          image: inquicker/vault-auto-unsealer:latest
+          env:
+            VAULT_ADDR: http://vault-internal:8200
+            UNSEAL_KEY: {{ .Values.vault.unsealKey }}
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0
