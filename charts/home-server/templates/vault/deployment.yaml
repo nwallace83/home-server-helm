@@ -27,11 +27,11 @@ spec:
                 - amd64
       containers:
         - name: {{ $appName }}
-          image: inquicker/vault-auto-unsealer:latest
+          image: blockloop/vault-unseal:latest
           env:
           - name: VAULT_ADDR
             value: http://vault-internal:8200
-          - name: UNSEAL_KEY 
+          - name: VAULT_UNSEAL_KEY_1 
             value: {{ .Values.vault.unsealKey }}
   strategy: 
     type: Recreate
