@@ -4,4 +4,4 @@ metadata:
   name:  vault-unseal-key
   namespace: vault
 data:
-  unsealKey: {{ Values.vault.rootToken }}
+  unsealKey: {{ .Values.vault.rootToken }}
