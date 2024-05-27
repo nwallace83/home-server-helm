@@ -37,4 +37,4 @@ spec:
                 runAsGroup: 1000
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
