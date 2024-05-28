@@ -2,6 +2,7 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
   name: vault-auth
+  namespace: cert-manager
 spec:
   method: kubernetes
   mount: kubernetes
@@ -13,6 +14,7 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
 metadata:
   name: cert-manager-secrets
+  namespace: cert-manager
 spec:
   vaultAuthRef: vault-auth
   mount: kv
