@@ -13,11 +13,11 @@ spec:
       - dns01:
           route53:
             accessKeyIDSecretRef:
-              key: access-key-id
-              name: route53-credentials-secret
+              key: aws_access_key_id
+              name: cert-manager-secrets
             hostedZoneID: Z06135012KVE9P1H4UWDK
             region: global
             secretAccessKeySecretRef:
-              key: secret-access-key
-              name: route53-credentials-secret
+              key: aws_secret_access_key
+              name: cert-manager-secrets
 {{- end }}

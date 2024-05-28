@@ -9,10 +9,6 @@ localGID: ""
 volumesShared: []
 madVolumesShared: []
 
-aws:
-  accessKeyId: ""
-  secretAccessKey: ""
-
 metallb:
   ipPoolName: ""
   adresses: []
