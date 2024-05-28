@@ -1,0 +1,25 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: cert-manager
+    serviceAccount: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: cert-manager-secrets
+spec:
+  vaultAuthRef: vault-auth
+  mount: kv
+  type: kv-v2
+  path:  cert-manager
+  refreshAfter: 60s
+  destination:
+    create: true
+    overwrite: true
+    name: cert-manager-secrets
