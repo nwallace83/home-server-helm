@@ -40,6 +40,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ $appName }}-env
+            - secretRef:
+                name: {{ $appName }}-env
           volumeMounts:
           {{- range .Values.madDelugevpn.volumes }}
           - name: {{ .name }}

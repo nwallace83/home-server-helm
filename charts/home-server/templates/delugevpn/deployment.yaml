@@ -51,6 +51,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ $appName }}-env
+            - secretRef:
+                name: {{ $appName }}-env
           volumeMounts:
           {{- range .Values.delugevpn.volumes }}
           - name: {{ .name }}

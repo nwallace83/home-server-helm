@@ -19,6 +19,4 @@ data:
   UMASK: {{ .Values.delugevpn.umask | default "000" | quote }}
   VPN_CLIENT: {{ .Values.delugevpn.vpnClient | default "wireguard" | quote }}
   VPN_ENABLED: {{ .Values.delugevpn.vpnEnabled | default "yes" | quote}}
-  VPN_PASS: {{ .Values.delugevpn.vpnPassword }}
   VPN_PROV: {{ .Values.delugevpn.vpnProv | default "pia" | quote }}
-  VPN_USER: {{ .Values.delugevpn.vpnUsername }}

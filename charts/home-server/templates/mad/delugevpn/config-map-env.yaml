@@ -18,6 +18,4 @@ data:
   UMASK: {{ .Values.madDelugevpn.umask | default "000" | quote }}
   VPN_CLIENT: {{ .Values.madDelugevpn.vpnClient | default "wireguard" | quote }}
   VPN_ENABLED: {{ .Values.madDelugevpn.vpnEnabled | default "yes" | quote}}
-  VPN_PASS: {{ .Values.madDelugevpn.vpnPassword }}
   VPN_PROV: {{ .Values.madDelugevpn.vpnProv | default "pia" | quote }}
-  VPN_USER: {{ .Values.madDelugevpn.vpnUsername }}
