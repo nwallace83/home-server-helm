@@ -30,8 +30,6 @@ readarr:
 
 delugevpn:
   loadBalancerIPPrivoxy: ""
-  vpnUsername: ""
-  vpnPassword: ""
   replicas: 1
   volumes: []
   sharedVolumes: []
@@ -87,7 +85,6 @@ prowlarr:
 
 vaultwarden:
   replicas: 1
-  adminToken: ""
   volumes: []
 
 flaresolverr:

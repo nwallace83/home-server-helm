@@ -30,6 +30,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ print $appName "-env"}}
+            - secretRef:
+                name: {{ $appName }}-env
           volumeMounts:
             {{- range .Values.vaultwarden.volumes }}
             - name: {{ .name }}

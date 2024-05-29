@@ -7,4 +7,3 @@ data:
   PGID: {{ .Values.localGID | quote }}
   PUID: {{ .Values.localUID | quote }}
   TZ: {{ .Values.timezone | quote }}
-  ADMIN_TOKEN: {{ .Values.vaultwarden.adminToken }}
