@@ -12,4 +12,3 @@ data:
   PIHOLE_GID: {{ .Values.localGID | quote }}
   PIHOLE_UID: {{ .Values.localUID | quote }}
   TZ: {{ .Values.timezone | quote }}
-  WEBPASSWORD: {{ .Values.pihole.webPassword | quote }}

@@ -48,6 +48,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ print $appName "-env" }}
+            - secretRef:
+                name: {{ $appName }}-env
           volumeMounts:
             - name: etc-pihole
               mountPath: /etc/pihole
