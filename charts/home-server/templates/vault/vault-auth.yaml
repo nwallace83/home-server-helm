@@ -18,5 +18,5 @@ spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
-    role: home-server
+    role: cert-manager
     serviceAccount: default
