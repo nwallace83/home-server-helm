@@ -16,6 +16,9 @@ spec:
           - name: vault-backup
             persistentVolumeClaim:
               claimName: vault-backup
+          - name: tls-secret
+            secret:
+              secretName: tls-secret
           containers:
             - name: backup-vault
               image: harbor.nwallace.io/home-server/vault:latest
@@ -24,9 +27,14 @@ spec:
               volumeMounts:
               - name: vault-backup
                 mountPath: /backup
+              - name: tls-secret
+                readOnly: true
+                mountPath: /vault/userconfig/tls-secret
               env:
+                - name: VAULT_CA_CERT
+                  value: /vault/userconfig/tls-secret/ca.crt
                 - name: VAULT_ADDR
-                  value: http://vault-active:8200
+                  value: https://vault-active:8200
                 - name: VAULT_TOKEN
                   valueFrom:
                     secretKeyRef:
