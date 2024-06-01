@@ -1,0 +1,18 @@
+{{- if eq .Values.environment "production" }}
+{{- range $i, $e := untilStep 0 3 1 }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-{{ $i }}
+spec: 
+  storageClassName: mongo
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /kubernetes/mongo/mongo-{{ $i }}
+  persistentVolumeReclaimPolicy: Retain
+---
+{{- end }}
+{{- end }}
