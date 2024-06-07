@@ -8,7 +8,7 @@ data:
   FTLCONF_LOCAL_IPV4: {{ .Values.pihole.loadBalancerIP }}
   FTLCONF_MAXDBDAYS: {{ .Values.pihole.ftlConfMaxDBDays | default "7" | quote }}
   IPv6: {{ .Values.pihole.ipv6 | default "false" | quote }}
-  PIHOLE_DNS_: {{ .Values.pihole.dnsOrigins | default "1.1.1.1;8.8.8.8;8.8.4.4;75.75.75.75;75.75.76.76" | quote }}
+  PIHOLE_DNS_: {{ .Values.pihole.dnsOrigins | default "1.1.1.1;8.8.8.8;8.8.4.4" | quote }}
   PIHOLE_GID: {{ .Values.localGID | quote }}
   PIHOLE_UID: {{ .Values.localUID | quote }}
   TZ: {{ .Values.timezone | quote }}
