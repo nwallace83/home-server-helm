@@ -1,0 +1,8 @@
+{{- if eq .Values.environment "production" }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nexus-pgdata
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+{{- end }}
