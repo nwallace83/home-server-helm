@@ -25,7 +25,7 @@ apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
   name: vault-auth
-  namespace: postgresql
+  namespace: gitlab
 spec:
   method: kubernetes
   mount: kubernetes
