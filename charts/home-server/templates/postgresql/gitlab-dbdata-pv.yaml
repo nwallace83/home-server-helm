@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nexus-pgdata-0
+  name: gitlab-pgdata-1
 spec:
-  storageClassName: nexus-pgdata
+  storageClassName: gitlab-pgdata
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /kubernetes/postgres/pv0
+    path: /kubernetes/postgres/gitlab/pv1
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -25,15 +25,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nexus-pgdata-1
+  name: gitlab-pgdata-2
 spec:
-  storageClassName: nexus-pgdata
+  storageClassName: gitlab-pgdata
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /kubernetes/postgres/pv1
+    path: /kubernetes/postgres/gitlab/pv2
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -49,15 +49,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nexus-pgdata-2
+  name: gitlab-pgdata-3
 spec:
-  storageClassName: nexus-pgdata
+  storageClassName: gitlab-pgdata
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /kubernetes/postgres/pv2
+    path: /kubernetes/postgres/gitlab/pv3
   nodeAffinity:
     required:
       nodeSelectorTerms:

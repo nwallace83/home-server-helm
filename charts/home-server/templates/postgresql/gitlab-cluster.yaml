@@ -1,0 +1,33 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: gitlab
+  namespace: gitlab
+spec:
+  instances: 2
+  switchoverDelay: 30
+  bootstrap:
+    initdb:
+      database: gitlabhq_production
+      owner: gitlab
+      secret:
+        name: app-secret
+      postInitSQL:
+        - CREATE EXTENSION pg_trgm
+        - CREATE EXTENSION btree_gist
+  managed:
+      roles:
+      - name: gitlab
+        ensure: present
+        login: true
+        passwordSecret:
+          name: gitlab-postgresql-password
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: gitlab-pgdata
+      volumeMode: Filesystem

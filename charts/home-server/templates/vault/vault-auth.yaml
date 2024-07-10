@@ -20,3 +20,15 @@ spec:
   kubernetes:
     role: cert-manager
     serviceAccount: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+  namespace: postgresql
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: postgresql
+    serviceAccount: default
