@@ -7,7 +7,7 @@ spec:
   capacity:
     storage: 8Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath:
     path: /kubernetes/minio
   persistentVolumeReclaimPolicy: Retain
