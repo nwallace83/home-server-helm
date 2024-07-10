@@ -3,6 +3,7 @@ kind: PersistentVolume
 metadata:
   name: minio
 spec:
+  storageClassName: minio
   capacity:
     storage: 8Gi
   accessModes:
