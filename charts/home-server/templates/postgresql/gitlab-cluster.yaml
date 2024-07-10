@@ -11,7 +11,7 @@ spec:
       database: gitlabhq_production
       owner: gitlab
       secret:
-        name: app-secret
+        name: gitlab-postgresql-password
       postInitSQL:
         - CREATE EXTENSION pg_trgm
         - CREATE EXTENSION btree_gist
