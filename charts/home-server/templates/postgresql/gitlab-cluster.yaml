@@ -33,13 +33,15 @@ spec:
       volumeMode: Filesystem
   backup:
     barmanObjectStore:
-      destinationPath: s3://gitlab-database-backups/
+      destinationPath: s3://gitlab-database/
       endpointURL: http://minio.minio:9000
+      wal:
+        compression: gzip
       s3Credentials:
         accessKeyId:
-          name: aws-creds
-          key: ACCESS_KEY_ID
+          name: gitlab-postgresql-minio
+          key: AccessKey
         secretAccessKey:
-          name: aws-creds
-          key: ACCESS_SECRET_KEY
+          name: gitlab-postgresql-minio
+          key: SecretKey
     retentionPolicy: "30d"
