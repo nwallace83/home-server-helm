@@ -35,7 +35,8 @@ spec:
     barmanObjectStore:
       destinationPath: s3://gitlab-database/
       endpointURL: http://minio.minio:9000
-      compression: gzip
+      data:
+        compression: gzip
       wal:
         compression: gzip
       s3Credentials:
