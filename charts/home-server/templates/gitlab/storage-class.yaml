@@ -2,13 +2,6 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: gitlab-database
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
   name: gitlab-gitaly
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
