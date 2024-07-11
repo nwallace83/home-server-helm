@@ -56,7 +56,11 @@ metadata:
   namespace: gitlab
 spec:
   instances: 2
-  switchoverDelay: 30
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
   env:
   - name: TZ
     value: America/Denver
