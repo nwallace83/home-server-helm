@@ -4,18 +4,31 @@ metadata:
   name: gitlab
   namespace: gitlab
 spec:
-  instances: 2
-  switchoverDelay: 30
+  instances: 3
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  env:
+  - name: TZ
+    value: America/Denver
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
-    initdb:
+    recovery:
+      source: gitlab
       database: gitlabhq_production
       owner: gitlab
       secret:
         name: gitlab-postgresql-password
-      postInitSQL:
-        - CREATE EXTENSION pg_trgm
-        - CREATE EXTENSION btree_gist
+    # initdb:
+    #   database: gitlabhq_production
+    #   owner: gitlab
+    #   secret:
+    #     name: gitlab-postgresql-password
+    #   postInitSQL:
+    #     - CREATE EXTENSION pg_trgm
+    #     - CREATE EXTENSION btree_gist
   managed:
     roles:
     - name: gitlab
@@ -47,7 +60,21 @@ spec:
         secretAccessKey:
           name: gitlab-postgresql-minio
           key: SecretKey
-    retentionPolicy: "30d"
+  externalClusters:
+    - name: gitlab
+      barmanObjectStore:
+        destinationPath: s3://gitlab-database/
+        endpointURL: http://minio.minio:9000
+        s3Credentials:
+          accessKeyId:
+            name: gitlab-postgresql-minio
+            key: AccessKey
+          secretAccessKey:
+            name: gitlab-postgresql-minio
+            key: SecretKey
+          wal:
+          maxParallel: 8
+    retentionPolicy: "7d"
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
@@ -70,7 +97,7 @@ spec:
       source: gitlab
       database: gitlabhq_production
       owner: gitlab
-      secret:
+      secret: 
         name: gitlab-postgresql-password
   managed:
     roles:
