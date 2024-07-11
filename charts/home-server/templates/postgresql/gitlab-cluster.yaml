@@ -21,14 +21,6 @@ spec:
       owner: gitlab
       secret:
         name: gitlab-postgresql-password
-    # initdb:
-    #   database: gitlabhq_production
-    #   owner: gitlab
-    #   secret:
-    #     name: gitlab-postgresql-password
-    #   postInitSQL:
-    #     - CREATE EXTENSION pg_trgm
-    #     - CREATE EXTENSION btree_gist
   managed:
     roles:
     - name: gitlab
@@ -48,7 +40,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: s3://gitlab-database/
+      destinationPath: s3://gitlab-database/2024-07-10
       endpointURL: http://minio.minio:9000
       data:
         compression: gzip
@@ -64,7 +56,7 @@ spec:
   externalClusters:
     - name: gitlab
       barmanObjectStore:
-        destinationPath: s3://gitlab-database/
+        destinationPath: s3://gitlab-database/2024-07-10
         endpointURL: http://minio.minio:9000
         s3Credentials:
           accessKeyId:
@@ -74,74 +66,4 @@ spec:
             name: gitlab-postgresql-minio
             key: SecretKey
           wal:
-          maxParallel: 8
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: gitlab-clone
-  namespace: gitlab
-spec:
-  instances: 2
-  switchoverDelay: 60
-  smartShutdownTimeout: 120
-  stopDelay: 60
-  primaryUpdateStrategy: unsupervised
-  primaryUpdateMethod: switchover
-  env:
-  - name: TZ
-    value: America/Denver
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.3
-  bootstrap:
-    recovery:
-      source: gitlab
-      database: gitlabhq_production
-      owner: gitlab
-      secret: 
-        name: gitlab-postgresql-password
-  managed:
-    roles:
-    - name: gitlab
-      ensure: present
-      login: true
-      passwordSecret:
-        name: gitlab-postgresql-password
-  externalClusters:
-    - name: gitlab
-      barmanObjectStore:
-        destinationPath: s3://gitlab-database/
-        endpointURL: http://minio.minio:9000
-        s3Credentials:
-          accessKeyId:
-            name: gitlab-postgresql-minio
-            key: AccessKey
-          secretAccessKey:
-            name: gitlab-postgresql-minio
-            key: SecretKey
-          wal:
-          maxParallel: 8
-  storage:
-    pvcTemplate:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
-      storageClassName: gitlab-pgdata
-      volumeMode: Filesystem
-  backup:
-    barmanObjectStore:
-      destinationPath: s3://gitlab-database-clone/
-      endpointURL: http://minio.minio:9000
-      data:
-        compression: gzip
-      wal:
-        compression: gzip
-      s3Credentials:
-        accessKeyId:
-          name: gitlab-postgresql-minio
-          key: AccessKey
-        secretAccessKey:
-          name: gitlab-postgresql-minio
-          key: SecretKey
-    retentionPolicy: "30d"
+            maxParallel: 8
