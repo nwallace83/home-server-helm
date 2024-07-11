@@ -46,6 +46,7 @@ spec:
       storageClassName: gitlab-pgdata
       volumeMode: Filesystem
   backup:
+    retentionPolicy: "7d"
     barmanObjectStore:
       destinationPath: s3://gitlab-database/
       endpointURL: http://minio.minio:9000
@@ -74,7 +75,6 @@ spec:
             key: SecretKey
           wal:
           maxParallel: 8
-    retentionPolicy: "7d"
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
