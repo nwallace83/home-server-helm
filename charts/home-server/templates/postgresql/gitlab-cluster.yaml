@@ -6,6 +6,8 @@ metadata:
 spec:
   instances: 2
   switchoverDelay: 30
+  postgresUID: 1000
+  postgresGID: 1000
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
     initdb:
@@ -57,6 +59,8 @@ metadata:
 spec:
   instances: 2
   switchoverDelay: 30
+  postgresUID: 1000
+  postgresGID: 1000
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
     recovery:

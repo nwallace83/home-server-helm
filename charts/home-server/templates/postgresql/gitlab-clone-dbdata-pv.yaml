@@ -52,8 +52,6 @@ metadata:
   name: gitlab-clone-pgdata-3
 spec:
   storageClassName: gitlab-pgdata
-  postgresUID: 1000
-  postgresGID: 1000
   capacity:
     storage: 1Gi
   accessModes:
