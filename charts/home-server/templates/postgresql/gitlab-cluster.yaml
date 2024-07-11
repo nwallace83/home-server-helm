@@ -60,7 +60,11 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
     recovery:
-      source: clusterBackup
+      source: gitlab
+      database: gitlabhq_production
+      owner: gitlab
+      secret:
+        name: gitlab-postgresql-password
   managed:
     roles:
     - name: gitlab
