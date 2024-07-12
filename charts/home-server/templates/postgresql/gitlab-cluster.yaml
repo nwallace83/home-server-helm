@@ -72,3 +72,5 @@ spec:
           secretAccessKey:
             name: gitlab-postgresql-minio
             key: SecretKey
+  monitoring:
+    enablePodMonitor: true
