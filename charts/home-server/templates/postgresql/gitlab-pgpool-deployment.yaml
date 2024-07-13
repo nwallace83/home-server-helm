@@ -19,9 +19,20 @@ spec:
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/pgpool:latest
+          env:
+          - name: DBUSER
+            valueFrom:
+              secretKeyRef:
+                name: gitlab-postgresql-password
+                key: username
+          - name: DBPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: gitlab-postgresql-password
+                key: password
           ports:
-            - containerPort: 5432
-              protocol: TCP
+          - containerPort: 5432
+            protocol: TCP
           imagePullPolicy: Always
   strategy: 
     type: Recreate
