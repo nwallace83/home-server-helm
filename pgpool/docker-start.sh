@@ -12,7 +12,6 @@ if [[ -z $PGDATABASE || -z $PGUSER ]]; then
   exit 1
 fi
 
-PGHOST=$(cat /etc/pgpool/pgpool.conf | grep backend_hostname | head -n 1 | cut -d = -f 2 | sed -e 's/\x27//g' -e 's/ //g')
 DBUSERNAME=$(cat /app/database-credentials/username)
 DBPASSWORD=$(cat /app/database-credentials/password)
 
