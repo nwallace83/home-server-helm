@@ -13,8 +13,8 @@ spec:
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
-  minSyncReplicas: 1
-  maxSyncReplicas: 2
+  # minSyncReplicas: 1
+  # maxSyncReplicas: 2
   env:
   - name: TZ
     value: America/Denver

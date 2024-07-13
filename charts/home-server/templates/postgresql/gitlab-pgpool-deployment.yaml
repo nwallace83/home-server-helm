@@ -44,5 +44,8 @@ spec:
             protocol: TCP
           imagePullPolicy: Always
   strategy: 
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 100%
   revisionHistoryLimit: 0
