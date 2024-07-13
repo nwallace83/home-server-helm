@@ -44,12 +44,12 @@ spec:
           image: harbor.nwallace.io/home-server/pgpool:latest
           volumeMounts:
           - name: database-credentials
-            mountPath: "/app/database-credentials"
+            mountPath: /app/database-credentials
           env:
           - name: PGHOSTADDR
             value: gitlab-rw
           - name: PGPORT
-            value: 5432
+            value: '5432'
           - name: PGDATABASE
             value: gitlab   
           - name: PGPASSFILE
