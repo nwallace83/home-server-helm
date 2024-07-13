@@ -17,5 +17,6 @@ DBPASSWORD=$(cat /app/database-credentials/password)
 
 echo "$DBUSERNAME:$DBPASSWORD" >> /tmp/pool_passwd
 echo "$PGHOSTADDR:$PGPORT:$PGDATABASE:$DBUSERNAME:$DBPASSWORD" > /app/.pgpass
+chmod 600 /app/.pgpass
 
 pgpool -n
