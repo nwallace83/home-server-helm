@@ -46,16 +46,12 @@ spec:
           - name: database-credentials
             mountPath: /app/database-credentials
           env:
-          - name: PGHOST
-            value: gitlab-rw
-          - name: PGPORT
-            value: '5432'
           - name: PGDATABASE
-            value: gitlabhq_production   
-          - name: PGPASSFILE
-            value: /app/.pgpass
+            value: gitlabhq_production
           - name: PGUSER
             value: gitlab
+          - name: TZ
+            value: America/Denver
           ports:
           - containerPort: 5432
             protocol: TCP

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ ! -e /app/database-credentials/username ] || [ ! -e /app/database-credentials/password ]; then
   echo "Missing one or more files:"
@@ -7,16 +7,17 @@ if [ ! -e /app/database-credentials/username ] || [ ! -e /app/database-credentia
   exit 1
 fi
 
-if [ -z $PGHOST ] || [ -z $PGPORT ] || [ -z $PGDATABASE ]; then
-  echo "Missing one or more variables: PGHOSTADDR PGPORT PGDATABASE"
+if [[ -z $PGDATABASE || -z $PGUSER ]]; then
+  echo "Missing one or more variables: PGDATABASE PGUSER"
   exit 1
 fi
 
+PGHOST=$(cat /etc/pgpool/pgpool.conf | grep backend_hostname | head -n 1 | cut -d = -f 2 | sed -e 's/\x27//g' -e 's/ //g')
 DBUSERNAME=$(cat /app/database-credentials/username)
 DBPASSWORD=$(cat /app/database-credentials/password)
 
 echo "$DBUSERNAME:$DBPASSWORD" >> /app/pool_passwd
-echo "$PGHOST:$PGPORT:$PGDATABASE:$DBUSERNAME:$DBPASSWORD" > /app/.pgpass
-chmod 600 /app/.pgpass
+echo "$PGHOST:$PGPORT:$PGDATABASE:$DBUSERNAME:$DBPASSWORD" > $PGPASSFILE
+chmod 600 $PGPASSFILE
 
 pgpool -n
