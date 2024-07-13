@@ -46,7 +46,7 @@ spec:
           - name: database-credentials
             mountPath: /app/database-credentials
           env:
-          - name: PGHOSTADDR
+          - name: PGHOST
             value: gitlab-rw
           - name: PGPORT
             value: '5432'

@@ -7,7 +7,7 @@ if [ ! -e /app/database-credentials/username ] || [ ! -e /app/database-credentia
   exit 1
 fi
 
-if [ -z $PGHOSTADDR ] || [ -z $PGPORT ] || [ -z $PGDATABASE ]; then
+if [ -z $PGHOST ] || [ -z $PGPORT ] || [ -z $PGDATABASE ]; then
   echo "Missing one or more variables: PGHOSTADDR PGPORT PGDATABASE"
   exit 1
 fi
@@ -16,7 +16,7 @@ DBUSERNAME=$(cat /app/database-credentials/username)
 DBPASSWORD=$(cat /app/database-credentials/password)
 
 echo "$DBUSERNAME:$DBPASSWORD" >> /app/pool_passwd
-echo "$PGHOSTADDR:$PGPORT:$PGDATABASE:$DBUSERNAME:$DBPASSWORD" > /app/.pgpass
+echo "$PGHOST:$PGPORT:$PGDATABASE:$DBUSERNAME:$DBPASSWORD" > /app/.pgpass
 chmod 600 /app/.pgpass
 
 pgpool -n
