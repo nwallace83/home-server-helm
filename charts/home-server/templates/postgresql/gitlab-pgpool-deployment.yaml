@@ -1,0 +1,28 @@
+{{- $appName := "pgpool" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  namespace: gitlab
+  labels:
+    app: {{ $appName }}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ $appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}
+    spec:
+      containers:
+        - name: {{ $appName }}
+          image: harbor.nwallace.io/home-server/pgpool:latest
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          imagePullPolicy: Always
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0
