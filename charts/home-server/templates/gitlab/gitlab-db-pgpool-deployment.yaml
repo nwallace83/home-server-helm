@@ -39,6 +39,15 @@ spec:
                 items:
                   - key: username
                     path: username
+        - name: pgpool-conf
+          mountPath: /etc/pgpool/pgpool.conf
+          subPath: pgpool.conf
+        - name: pgpool-conf
+          configMap:
+            name: pgpool-conf
+            items:
+              - key: pgpool.conf
+                path: pgpool.conf
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/pgpool:latest
@@ -47,7 +56,7 @@ spec:
             mountPath: /app/database-credentials
           env:
           - name: PGDATABASE
-            value: gitlabhq_production
+            value: gitlab
           - name: PGUSER
             value: gitlab
           - name: TZ

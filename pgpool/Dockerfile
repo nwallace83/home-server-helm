@@ -6,7 +6,6 @@ RUN \
   mkdir /app &&\
   chown pgpool:pgpool /app
 
-COPY pgpool.conf /etc/pgpool/
 COPY --chmod=0755 docker-start.sh /usr/local/bin
 
 ENV PGPASSFILE=/app/.pgpass
