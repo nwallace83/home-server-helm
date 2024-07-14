@@ -25,20 +25,20 @@ spec:
                 operator: In
                 values:
                 - amd64
-        volumes:
-          - name: database-credentials
-            projected:
-              sources:
-              - secret:
-                  name: gitlab-postgresql-password
-                  items:
-                    - key: password
-                      path: password
-              - secret:
-                  name: gitlab-postgresql-password
-                  items:
-                    - key: username
-                      path: username
+      volumes:
+        - name: database-credentials
+          projected:
+            sources:
+            - secret:
+                name: gitlab-postgresql-password
+                items:
+                  - key: password
+                    path: password
+            - secret:
+                name: gitlab-postgresql-password
+                items:
+                  - key: username
+                    path: username
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/pgpool:latest
