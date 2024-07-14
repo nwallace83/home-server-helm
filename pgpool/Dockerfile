@@ -9,9 +9,9 @@ RUN \
 COPY pgpool.conf /etc/pgpool/
 COPY --chmod=0755 docker-start.sh /usr/local/bin
 
-ENV PGPASSFILE /app/.pgpass
-ENV PGPORT 5432
-ENV PGHOST localhost
+ENV PGPASSFILE=/app/.pgpass
+ENV PGPORT=5432
+ENV PGHOST=localhost
 
 USER pgpool
 
