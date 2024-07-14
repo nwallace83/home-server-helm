@@ -1,20 +1,20 @@
-{{- $appName := "pgpool" }}
+{{- $appName := "harbor" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $appName }}
+  name: {{ $appName }}-pgpool
   namespace: harbor
   labels:
-    app: {{ $appName }}
+    app: {{ $appName }}-pgpool
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: {{ $appName }}
+      app: {{ $appName }}-pgpool
   template:
     metadata:
       labels:
-        app: {{ $appName }}
+        app: {{ $appName }}-pgpool
     spec:
       affinity:
         nodeAffinity:
@@ -43,7 +43,7 @@ spec:
           configMap:
             name: pgpool-conf
       containers:
-        - name: {{ $appName }}
+        - name: {{ $appName }}-pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
           volumeMounts:
           - name: database-credentials
