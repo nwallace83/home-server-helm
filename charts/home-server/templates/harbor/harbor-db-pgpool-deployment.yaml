@@ -42,9 +42,6 @@ spec:
         - name: pgpool-conf
           configMap:
             name: pgpool-conf
-            items:
-              - key: pgpool.conf
-                path: pgpool.conf
       containers:
         - name: {{ $appName }}
           image: harbor.nwallace.io/home-server/pgpool:latest
