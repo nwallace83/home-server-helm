@@ -1,0 +1,82 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: harbor
+  namespace: harbor
+spec:
+  resources:
+    limits:
+        memory: "500Mi"
+  instances: 3
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  # minSyncReplicas: 1
+  # maxSyncReplicas: 2
+  env:
+  - name: TZ
+    value: America/Denver
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.3
+  bootstrap:
+    bootstrap:
+      initdb:
+        database: registry
+        owner: harbor
+        secret:
+          name: harbor-postgresql-password
+    # recovery:
+    #   source: harbor
+    #   database: harbor
+    #   owner: harbor
+    #   secret:
+    #     name: harbor-postgresql-password
+  managed:
+    roles:
+    - name: harbor
+      ensure: present
+      login: true
+      passwordSecret:
+        name: harbor-postgresql-password
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: harbor-pgdata
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: "7d"
+    barmanObjectStore:
+      destinationPath: s3://harbor-database/2024-07-14
+      endpointURL: http://minio.minio:9000
+      data:
+        compression: gzip
+      wal:
+        compression: gzip
+      s3Credentials:
+        accessKeyId:
+          name: harbor-postgresql-minio
+          key: AccessKey
+        secretAccessKey:
+          name: harbor-postgresql-minio
+          key: SecretKey
+  externalClusters:
+    - name: harbor
+      barmanObjectStore:
+        destinationPath: s3://harbor-database/2024-07-14
+        endpointURL: http://minio.minio:9000
+        wal:
+          maxParallel: 8
+        s3Credentials:
+          accessKeyId:
+            name: harbor-postgresql-minio
+            key: AccessKey
+          secretAccessKey:
+            name: harbor-postgresql-minio
+            key: SecretKey
+  monitoring:
+    enablePodMonitor: true

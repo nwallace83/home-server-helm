@@ -1,9 +1,9 @@
-{{- $appName := "pgpool" }}
+{{- $appName := "harbor" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: gitlab-{{ $appName }}
-  namespace: gitlab
+  name: {{ $appName }}-db
+  namespace: harbor
 spec:
   ports:
     - name: http
