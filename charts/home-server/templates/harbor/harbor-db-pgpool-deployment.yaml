@@ -40,9 +40,6 @@ spec:
                   - key: username
                     path: username
         - name: pgpool-conf
-          mountPath: /etc/pgpool/pgpool.conf
-          subPath: pgpool.conf
-        - name: pgpool-conf
           configMap:
             name: pgpool-conf
             items:
@@ -54,6 +51,9 @@ spec:
           volumeMounts:
           - name: database-credentials
             mountPath: /app/database-credentials
+          - name: pgpool.conf
+            mountPath: /etc/pgpool/pgpool.conf
+            subPath: pgpool.conf
           env:
           - name: PGDATABASE
             value: registry
