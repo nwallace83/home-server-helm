@@ -51,7 +51,7 @@ spec:
           volumeMounts:
           - name: database-credentials
             mountPath: /app/database-credentials
-          - name: pgpool.conf
+          - name: pgpool-conf
             mountPath: /etc/pgpool/pgpool.conf
             subPath: pgpool.conf
           env:
