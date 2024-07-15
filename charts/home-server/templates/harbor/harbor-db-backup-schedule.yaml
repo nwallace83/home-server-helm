@@ -8,4 +8,4 @@ spec:
   backupOwnerReference: cluster
   immediate: true
   cluster:
-    name: gitlab
+    name: harbor
