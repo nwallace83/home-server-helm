@@ -20,21 +20,21 @@ spec:
     value: America/Denver
   imageName: ghcr.io/cloudnative-pg/postgresql:15.1
   bootstrap:
-    initdb:
-      database: gitlabhq_production
-      owner: gitlab
-      secret:
-        name: gitlab-postgresql-password
-      postInitSQL:
-        - CREATE EXTENSION IF NOT EXISTS btree_gist
-        - CREATE EXTENSION IF NOT EXISTS pg_trgm
-        - CREATE EXTENSION IF NOT EXISTS plpgsql
-    # recovery:
-    #   source: gitlab
+    # initdb:
     #   database: gitlabhq_production
     #   owner: gitlab
     #   secret:
     #     name: gitlab-postgresql-password
+    #   postInitSQL:
+    #     - CREATE EXTENSION IF NOT EXISTS btree_gist
+    #     - CREATE EXTENSION IF NOT EXISTS pg_trgm
+    #     - CREATE EXTENSION IF NOT EXISTS plpgsql
+    recovery:
+      source: gitlab
+      database: gitlabhq_production
+      owner: gitlab
+      secret:
+        name: gitlab-postgresql-password
   managed:
     roles:
     - name: gitlab
@@ -67,19 +67,19 @@ spec:
         secretAccessKey:
           name: gitlab-postgresql-minio
           key: SecretKey
-  # externalClusters:
-  #   - name: gitlab
-  #     barmanObjectStore:
-  #       destinationPath: s3://gitlab-database/2024-07-10
-  #       endpointURL: http://minio.minio:9000
-  #       wal:
-  #         maxParallel: 8
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: gitlab-postgresql-minio
-  #           key: AccessKey
-  #         secretAccessKey:
-  #           name: gitlab-postgresql-minio
-  #           key: SecretKey
+  externalClusters:
+    - name: gitlab
+      barmanObjectStore:
+        destinationPath: s3://gitlab-database/2024-07-14
+        endpointURL: http://minio.minio:9000
+        wal:
+          maxParallel: 8
+        s3Credentials:
+          accessKeyId:
+            name: gitlab-postgresql-minio
+            key: AccessKey
+          secretAccessKey:
+            name: gitlab-postgresql-minio
+            key: SecretKey
   monitoring:
     enablePodMonitor: true
