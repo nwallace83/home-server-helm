@@ -19,7 +19,7 @@ build-container:
   - until docker info; do sleep 1; done
   - docker login --username=$HARBOR_USERNAME --password=$HARBOR_PASSWORD $HARBOR_URL
   - docker buildx ls
-  - docker buildx create --name mybuilder --platform linux/arm64,linux/arm64 --driver-opt image=moby/buildkit:latest --use
+  - docker buildx create --name mybuilder --platform linux/arm64,linux/arm64
   - sleep 30
   - docker buildx ls
   - docker buildx use mybuilder
