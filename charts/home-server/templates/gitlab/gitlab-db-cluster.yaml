@@ -7,12 +7,15 @@ spec:
   resources:
     limits:
         memory: "500Mi"
-  instances: 3
+  instances: 2
   switchoverDelay: 60
   smartShutdownTimeout: 120
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
+  affinity:
+    nodeAffinity:
+      beta.kubernetes.io/arch: amd64
   # minSyncReplicas: 1
   # maxSyncReplicas: 2
   env:
