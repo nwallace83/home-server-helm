@@ -14,7 +14,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   parameters:
-    max_connections: '200'
+    - max_connections: '200'
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
