@@ -20,7 +20,7 @@ data:
     health_check_period = 0
     connection_cache = true
     max_pool = 2
-    num_init_children = 16
+    num_init_children = 8
     log_hostname = true
     log_connections = true
     log_disconnections = true
