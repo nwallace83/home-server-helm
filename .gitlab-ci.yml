@@ -20,4 +20,5 @@ build-container:
   - docker login --username=$HARBOR_USERNAME --password=$HARBOR_PASSWORD $HARBOR_URL
   - docker context create builder
   - docker buildx create builder --use
-  - docker buildx build --platform linux/amd64,linux/arm64 --push -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:$CI_COMMIT_SHORT_SHA -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:latest pgpool
+  - docker buildx build --platform linux/amd64 --push -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:$CI_COMMIT_SHORT_SHA -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:latest pgpool
+  - docker buildx build --platform linux/arm64 --push -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:$CI_COMMIT_SHORT_SHA -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:latest pgpool
