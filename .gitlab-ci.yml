@@ -11,8 +11,9 @@ build-container:
     DOCKER_TLS_VERIFY: 1
     DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
   services:
-  - docker:27.0.3-dind
-  - moby/buildkit:latest as buildkit
+  - name: docker:27.0.3-dind
+  - name: moby/buildkit:latest 
+    alias: buildkit
   stage: build-container
   script:
   - until docker info; do sleep 1; done
