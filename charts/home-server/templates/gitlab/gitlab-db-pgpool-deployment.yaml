@@ -66,14 +66,14 @@ spec:
             exec:
               command: ["sh", "-c", "psql -c 'SELECT version();'"]
             initialDelaySeconds: 5
-            periodSeconds: 5
-            failureThreshold: 5
+            periodSeconds: 10
+            failureThreshold: 6
           readinessProbe:
             exec:
               command: ["sh", "-c", "psql -c 'SELECT version();'"]
             initialDelaySeconds: 5
-            periodSeconds: 5
-            failureThreshold: 2
+            periodSeconds: 10
+            failureThreshold: 6
           startupProbe:
             exec:
               command: ["sh", "-c", "psql -c 'SELECT version();'"]
