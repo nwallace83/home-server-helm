@@ -62,6 +62,24 @@ spec:
           - containerPort: 5432
             protocol: TCP
           imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "psql -c 'SELECT version();'"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "psql -c 'SELECT version();'"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 2
+          startupProbe:
+            exec:
+              command: ["sh", "-c", "psql -c 'SELECT version();'"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
   strategy: 
     type: RollingUpdate
     rollingUpdate:
