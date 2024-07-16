@@ -6,6 +6,7 @@ build-container:
   cache: {}
   variables:
     DOCKER_HOST: tcp://docker:2376
+    BUILDKIT_HOST: tcp://docker:2376
     DOCKER_TLS_CERTDIR: "/certs"
     DOCKER_TLS_VERIFY: 1
     DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
@@ -16,5 +17,6 @@ build-container:
   - until docker info; do sleep 1; done
   - docker login --username=$HARBOR_USERNAME --password=$HARBOR_PASSWORD $HARBOR_URL
   - docker buildx create --name mybuilder --platform linux/arm64,linux/arm64 default
+  - docker buildx ls
   - docker buildx use mybuilder
   - docker buildx build --platform linux/amd64,linux/arm64 --push -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:$CI_COMMIT_SHORT_SHA -t $HARBOR_HOST/$HARBOR_PROJECT/pgpool:latest pgpool
