@@ -45,6 +45,7 @@ spec:
       containers:
         - name: {{ $appName }}-pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
+          imagePullPolicy: Always
           volumeMounts:
           - name: database-credentials
             mountPath: /app/database-credentials
@@ -61,7 +62,6 @@ spec:
           ports:
           - containerPort: 5432
             protocol: TCP
-          imagePullPolicy: Always
           livenessProbe:
             exec:
               command: ["sh", "-c", "psql -c 'SELECT version();'"]
