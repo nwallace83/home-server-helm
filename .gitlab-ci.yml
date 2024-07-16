@@ -2,7 +2,7 @@ stages:
 - build-container
 
 build-container:
-  image: docker:24.0.7
+  image: docker:27.0.3
   cache: {}
   variables:
     DOCKER_HOST: tcp://docker:2376
@@ -11,7 +11,7 @@ build-container:
     DOCKER_TLS_VERIFY: 1
     DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
   services:
-  - docker:24.0.7-dind
+  - docker:27.0.3-dind
   stage: build-container
   script:
   - until docker info; do sleep 1; done
