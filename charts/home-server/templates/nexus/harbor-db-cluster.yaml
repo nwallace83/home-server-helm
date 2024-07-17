@@ -1,0 +1,90 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: nexus
+  namespace: nexus
+spec:
+  resources:
+    limits:
+        memory: "256Mi"
+  instances: 2
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: beta.kubernetes.io/arch
+            operator: In
+            values:
+            - amd64
+  # minSyncReplicas: 1
+  # maxSyncReplicas: 2
+  env:
+  - name: TZ
+    value: America/Denver
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.3
+  bootstrap:
+    initdb:
+      database: registry
+      owner: nexus
+      secret:
+        name: nexus-postgresql-password
+    # recovery:
+    #   source: nexus
+    #   database: nexus
+    #   owner: nexus
+    #   secret:
+    #     name: nexus-postgresql-password
+  managed:
+    roles:
+    - name: nexus
+      ensure: present
+      login: true
+      passwordSecret:
+        name: nexus-postgresql-password
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: nexus-pgdata
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: "7d"
+    barmanObjectStore:
+      destinationPath: s3://nexus-database/2024-07-14
+      endpointURL: http://minio.minio:9000
+      data:
+        compression: gzip
+      wal:
+        compression: gzip
+      s3Credentials:
+        accessKeyId:
+          name: nexus-postgresql-minio
+          key: AccessKey
+        secretAccessKey:
+          name: nexus-postgresql-minio
+          key: SecretKey
+  externalClusters:
+    - name: nexus
+      barmanObjectStore:
+        destinationPath: s3://nexus-database/2024-07-14
+        endpointURL: http://minio.minio:9000
+        wal:
+          maxParallel: 8
+        s3Credentials:
+          accessKeyId:
+            name: nexus-postgresql-minio
+            key: AccessKey
+          secretAccessKey:
+            name: nexus-postgresql-minio
+            key: SecretKey
+  monitoring:
+    enablePodMonitor: true

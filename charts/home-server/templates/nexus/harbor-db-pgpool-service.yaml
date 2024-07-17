@@ -1,0 +1,14 @@
+{{- $appName := "nexus" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $appName }}-db
+  namespace: nexus
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: {{ $appName }}-pgpool

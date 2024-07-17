@@ -68,3 +68,15 @@ spec:
   kubernetes:
     role: harbor
     serviceAccount: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+  namespace: nexus
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: nexus
+    serviceAccount: default
