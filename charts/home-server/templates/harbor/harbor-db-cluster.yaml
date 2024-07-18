@@ -53,8 +53,8 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
-      storageClassName: harbor-pgdata
+          storage: 4Gi
+      storageClassName: longhorn-db
       volumeMode: Filesystem
   backup:
     retentionPolicy: "7d"

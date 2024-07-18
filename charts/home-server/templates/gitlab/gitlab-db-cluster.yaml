@@ -60,8 +60,8 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
-      storageClassName: gitlab-pgdata
+          storage: 4Gi
+      storageClassName: longhorn-db
       volumeMode: Filesystem
   backup:
     retentionPolicy: "7d"
