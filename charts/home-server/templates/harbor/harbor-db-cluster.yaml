@@ -29,17 +29,17 @@ spec:
     value: America/Denver
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
-    initdb:
-      database: registry
-      owner: harbor
-      secret:
-        name: harbor-postgresql-password
-    # recovery:
-    #   source: harbor
-    #   database: harbor
+    # initdb:
+    #   database: registry
     #   owner: harbor
     #   secret:
     #     name: harbor-postgresql-password
+    recovery:
+      source: harbor
+      database: harbor
+      owner: harbor
+      secret:
+        name: harbor-postgresql-password
   managed:
     roles:
     - name: harbor
