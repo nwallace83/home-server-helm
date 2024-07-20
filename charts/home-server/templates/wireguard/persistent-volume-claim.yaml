@@ -1,14 +1,15 @@
 {{- range .Values.wireguard.volumes }}
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
   name: {{ .name }}
 spec:
+  capacity:
+    storage: {{ .size }}
   accessModes:
     - ReadWriteMany
-  resources:
-    requests:
-      storage: {{ .size }}
-  volumeName: {{ .name }}
+  hostPath:
+    path: {{ .host_path }}
+  persistentVolumeReclaimPolicy: Retain
 {{- end }}
