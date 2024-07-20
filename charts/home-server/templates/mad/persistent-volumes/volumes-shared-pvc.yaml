@@ -1,5 +1,4 @@
 {{- range .Values.madVolumesShared }}
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -9,6 +8,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .size }}
+      storage: 1Gi
   volumeName: {{ .name }}
+---
 {{- end }}
