@@ -59,7 +59,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: s3://nexus-database/2024-07-14
+      destinationPath: s3://nexus-database/2024-07-20
       endpointURL: http://minio.minio:9000
       data:
         compression: gzip
