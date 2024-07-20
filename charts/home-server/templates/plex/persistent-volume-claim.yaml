@@ -11,4 +11,5 @@ spec:
     requests:
       storage: {{ .size }}
   volumeName: {{ .name }}
+  storageClassName: hostpath
 {{- end }}

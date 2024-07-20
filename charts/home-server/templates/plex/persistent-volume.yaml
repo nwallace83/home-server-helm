@@ -12,4 +12,5 @@ spec:
   hostPath:
     path: {{ print "/kubernetes" .host_path }}
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: hostpath
 {{- end }}
