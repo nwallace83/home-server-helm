@@ -6,9 +6,9 @@ metadata:
   name: {{ .name }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .size }}
-  storageClassName: longhorn
+  storageClassName: longhorn-rwx
 {{- end }}
