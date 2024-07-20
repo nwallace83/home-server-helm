@@ -11,4 +11,5 @@ spec:
   hostPath:
     path: /kubernetes/harbor
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: hostpath
 {{- end }}
