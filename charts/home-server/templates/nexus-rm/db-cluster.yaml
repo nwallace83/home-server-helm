@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: nexus-iq
+  name: nexus-rm
   namespace: nexus
 spec:
   resources:
@@ -30,8 +30,8 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
     initdb:
-      database: nexus-iq
-      owner: nexus-iq
+      database: nexus-rm
+      owner: nexus-rm
       secret:
         name: nexus-postgresql-password
     # recovery:
@@ -42,7 +42,7 @@ spec:
     #     name: nexus-postgresql-password
   managed:
     roles:
-    - name: nexus-iq
+    - name: nexus-rm
       ensure: present
       login: true
       passwordSecret:
@@ -59,7 +59,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: s3://nexus-iq-database/2024-07-20
+      destinationPath: s3://nexus-rm-database/2024-07-20
       endpointURL: http://minio.minio:9000
       data:
         compression: gzip
@@ -75,7 +75,7 @@ spec:
   externalClusters:
     - name: nexus
       barmanObjectStore:
-        destinationPath: s3://nexus-iq-database/2024-07-20
+        destinationPath: s3://nexus-rm-database/2024-07-20
         endpointURL: http://minio.minio:9000
         wal:
           maxParallel: 8

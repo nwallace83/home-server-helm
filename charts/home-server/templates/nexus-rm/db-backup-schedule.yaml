@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: nexus-backup
+  name: nexus-rm-backup
   namespace: nexus
 spec:
   schedule: "0 20 0 * * *"
