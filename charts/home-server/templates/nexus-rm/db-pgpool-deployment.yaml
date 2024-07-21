@@ -54,7 +54,7 @@ spec:
             subPath: pgpool.conf
           env:
           - name: PGDATABASE
-            value: registry
+            value: nexus-rm
           - name: PGUSER
             value: nexus
           - name: TZ
