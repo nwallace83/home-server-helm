@@ -16,7 +16,6 @@ spec:
   postgresql:
     parameters:
       max_connections: '500'
-      shared_buffers: '81920'
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
