@@ -8,4 +8,4 @@ spec:
   backupOwnerReference: cluster
   immediate: true
   cluster:
-    name: nexus
+    name: nexus-rm
