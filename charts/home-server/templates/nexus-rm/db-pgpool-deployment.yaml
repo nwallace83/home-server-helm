@@ -41,7 +41,7 @@ spec:
                     path: username
         - name: pgpool-conf
           configMap:
-            name: pgpool-conf
+            name: {{ $appName }}-pgpool-conf
       containers:
         - name: {{ $appName }}-pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
@@ -49,7 +49,7 @@ spec:
           volumeMounts:
           - name: database-credentials
             mountPath: /app/database-credentials
-          - name: {{ $appName }}-pgpool-conf
+          - name: pgpool-conf
             mountPath: /etc/pgpool/pgpool.conf
             subPath: pgpool.conf
           env:
