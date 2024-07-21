@@ -19,6 +19,7 @@ data:
     sr_check_period = 0
     health_check_period = 0
     connection_cache = true
+    process_management_mode = 'dynamic'
     max_pool = 4
     num_init_children = 150
     log_hostname = true
