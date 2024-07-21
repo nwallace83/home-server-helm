@@ -56,7 +56,7 @@ spec:
           - name: PGDATABASE
             value: nexus-rm
           - name: PGUSER
-            value: nexus
+            value: nexus-rm
           - name: TZ
             value: America/Denver
           ports:
