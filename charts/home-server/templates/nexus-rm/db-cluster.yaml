@@ -6,7 +6,7 @@ metadata:
 spec:
   resources:
     limits:
-        memory: "256Mi"
+        memory: "512Mi"
   instances: 2
   switchoverDelay: 60
   smartShutdownTimeout: 120
