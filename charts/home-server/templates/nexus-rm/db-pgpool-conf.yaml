@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pgpool-conf
+  name: {{ $appName }}-pgpool-conf
   namespace: nexus
 data:
   pgpool.conf: |

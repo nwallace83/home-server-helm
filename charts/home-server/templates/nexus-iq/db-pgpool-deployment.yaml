@@ -41,7 +41,7 @@ spec:
                     path: username
         - name: pgpool-conf
           configMap:
-            name: pgpool-conf
+            name: {{ $appName }}-pgpool-conf
       containers:
         - name: {{ $appName }}-pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
