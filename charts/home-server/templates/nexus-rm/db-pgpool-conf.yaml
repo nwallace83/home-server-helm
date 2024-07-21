@@ -22,6 +22,7 @@ data:
     process_management_mode = 'dynamic'
     max_pool = 4
     num_init_children = 150
+    child_life_time = 1800
     log_hostname = true
     log_connections = true
     log_disconnections = true
