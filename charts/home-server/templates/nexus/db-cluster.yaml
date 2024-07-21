@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: nexus
+  name: nexus-iq
   namespace: nexus
 spec:
   resources:
@@ -30,8 +30,8 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3
   bootstrap:
     initdb:
-      database: registry
-      owner: nexus
+      database: nexus-iq
+      owner: nexus-iq
       secret:
         name: nexus-postgresql-password
     # recovery:
@@ -42,7 +42,7 @@ spec:
     #     name: nexus-postgresql-password
   managed:
     roles:
-    - name: nexus
+    - name: nexus-iq
       ensure: present
       login: true
       passwordSecret:
