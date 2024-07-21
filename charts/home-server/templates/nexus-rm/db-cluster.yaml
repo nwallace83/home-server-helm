@@ -15,7 +15,7 @@ spec:
   primaryUpdateMethod: switchover
   postgresql:
     parameters:
-      max_connections: '300'
+      max_connections: '500'
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
