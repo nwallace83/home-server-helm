@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: nexus-iq-backup
+  namespace: nexus
+spec:
+  schedule: "0 20 0 * * *"
+  backupOwnerReference: cluster
+  immediate: true
+  cluster:
+    name: nexus-iq

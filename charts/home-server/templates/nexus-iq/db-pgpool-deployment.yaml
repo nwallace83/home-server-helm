@@ -1,0 +1,88 @@
+{{- $appName := "nexus-iq" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}-pgpool
+  namespace: nexus
+  labels:
+    app: {{ $appName }}-pgpool
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ $appName }}-pgpool
+  template:
+    metadata:
+      labels:
+        app: {{ $appName }}-pgpool
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      volumes:
+        - name: database-credentials
+          projected:
+            sources:
+            - secret:
+                name: nexus-postgresql-password
+                items:
+                  - key: password
+                    path: password
+            - secret:
+                name: nexus-postgresql-password
+                items:
+                  - key: username
+                    path: username
+        - name: pgpool-conf
+          configMap:
+            name: pgpool-conf
+      containers:
+        - name: {{ $appName }}-pgpool
+          image: harbor.nwallace.io/home-server/pgpool:latest
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: database-credentials
+            mountPath: /app/database-credentials
+          - name: pgpool-conf
+            mountPath: /etc/pgpool/pgpool.conf
+            subPath: pgpool.conf
+          env:
+          - name: PGDATABASE
+            value: nexus-iq
+          - name: PGUSER
+            value: nexus-iq
+          - name: TZ
+            value: America/Denver
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 6
+          startupProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 100%
+  revisionHistoryLimit: 0
