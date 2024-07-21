@@ -34,6 +34,8 @@ spec:
       owner: nexus-rm
       secret:
         name: nexus-postgresql-password
+      postInitSQL:
+       - CREATE EXTENSION IF NOT EXISTS pg_trgm schema public;
     # recovery:
     #   source: nexus
     #   database: nexus
