@@ -30,12 +30,12 @@ spec:
           projected:
             sources:
             - secret:
-                name: nexus-postgresql-password
+                name: nexus-iq-postgresql-password
                 items:
                   - key: password
                     path: password
             - secret:
-                name: nexus-postgresql-password
+                name: nexus-iq-postgresql-password
                 items:
                   - key: username
                     path: username
