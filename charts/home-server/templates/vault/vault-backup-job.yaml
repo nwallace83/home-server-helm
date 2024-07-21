@@ -31,6 +31,8 @@ spec:
                 readOnly: true
                 mountPath: /vault/userconfig/tls-secret
               env:
+                - name: VAULT_SKIP_VERIFY
+                  value: 'true'
                 - name: VAULT_CACERT
                   value: /vault/userconfig/tls-secret/ca.crt
                 - name: VAULT_ADDR
