@@ -36,7 +36,7 @@ spec:
       database: nexus-iq
       owner: nexus-iq
       secret:
-        name: nexus-postgresql-password
+        name: nexus-iq-postgresql-password
       postInitSQL:
        - CREATE EXTENSION IF NOT EXISTS pg_trgm schema public;
     # recovery:
@@ -44,14 +44,14 @@ spec:
     #   database: nexus
     #   owner: nexus
     #   secret:
-    #     name: nexus-postgresql-password
+    #     name: nexus-iq-postgresql-password
   managed:
     roles:
     - name: nexus-iq
       ensure: present
       login: true
       passwordSecret:
-        name: nexus-postgresql-password
+        name: nexus-iq-postgresql-password
   storage:
     pvcTemplate:
       accessModes:
