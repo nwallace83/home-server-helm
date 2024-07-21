@@ -13,6 +13,9 @@ spec:
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
+  postgresql:
+    parameters:
+      max_connections: '300'
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
