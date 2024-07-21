@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-blobs
+  namespace: nexus
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: nexus-blobs
+  storageClassName: nfs
+  volumeMode: Filesystem
