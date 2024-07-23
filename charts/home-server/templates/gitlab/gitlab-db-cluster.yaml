@@ -9,7 +9,7 @@ spec:
   resources:
     limits:
         memory: "500Mi"
-  instances: 2
+  instances: 3
   switchoverDelay: 60
   smartShutdownTimeout: 120
   stopDelay: 60
