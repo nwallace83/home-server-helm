@@ -3,6 +3,8 @@ kind: Cluster
 metadata:
   name: gitlab
   namespace: gitlab
+  labels:
+    workload: database
 spec:
   resources:
     limits:
@@ -13,8 +15,6 @@ spec:
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
-  labels:
-    workload: database
   postgresql:
     parameters:
       max_connections: '200'
