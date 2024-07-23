@@ -6,6 +6,8 @@ metadata:
   namespace: gitlab
   labels:
     app: {{ $appName }}-pgpool
+  annotations:
+      checksum/config: {{ include (print $.Template.BasePath "/gitlab/gitlab-db-pgpool-conf.yaml") . | sha256sum }}
 spec:
   replicas: 2
   selector:

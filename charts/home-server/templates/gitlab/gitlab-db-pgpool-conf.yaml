@@ -28,7 +28,7 @@ data:
 
     backend_hostname0 = '{{ $dbcluster }}-rw'
     backend_port0 = 5432
-    backend_weight0 = 1
+    backend_weight0 = 0
     backend_application_name0 = '{{ $dbcluster }}-rw' 
     backend_flag0 = 'ALWAYS_PRIMARY'
 
