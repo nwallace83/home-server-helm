@@ -4,7 +4,7 @@ metadata:
   name: gitlab-backup
   namespace: gitlab
 spec:
-  schedule: "0 0 0 * * *"
+  schedule: "0 0 6 * * *"
   backupOwnerReference: cluster
   immediate: true
   cluster:

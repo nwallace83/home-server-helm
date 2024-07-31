@@ -4,7 +4,7 @@ metadata:
   name: nexus-rm-backup
   namespace: nexus
 spec:
-  schedule: "0 20 0 * * *"
+  schedule: "0 20 6 * * *"
   backupOwnerReference: cluster
   immediate: true
   cluster:
