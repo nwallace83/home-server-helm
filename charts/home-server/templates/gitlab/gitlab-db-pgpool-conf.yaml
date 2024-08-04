@@ -23,7 +23,7 @@ data:
     max_pool = 3
     num_init_children = 32
     child_life_time = 60
-    log_statement = true
+    allow_sql_comments = true
     log_hostname = true
     log_connections = true
     log_disconnections = true
