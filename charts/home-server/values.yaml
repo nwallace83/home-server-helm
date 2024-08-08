@@ -55,6 +55,13 @@ radarr:
   volumes: []
   sharedVolumes: []
 
+nzbget:
+  replicas: 1
+  volumes: []
+  sharedVolumes: []
+  username: ''
+  password: ''
+
 madRadarr:
   replicas: 1
   volumes: []

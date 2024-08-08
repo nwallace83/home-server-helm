@@ -1,0 +1,11 @@
+{{- $appName := "nzbget" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ print $appName "-env"}}
+data:
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
+  TZ: {{ .Values.timezone | quote }}
+  NZBGET_USER: {{ .Values.nzbget.username }}
+  NZBGET_PASS: {{ .Values.nzbget.password }}
