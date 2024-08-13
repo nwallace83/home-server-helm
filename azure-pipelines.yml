@@ -36,24 +36,22 @@ jobs:
     steps:
     - bash: |
         sleep 600
-  - job: Wait2
-    pool:
-      name: Default
-    steps:
+      displayName: Waiting_first
     - bash: |
         sleep 600
+      displayName: Waiting_second
 
 
 # {
 #   "records": [
 #     {
 #       "previousAttempts": [],
-#       "id": "edf3fc79-bcb7-56b8-fb97-f2239be7c249",
+#       "id": "4dd260c4-c2b3-5bb0-f5e3-90a98bc027ff",
 #       "parentId": "96ac2280-8cb4-5df5-99de-dd2da759617d",
 #       "type": "Checkpoint",
 #       "name": "Checkpoint",
-#       "startTime": "2024-08-13T02:15:57.2266667Z",
-#       "finishTime": "2024-08-13T02:15:57.2266667Z",
+#       "startTime": "2024-08-13T02:35:13.8933333Z",
+#       "finishTime": "2024-08-13T02:35:13.8933333Z",
 #       "currentOperation": null,
 #       "percentComplete": null,
 #       "state": "completed",
@@ -84,7 +82,7 @@ jobs:
 #       "state": "pending",
 #       "result": null,
 #       "resultCode": null,
-#       "changeId": 5,
+#       "changeId": 7,
 #       "lastModified": "0001-01-01T00:00:00",
 #       "workerName": null,
 #       "order": 3,
@@ -95,7 +93,7 @@ jobs:
 #       "log": {
 #         "id": 4,
 #         "type": "Container",
-#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/logs/4"
+#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/logs/4"
 #       },
 #       "task": null,
 #       "attempt": 1,
@@ -134,7 +132,7 @@ jobs:
 #       "parentId": null,
 #       "type": "Stage",
 #       "name": "__default",
-#       "startTime": "2024-08-13T02:15:59.6833333Z",
+#       "startTime": "2024-08-13T02:35:17.66Z",
 #       "finishTime": null,
 #       "currentOperation": null,
 #       "percentComplete": null,
@@ -160,8 +158,8 @@ jobs:
 #       "parentId": "3ec2226d-e869-5b48-a3d6-0ffde890699f",
 #       "type": "Task",
 #       "name": "InvokeRESTAPI",
-#       "startTime": "2024-08-13T02:15:59.6833333Z",
-#       "finishTime": "2024-08-13T02:15:59.8733333Z",
+#       "startTime": "2024-08-13T02:35:17.66Z",
+#       "finishTime": "2024-08-13T02:35:17.8333333Z",
 #       "currentOperation": null,
 #       "percentComplete": null,
 #       "state": "completed",
@@ -178,7 +176,7 @@ jobs:
 #       "log": {
 #         "id": 6,
 #         "type": "Container",
-#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/logs/6"
+#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/logs/6"
 #       },
 #       "task": {
 #         "id": "9c3e8943-130d-4c78-ac63-8af81df62dfb",
@@ -194,8 +192,8 @@ jobs:
 #       "parentId": "8a77a381-8d3b-57dc-3688-c314566f21db",
 #       "type": "Job",
 #       "name": "API_Call",
-#       "startTime": "2024-08-13T02:15:59.6833333Z",
-#       "finishTime": "2024-08-13T02:16:00.03Z",
+#       "startTime": "2024-08-13T02:35:17.66Z",
+#       "finishTime": "2024-08-13T02:35:17.98Z",
 #       "currentOperation": null,
 #       "percentComplete": null,
 #       "state": "completed",
@@ -220,8 +218,8 @@ jobs:
 #       "parentId": "96ac2280-8cb4-5df5-99de-dd2da759617d",
 #       "type": "Phase",
 #       "name": "API_Call",
-#       "startTime": "2024-08-13T02:15:59.6833333Z",
-#       "finishTime": "2024-08-13T02:16:00.1533333Z",
+#       "startTime": "2024-08-13T02:35:17.66Z",
+#       "finishTime": "2024-08-13T02:35:18.1033333Z",
 #       "currentOperation": null,
 #       "percentComplete": null,
 #       "state": "completed",
@@ -238,7 +236,7 @@ jobs:
 #       "log": {
 #         "id": 5,
 #         "type": "Container",
-#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/logs/5"
+#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/logs/5"
 #       },
 #       "task": null,
 #       "attempt": 1,
@@ -250,7 +248,7 @@ jobs:
 #       "parentId": "96ac2280-8cb4-5df5-99de-dd2da759617d",
 #       "type": "Phase",
 #       "name": "Wait",
-#       "startTime": "2024-08-13T02:16:08.34Z",
+#       "startTime": "2024-08-13T02:35:25.6066667Z",
 #       "finishTime": null,
 #       "currentOperation": null,
 #       "percentComplete": null,
@@ -268,7 +266,7 @@ jobs:
 #       "log": {
 #         "id": 3,
 #         "type": "Container",
-#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/logs/3"
+#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/logs/3"
 #       },
 #       "task": null,
 #       "attempt": 1,
@@ -280,7 +278,7 @@ jobs:
 #       "parentId": "ae27ddf8-f2a7-55b9-39f7-a07ecdac0860",
 #       "type": "Job",
 #       "name": "Wait",
-#       "startTime": "2024-08-13T02:16:08.34Z",
+#       "startTime": "2024-08-13T02:35:25.6066667Z",
 #       "finishTime": null,
 #       "currentOperation": null,
 #       "percentComplete": 0,
@@ -303,7 +301,7 @@ jobs:
 #     },
 #     {
 #       "previousAttempts": [],
-#       "id": "7aa2ca44-beb2-4b60-9086-b10841f27b02",
+#       "id": "f89692cc-a6ab-404a-a2d8-a681bea6b0cf",
 #       "parentId": "1c69a038-85d7-598e-0cea-ba0cf6c420f8",
 #       "type": "Task",
 #       "name": "Post-job: Checkout nwallace83/home-server-helm@main to s",
@@ -329,18 +327,48 @@ jobs:
 #     },
 #     {
 #       "previousAttempts": [],
+#       "id": "a54e8e50-2d8a-4bfe-a33c-3e6fda4e4e1e",
+#       "parentId": "1c69a038-85d7-598e-0cea-ba0cf6c420f8",
+#       "type": "Task",
+#       "name": "Initialize job",
+#       "startTime": "2024-08-13T02:35:27.52Z",
+#       "finishTime": "2024-08-13T02:35:27.9166667Z",
+#       "currentOperation": null,
+#       "percentComplete": null,
+#       "state": "completed",
+#       "result": "succeeded",
+#       "resultCode": null,
+#       "changeId": 22,
+#       "lastModified": "0001-01-01T00:00:00",
+#       "workerName": "azure-azure-devops-agent-7b5b6d4d8c-85694",
+#       "order": 1,
+#       "details": null,
+#       "errorCount": 0,
+#       "warningCount": 0,
+#       "url": null,
+#       "log": {
+#         "id": 7,
+#         "type": "Container",
+#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/logs/7"
+#       },
+#       "task": null,
+#       "attempt": 1,
+#       "identifier": null
+#     },
+#     {
+#       "previousAttempts": [],
 #       "id": "e868b472-2e13-55cd-54ac-57c9aaa7a6ab",
 #       "parentId": "1c69a038-85d7-598e-0cea-ba0cf6c420f8",
 #       "type": "Task",
 #       "name": "Bash",
-#       "startTime": "2024-08-13T02:16:17.4633333Z",
+#       "startTime": "2024-08-13T02:35:36.1166667Z",
 #       "finishTime": null,
 #       "currentOperation": null,
 #       "percentComplete": 0,
 #       "state": "inProgress",
 #       "result": null,
 #       "resultCode": null,
-#       "changeId": 23,
+#       "changeId": 24,
 #       "lastModified": "0001-01-01T00:00:00",
 #       "workerName": "azure-azure-devops-agent-7b5b6d4d8c-85694",
 #       "order": 3,
@@ -359,48 +387,18 @@ jobs:
 #     },
 #     {
 #       "previousAttempts": [],
-#       "id": "ff6cf24a-7c72-4f69-bd1d-f50e2055d9ac",
-#       "parentId": "1c69a038-85d7-598e-0cea-ba0cf6c420f8",
-#       "type": "Task",
-#       "name": "Initialize job",
-#       "startTime": "2024-08-13T02:16:09.9333333Z",
-#       "finishTime": "2024-08-13T02:16:10.35Z",
-#       "currentOperation": null,
-#       "percentComplete": null,
-#       "state": "completed",
-#       "result": "succeeded",
-#       "resultCode": null,
-#       "changeId": 23,
-#       "lastModified": "0001-01-01T00:00:00",
-#       "workerName": "azure-azure-devops-agent-7b5b6d4d8c-85694",
-#       "order": 1,
-#       "details": null,
-#       "errorCount": 0,
-#       "warningCount": 0,
-#       "url": null,
-#       "log": {
-#         "id": 7,
-#         "type": "Container",
-#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/logs/7"
-#       },
-#       "task": null,
-#       "attempt": 1,
-#       "identifier": null
-#     },
-#     {
-#       "previousAttempts": [],
 #       "id": "818befed-9ffe-5775-7057-3b408ef25dac",
 #       "parentId": "1c69a038-85d7-598e-0cea-ba0cf6c420f8",
 #       "type": "Task",
 #       "name": "Checkout nwallace83/home-server-helm@main to s",
-#       "startTime": "2024-08-13T02:16:10.4333333Z",
-#       "finishTime": "2024-08-13T02:16:17.4633333Z",
+#       "startTime": "2024-08-13T02:35:28.0033333Z",
+#       "finishTime": "2024-08-13T02:35:36.1166667Z",
 #       "currentOperation": null,
 #       "percentComplete": null,
 #       "state": "completed",
 #       "result": "succeeded",
 #       "resultCode": null,
-#       "changeId": 24,
+#       "changeId": 25,
 #       "lastModified": "0001-01-01T00:00:00",
 #       "workerName": "azure-azure-devops-agent-7b5b6d4d8c-85694",
 #       "order": 2,
@@ -411,7 +409,7 @@ jobs:
 #       "log": {
 #         "id": 8,
 #         "type": "Container",
-#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/logs/8"
+#         "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/logs/8"
 #       },
 #       "task": null,
 #       "attempt": 1,
@@ -419,8 +417,8 @@ jobs:
 #     }
 #   ],
 #   "lastChangedBy": "c4928020-9021-4f8a-b97a-7bd708b74048",
-#   "lastChangedOn": "2024-08-13T02:16:19.947Z",
-#   "id": "28c6d4f6-359c-4e0a-8e0b-c3ac8b0dc598",
-#   "changeId": 24,
-#   "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/20/Timeline/28c6d4f6-359c-4e0a-8e0b-c3ac8b0dc598"
+#   "lastChangedOn": "2024-08-13T02:35:37.327Z",
+#   "id": "6e7c8cef-ba74-4bcf-a716-a6fdbdeb406e",
+#   "changeId": 25,
+#   "url": "https://dev.azure.com/nathanwallace114/591c3275-d3c8-40d6-812c-be4b62651a44/_apis/build/builds/22/Timeline/6e7c8cef-ba74-4bcf-a716-a6fdbdeb406e"
 # }
