@@ -16,7 +16,7 @@ jobs:
         connectionType: 'connectedServiceName'
         serviceConnection: 'webhook'
         method: 'POST'
-        waitForCompletion: 'true'
+        waitForCompletion: 'false'
   - job: Wait
     pool:
       name: default
