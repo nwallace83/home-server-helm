@@ -19,7 +19,13 @@ jobs:
         waitForCompletion: 'false'
   - job: Wait
     pool:
-      name: default
+      name: Default
+    steps:
+    - bash: |
+        sleep 600
+  - job: Wait2
+    pool:
+      name: Default
     steps:
     - bash: |
         sleep 600
