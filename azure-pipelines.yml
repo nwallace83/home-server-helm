@@ -6,14 +6,20 @@
 trigger:
 - main
 
-pool:
-  vmImage: Default
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+  - job: API_Call
+    pool:
+      name: server
+    steps:
+    - task: InvokeRESTAPI@1
+      inputs:
+        connectionType: 'connectedServiceName'
+        serviceConnection: 'webhook'
+        method: 'POST'
+        waitForCompletion: 'true'
+  - job: Wait
+    pool:
+      name: default
+    steps:
+    - bash: |
+        sleep 600
