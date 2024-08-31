@@ -27,7 +27,7 @@ spec:
   env:
   - name: TZ
     value: America/Denver
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.3
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
   bootstrap:
     # initdb:
     #   database: registry
