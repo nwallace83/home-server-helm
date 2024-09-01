@@ -56,6 +56,15 @@ spec:
           storage: 4Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
+  walStorage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
