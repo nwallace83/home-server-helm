@@ -43,7 +43,7 @@ spec:
             name: pgpool-conf
       containers:
         - name: {{ $appName }}-pgpool
-          image: vaultwarden.nwallace.io/home-server/pgpool:latest
+          image: harbor.nwallace.io/home-server/pgpool:latest
           imagePullPolicy: Always
           volumeMounts:
           - name: database-credentials
