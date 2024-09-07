@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: vaultwarden-backup
+spec:
+  schedule: "0 20 0 * * *"
+  backupOwnerReference: cluster
+  immediate: true
+  cluster:
+    name: vaultwarden

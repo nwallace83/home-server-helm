@@ -1,0 +1,98 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: vaultwarden
+spec:
+  resources:
+    limits:
+        memory: "500Mi"
+  instances: 2
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: beta.kubernetes.io/arch
+            operator: In
+            values:
+            - amd64
+  # minSyncReplicas: 1
+  # maxSyncReplicas: 2
+  env:
+  - name: TZ
+    value: America/Denver
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  bootstrap:
+    initdb:
+      database: vaultwarden
+      owner: vaultwarden
+      secret:
+        name: vaultwarden-postgresql-password
+    # recovery:
+    #   source: vaultwarden
+    #   database: vaultwarden
+    #   owner: vaultwarden
+    #   secret:
+    #     name: vaultwarden-postgresql-password
+  managed:
+    roles:
+    - name: vaultwarden
+      ensure: present
+      login: true
+      passwordSecret:
+        name: vaultwarden-postgresql-password
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
+  walStorage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: "7d"
+    barmanObjectStore:
+      destinationPath: s3://vaultwarden-database
+      endpointURL: http://minio.minio:9000
+      data:
+        compression: gzip
+      wal:
+        compression: gzip
+      s3Credentials:
+        accessKeyId:
+          name: vaultwarden-postgresql-minio
+          key: AccessKey
+        secretAccessKey:
+          name: vaultwarden-postgresql-minio
+          key: SecretKey
+  externalClusters:
+    - name: vaultwarden
+      barmanObjectStore:
+        destinationPath: s3://vaultwarden-database
+        endpointURL: http://minio.minio:9000
+        wal:
+          maxParallel: 8
+        s3Credentials:
+          accessKeyId:
+            name: vaultwarden-postgresql-minio
+            key: AccessKey
+          secretAccessKey:
+            name: vaultwarden-postgresql-minio
+            key: SecretKey
+  monitoring:
+    enablePodMonitor: true
