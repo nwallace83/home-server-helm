@@ -7,7 +7,7 @@ spec:
     storage: 1Gi
   nfs:
     server: 192.168.0.5
-    path: /kubernetes/harbor-registry
+    path: /harbor-registry
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
