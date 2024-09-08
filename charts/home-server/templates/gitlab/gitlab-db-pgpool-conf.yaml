@@ -20,9 +20,8 @@ data:
     sr_check_period = 0
     health_check_period = 0
     connection_cache = true
-    max_pool = 3
+    max_pool = 4
     num_init_children = 32
-    child_life_time = 60
     allow_sql_comments = true
     log_hostname = true
     log_connections = true
