@@ -4,17 +4,10 @@ metadata:
   name: minio
 spec:
   capacity:
-    storage: 1Gi
-  nfs:
-    server: 192.168.0.5
-    path: /minio
+    storage: 4Ti
+  hostPath:
+    path: /mnt/ssd/minio
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs
-  mountOptions:
-    - hard
-    - nfsvers=4.2
-    - retrans=3
-    - noatime
-  volumeMode: Filesystem
+  storageClassName: hostpath

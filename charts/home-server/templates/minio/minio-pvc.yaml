@@ -8,7 +8,6 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 4Ti
   volumeName: minio
-  storageClassName: nfs
-  volumeMode: Filesystem
+  storageClassName: hostpath
