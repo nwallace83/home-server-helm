@@ -28,6 +28,7 @@ data:
     log_connections = true
     log_disconnections = true
     log_line_prefix = '%t [%P] '
+    process_management_mode = dynamic
 
     backend_hostname0 = '{{ $dbcluster }}-rw'
     backend_port0 = 5432
