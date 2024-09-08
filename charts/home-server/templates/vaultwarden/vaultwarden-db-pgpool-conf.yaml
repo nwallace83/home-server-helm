@@ -18,12 +18,14 @@ data:
     sr_check_period = 0
     health_check_period = 0
     connection_cache = true
+    child_life_time = 1800
     max_pool = 3
     num_init_children = 32
     log_hostname = true
     log_connections = true
     log_disconnections = true
     log_line_prefix = '%t [%P] '
+    process_management_mode = dynamic
 
     backend_hostname0 = '{{ $dbcluster }}-rw'
     backend_port0 = 5432
