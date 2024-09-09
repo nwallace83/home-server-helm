@@ -9,42 +9,44 @@ spec:
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
-      backoffLimit: 0
       template:
         spec:
           volumes:
-          - name: vault-backup
-            persistentVolumeClaim:
-              claimName: vault-backup
-          - name: tls-secret
-            secret:
-              secretName: tls-secret
+            - name: vault-backup
+              emptyDir: {}
           containers:
+            - name: minio-mc
+              image: minio/mc:latest
+              env:
+                - name: MINIO_HOST
+                  value: http://minio.minio:9000
+              envFrom:
+                - secretRef:
+                    name: vault-backup-secret
+              volumeMounts:
+                - name: vault-backup
+                  mountPath: /backup
+              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap minio/vault-backups/"]
+              imagePullPolicy: Always
+          initContainers:
             - name: backup-vault
               image: hashicorp/vault:latest
               imagePullPolicy: Always
-              command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap && find /backup -name vault-backup*.snap -mtime +30 -exec rm -f {} \\;"]
+              command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap"]
               volumeMounts:
-              - name: vault-backup
-                mountPath: /backup
-              - name: tls-secret
-                readOnly: true
-                mountPath: /vault/userconfig/tls-secret
+                - name: vault-backup
+                  mountPath: /backup
               env:
                 - name: VAULT_SKIP_VERIFY
                   value: 'true'
-                - name: VAULT_CACERT
-                  value: /vault/userconfig/tls-secret/ca.crt
                 - name: VAULT_ADDR
                   value: https://vault-active:8200
-                - name: VAULT_TOKEN
-                  valueFrom:
-                    secretKeyRef:
-                      name: vault-backup-secret
-                      key: rootToken
+              envFrom:
+                - secretRef:
+                    name: vault-backup-secret
               securityContext:
-                runAsUser: 1000
-                runAsGroup: 1000
+                runAsUser: 0
+                runAsGroup: 0
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
