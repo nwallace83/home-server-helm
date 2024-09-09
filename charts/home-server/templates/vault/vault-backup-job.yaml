@@ -16,7 +16,7 @@ spec:
               emptyDir: {}
           containers:
             - name: minio-mc
-              image: minio/mc:latest
+              image: harbor.nwallace.io/home-server/mc:latest
               env:
                 - name: MINIO_HOST
                   value: http://minio.minio:9000
