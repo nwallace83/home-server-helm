@@ -35,8 +35,8 @@ data:
       guest ok = yes
       guest only = yes
 
-    [Media3]
-      path = /media3
+    [Media4]
+      path = /media4
       read only = no
       guest ok = yes
       guest only = yes
