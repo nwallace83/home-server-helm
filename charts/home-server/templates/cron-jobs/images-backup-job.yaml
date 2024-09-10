@@ -10,6 +10,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kubernetes.io/hostname: server
           volumes:
             - name: images
               nfs:
