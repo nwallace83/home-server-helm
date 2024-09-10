@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-images
+spec:
+  schedule: "1  6 * * 0"
+  timeZone: {{ .Values.timezone }}
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: images
+              nfs:
+                server: 192.168.0.5
+                path: /images
+          containers:
+            - name: minio-mc
+              image: harbor.nwallace.io/home-server/mc:latest
+              env:
+                - name: MINIO_HOST
+                  value: http://minio.minio:9000
+              envFrom:
+                - secretRef:
+                    name: backups-s3-credentials
+              volumeMounts:
+                - name: images
+                  mountPath: /images
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp /images/images-$(date +%Y-%m-%d).tar.gz minio/bacup-images/ && rm -f /images/images-*.tar.gz"]
+              imagePullPolicy: Always
+          initContainers:
+            - name: backup-images
+              image: harbor.nwallace.io/home-server/busybox:latest
+              command: ["/bin/sh","-c","tar -zcf /images/images-$(date +%Y-%m-%d).tar.gz /images"]
+              volumeMounts:
+                - name: images
+                  mountPath: /images
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+              imagePullPolicy: Always
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
