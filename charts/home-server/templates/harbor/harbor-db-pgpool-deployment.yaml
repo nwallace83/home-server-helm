@@ -45,7 +45,7 @@ spec:
       containers:
         - name: {{ $appName }}-pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: database-credentials
             mountPath: /app/database-credentials
