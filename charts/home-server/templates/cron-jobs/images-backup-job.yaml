@@ -27,15 +27,12 @@ spec:
               volumeMounts:
                 - name: images
                   mountPath: /images
-              securityContext:
-                runAsUser: 1000
-                runAsGroup: 1000
-              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp /images/images-$(date +%Y-%m-%d).tar.gz minio/bacup-images/ && rm -f /images/images-*.tar.gz"]
+              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp /images/images.tar.gz minio/bacup-images/ && rm -f /images/images-*.tar.gz"]
               imagePullPolicy: Always
           initContainers:
             - name: backup-images
               image: harbor.nwallace.io/home-server/busybox:latest
-              command: ["/bin/sh","-c","tar --exclude='images-$(date +%Y-%m-%d).tar.gz' -zvcf /images/images-$(date +%Y-%m-%d).tar.gz /images"]
+              command: ["/bin/sh","-c","tar --exclude='images.tar.gz' -zvcf /images/images.tar.gz /images"]
               volumeMounts:
                 - name: images
                   mountPath: /images
