@@ -35,7 +35,7 @@ spec:
           initContainers:
             - name: backup-images
               image: harbor.nwallace.io/home-server/busybox:latest
-              command: ["/bin/sh","-c","tar -zvcf /images/images-$(date +%Y-%m-%d).tar.gz /images"]
+              command: ["/bin/sh","-c","tar --exclude='images-$(date +%Y-%m-%d).tar.gz' -zvcf /images/images-$(date +%Y-%m-%d).tar.gz /images"]
               volumeMounts:
                 - name: images
                   mountPath: /images
