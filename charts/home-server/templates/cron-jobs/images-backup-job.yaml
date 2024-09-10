@@ -27,7 +27,7 @@ spec:
               volumeMounts:
                 - name: images
                   mountPath: /images
-              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp /images/images.tar.gz minio/bacup-images/ && rm -f /images/images.tar.gz"]
+              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp --part-size=4Gi /images/images.tar.gz minio/bacup-images/ && rm -f /images/images.tar.gz"]
               imagePullPolicy: Always
           initContainers:
             - name: backup-images
