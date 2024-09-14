@@ -19,7 +19,7 @@ spec:
   env:
   - name: TZ
     value: America/Denver
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-12
   bootstrap:
     initdb:
       database: vaultwarden
