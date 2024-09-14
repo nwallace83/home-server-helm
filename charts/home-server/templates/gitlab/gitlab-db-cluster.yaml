@@ -18,6 +18,8 @@ spec:
   postgresql:
     parameters:
       max_connections: '200'
+  affinity:
+    podAntiAffinityType: required
   # minSyncReplicas: 1
   # maxSyncReplicas: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:15.1
