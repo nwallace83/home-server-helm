@@ -28,15 +28,3 @@ data:
       read only = no
       guest ok = yes
       guest only = yes
-
-    [Media2]
-      path = /media2
-      read only = no
-      guest ok = yes
-      guest only = yes
-
-    [Media4]
-      path = /media4
-      read only = no
-      guest ok = yes
-      guest only = yes
