@@ -10,4 +10,4 @@ spec:
     requests:
       storage: 4Ti
   volumeName: minio
-  storageClassName: hostpath
+  storageClassName: minio
