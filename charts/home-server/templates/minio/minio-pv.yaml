@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: minio-server
+  name: minio
 spec:
   capacity:
     storage: 4Ti
@@ -19,25 +19,3 @@ spec:
           operator: In
           values:
           - server
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: minio-node2
-spec:
-  capacity:
-    storage: 4Ti
-  hostPath:
-    path: /minio
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: minio
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - node2
