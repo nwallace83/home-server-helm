@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $appName }}
+  annotations:
+    checksum/config: {{ .Values.pihole.customList | sha256sum }}
 spec:
   replicas: {{ .Values.pihole.replicas }}
   selector:
