@@ -4,7 +4,7 @@ metadata:
   name: harbor-backup
   namespace: harbor
 spec:
-  schedule: "0 10 0 * * *"
+  schedule: "0 10 6 * * *"
   backupOwnerReference: cluster
   immediate: true
   cluster:
