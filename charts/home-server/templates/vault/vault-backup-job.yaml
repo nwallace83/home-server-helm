@@ -30,7 +30,7 @@ spec:
               imagePullPolicy: Always
           initContainers:
             - name: backup-vault
-              image: hashicorp/vault:latest
+              image: harbor.nwallace.io/docker-hub/hashicorp/vault:latest
               imagePullPolicy: Always
               command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap"]
               volumeMounts:
