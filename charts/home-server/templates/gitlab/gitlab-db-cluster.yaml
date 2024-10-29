@@ -52,7 +52,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 8Gi
+          storage: 4Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
   walStorage:
@@ -61,7 +61,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 2Gi
+          storage: 3Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
   backup:
