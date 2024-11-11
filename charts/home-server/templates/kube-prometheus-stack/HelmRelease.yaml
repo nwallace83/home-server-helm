@@ -82,6 +82,8 @@ spec:
                 requests:
                   storage: 100Mi
     grafana:
+      admin:
+        existingSecret: grafana-credentials
       persistence:
         enabled: true
         storageClassName: longhorn
