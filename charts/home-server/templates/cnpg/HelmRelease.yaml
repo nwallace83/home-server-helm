@@ -21,4 +21,3 @@ spec:
       podMonitorEnabled: true
     image:
       repository: harbor.nwallace.io/github/cloudnative-pg/cloudnative-pg
-  chart: cloudnative-pg
