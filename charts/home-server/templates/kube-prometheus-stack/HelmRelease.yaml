@@ -49,20 +49,20 @@ spec:
           matchLabels: null
         retention: 7d
         prometheusOperator:
-      image:
-        registry: harbor.nwallace.io/quay
-      admissionWebhooks:
-        deployment:
           image:
             registry: harbor.nwallace.io/quay
-        patch:
-          image:
-            registry: harbor.nwallace.io/k8s
-      prometheusConfigReloader:
-        image:
-          registry: harbor.nwallace.io/quay
-      thanosImage:
-        registry: harbor.nwallace.io/quay
+          admissionWebhooks:
+            deployment:
+              image:
+                registry: harbor.nwallace.io/quay
+            patch:
+              image:
+                registry: harbor.nwallace.io/k8s
+          prometheusConfigReloader:
+            image:
+              registry: harbor.nwallace.io/quay
+          thanosImage:
+            registry: harbor.nwallace.io/quay
     thanosRuler:
       thanosRulerSpec:
         image:
