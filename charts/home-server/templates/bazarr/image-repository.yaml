@@ -4,4 +4,4 @@ metadata:
   name: bazarr
 spec:
   image: harbor.nwallace.io/docker-hub/linuxserver/bazarr
-  interval: 5m
+  interval: 30m
