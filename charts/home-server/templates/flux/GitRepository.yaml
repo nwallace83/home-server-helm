@@ -5,8 +5,10 @@ metadata:
 spec:
   interval: 1m
   url: https://gitlab.nwallace.io/home-server/home-server-helm.git
+  secretRef:
+    name: gitlab-pat
   ref:
-    branch: master
+    branch: main
   ignore: |
    /*
    !/charts/

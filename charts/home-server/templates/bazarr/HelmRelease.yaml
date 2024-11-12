@@ -13,7 +13,7 @@ spec:
         namespace: {{ .Release.namespace }}
       interval: 1m
   values:
-    image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5
+    image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.4 # {"$imagepolicy": "{{ .Release.Namespace }}:bazarr"}
     ingress:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
