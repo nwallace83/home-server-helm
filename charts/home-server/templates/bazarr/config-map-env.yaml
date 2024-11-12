@@ -1,9 +1,0 @@
-{{- $appName := "bazarr" }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ $appName }}-env
-data:
-  PGID: {{ .Values.localGID | quote }}
-  PUID: {{ .Values.localUID | quote }}
-  TZ: {{ .Values.timezone }}
