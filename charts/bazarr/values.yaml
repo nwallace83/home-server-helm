@@ -1,6 +1,6 @@
 timezone: America/Denver
 email: ''
-image: docker.io/linuxserver/bazarr:1.4.5
+image: docker.io/linuxserver/bazarr:1.4.4 # {"$imagepolicy": "home-server:bazarr"}
 resources: {}
 
 localUID: "1000"
