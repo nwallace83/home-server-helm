@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/sonarr:4.0.9 # {"$imagepolicy": "home-server:bazarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5 # {"$imagepolicy": "home-server:bazarr"}
 resources: {}
 localUID: "1000"
 localGID: "1000"
