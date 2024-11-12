@@ -1,27 +1,20 @@
 timezone: America/Denver
 email: ''
-image: docker.io/linuxserver/bazarr:1.4.4 # {"$imagepolicy": "home-server:bazarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5 # {"$imagepolicy": "home-server:bazarr"}
 resources: {}
-
 localUID: "1000"
 localGID: "1000"
-
-
 ingress:
   host: bazarr.localhost
   annotations: {}
   ingressClassName: ""
-
 pvc:
   enabled: false
   size: 200Mi
   storageClassName: ""
-
 volumes: {}
 volumeMounts: {}
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
@@ -32,7 +25,6 @@ livenessProbe:
   periodSeconds: 10
   successThreshold: 1
   failureThreshold: 12
-
 readinessProbe:
   httpGet:
     path: /
