@@ -19,7 +19,7 @@ spec:
         nginx.ingress.kubernetes.io/ssl-redirect: 'true'
         nginx.ingress.kubernetes.io/limit-rps: "5"
       ingressClassName: nginx-ext
-      host: bazarr.nwallace.io
+      host: sonarr.nwallace.io
     pvc:
       enabled: true
       size: 2Gi
