@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: home-server
-        namespace: {{ .Relase.namespace }}
+        namespace: {{ .Release.namespace }}
       interval: 1m
   values:
     image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5
