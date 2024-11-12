@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: home-server
+spec:
+  interval: 1m
+  url: https://gitlab.nwallace.io/home-server/home-server-helm.git
+  ref:
+    branch: master
+  ignore: |
+   /*
+   !/charts/

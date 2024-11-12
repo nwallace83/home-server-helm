@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      volumes:
+        {{- if .Values.volumes }}
+          {{- toYaml .Values.volumes | nindent 8 }}
+        {{- end }}
+        {{- if .Values.pvc.enabled }}
+        - name: {{ .Release.Name }}-config
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-config
+        {{- end }}
+      containers:
+        - name: bazarr
+          image: {{ .Values.image }}
+          ports:
+            - containerPort: 6767
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          volumeMounts:
+            {{- if .Values.volumeMounts }}
+              {{- toYaml .Values.volumeMounts | nindent 12 }}
+            {{- end }}
+            {{- if .Values.pvc.enabled }}
+            - name: {{ .Release.Name }}-config
+              mountPath: /config
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+  strategy: 
+    type: Recreate
+  revisionHistoryLimit: 0
