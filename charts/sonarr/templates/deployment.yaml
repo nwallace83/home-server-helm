@@ -24,7 +24,7 @@ spec:
             claimName: {{ .Release.Name }}-config
         {{- end }}
       containers:
-        - name: sonarr
+        - name: sonarr-test
           image: {{ .Values.image }}
           ports:
             - containerPort: 8989
