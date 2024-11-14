@@ -24,7 +24,7 @@ spec:
             claimName: {{ .Release.Name }}-config
         {{- end }}
       containers:
-        - name: bazarr
+        - name: sonarr
           image: {{ .Values.image }}
           ports:
             - containerPort: 8989
