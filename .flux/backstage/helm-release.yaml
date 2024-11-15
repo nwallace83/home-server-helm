@@ -4,11 +4,11 @@ metadata:
   name: backstage
 spec:
   interval: 10m
+  targetNamespace: backstage
   chart:
     spec:
       chart: backstage
       version: '*'
-      targetNamespace: backstage
       sourceRef:
         kind: HelmRepository
         name: backstage
