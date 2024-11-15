@@ -51,57 +51,57 @@ spec:
     type: Recreate
   revisionHistoryLimit: 0
 
----
+# ---
 
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: {{ .Release.Name }}
-spec:
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}
-  serviceName: {{ .Release.Name }}
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: {{ .Release.Name }}
-    spec:
-     volumes:
-          {{- toYaml .Values.volumes | nindent 8 }}
-      terminationGracePeriodSeconds: 10
-      containers:
-        - name: bazarr
-          image: {{ .Values.image }}
-          ports:
-            - name: http
-              containerPort: 6767
-              protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}-env
-          volumeMounts:
-            {{- if .Values.volumeMounts }}
-              {{- toYaml .Values.volumeMounts | nindent 12 }}
-            {{- end }}
-            {{- if .Values.pvc.enabled }}
-            - name: {{ .Release.Name }}-config
-              mountPath: /config
-            {{- end }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
-  volumeClaimTemplates:
-  - metadata:
-      name: {{ .Release.Name }}-config
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: longhorn
-      resources:
-        requests:
-          storage: {{ .Values.pvc.size }}
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: {{ .Release.Name }}
+# spec:
+#   selector:
+#     matchLabels:
+#       app: {{ .Release.Name }}
+#   serviceName: {{ .Release.Name }}
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: {{ .Release.Name }}
+#     spec:
+#      volumes:
+#           {{- toYaml .Values.volumes | nindent 8 }}
+#       terminationGracePeriodSeconds: 10
+#       containers:
+#         - name: bazarr
+#           image: {{ .Values.image }}
+#           ports:
+#             - name: http
+#               containerPort: 6767
+#               protocol: TCP
+#           envFrom:
+#             - configMapRef:
+#                 name: {{ .Release.Name }}-env
+#           volumeMounts:
+#             {{- if .Values.volumeMounts }}
+#               {{- toYaml .Values.volumeMounts | nindent 12 }}
+#             {{- end }}
+#             {{- if .Values.pvc.enabled }}
+#             - name: {{ .Release.Name }}-config
+#               mountPath: /config
+#             {{- end }}
+#           resources:
+#             {{- toYaml .Values.resources | nindent 12 }}
+#           livenessProbe:
+#             {{- toYaml .Values.livenessProbe | nindent 12 }}
+#           readinessProbe:
+#             {{- toYaml .Values.readinessProbe | nindent 12 }}
+#           imagePullPolicy: {{ .Values.imagePullPolicy }}
+#   volumeClaimTemplates:
+#   - metadata:
+#       name: {{ .Release.Name }}-config
+#     spec:
+#       accessModes: [ "ReadWriteOnce" ]
+#       storageClassName: longhorn
+#       resources:
+#         requests:
+#           storage: {{ .Values.pvc.size }}
