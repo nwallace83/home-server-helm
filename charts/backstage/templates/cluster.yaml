@@ -24,12 +24,12 @@ spec:
       owner: backstage
       secret:
         name: backstage-postgresql-password
-    recovery:
-      source: backstage
-      database: backstage
-      owner: backstage
-      secret:
-        name: backstage-postgresql-password
+    # recovery:
+    #   source: backstage
+    #   database: backstage
+    #   owner: backstage
+    #   secret:
+    #     name: backstage-postgresql-password
   managed:
     roles:
     - name: backstage
