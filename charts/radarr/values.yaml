@@ -1,0 +1,50 @@
+timezone: America/Denver
+image: harbor.nwallace.io/docker-hub/linuxserver/radarr:5.14.0 # {"$imagepolicy": "home-server:radarr"}
+localUID: "1000"
+localGID: "1000"
+
+resources: {}
+  
+ingress:
+  host: radarr.nwallace.io
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/limit-rps: "5"
+  ingressClassName: nginx-ext
+
+pvc:
+  size: 1.5Gi
+  storageClassName: longhorn
+
+volumes:
+  - name: media
+    persistentVolumeClaim:
+      claimName: media
+
+volumeMounts:
+  - name: media
+    mountPath: /media
+
+imagePullPolicy: IfNotPresent
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 7878
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
+readinessProbe:
+  httpGet:
+    path: /
+    port: 7878
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
