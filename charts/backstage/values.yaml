@@ -4,7 +4,6 @@ backstage:
       app:
       # Should be the same as backend.baseUrl when using the `app-backend` plugin.
       baseUrl: https://backstage.nwallace.io
-
       backend:
         # Note that the baseUrl should be the URL that the browser and other clients
         # should use when communicating with the backend, i.e. it needs to be
@@ -16,14 +15,9 @@ backstage:
         # all interfaces, the most permissive setting. The right value depends on your specific deployment.
         listen:
           port: 7007
-        plugin:
-          auth:
-            connection:
-              database: backstage
         # config options: https://node-postgres.com/apis/client
         database:
           client: pg
-          pluginDivisionMode: schema
           connection:
             host: ${POSTGRES_HOST}
             port: ${POSTGRES_PORT}
