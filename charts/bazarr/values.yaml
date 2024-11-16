@@ -1,21 +1,38 @@
 timezone: America/Denver
 image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5 # {"$imagepolicy": "home-server:bazarr"}
-resources: {}
 localUID: "1000"
 localGID: "1000"
 
+resources:
+  limits:
+    memory: 2048M
+  
 ingress:
-  host: bazarr.localhost
-  annotations: {}
-  ingressClassName: ""
+  host: bazarr.nwallace.io
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/limit-rps: "5"
+  ingressClassName: nginx-ext
 
 pvc:
-  enabled: false
   size: 200Mi
-  storageClassName: ""
+  storageClassName: longhorn
 
-volumes: {}
-volumeMounts: {}
+volumes:
+  - metadata:
+      name: media
+    spec:
+      accessModes: [ "ReadWriteMany" ]
+      storageClassName: nfs
+      volumeName: media
+      resources:
+        requests:
+          storage: 1Gi
+
+volumeMounts:
+  - name: media
+    mountPath: /media
 
 imagePullPolicy: IfNotPresent
 

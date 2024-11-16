@@ -1,28 +1,20 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
-  labels:
-    app: {{ .Release.Name }}
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: {{ .Release.Name }}
+  serviceName: {{ .Release.Name }}
+  replicas: 1
+  minReadySeconds: 10
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}
     spec:
-      volumes:
-        {{- if .Values.volumes }}
-          {{- toYaml .Values.volumes | nindent 8 }}
-        {{- end }}
-        {{- if .Values.pvc.enabled }}
-        - name: {{ .Release.Name }}-config
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-config
-        {{- end }}
+      terminationGracePeriodSeconds: 10
       containers:
         - name: bazarr
           image: {{ .Values.image }}
@@ -36,10 +28,8 @@ spec:
             {{- if .Values.volumeMounts }}
               {{- toYaml .Values.volumeMounts | nindent 12 }}
             {{- end }}
-            {{- if .Values.pvc.enabled }}
-            - name: {{ .Release.Name }}-config
+            - name: {{ .Release.Name }}
               mountPath: /config
-            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
@@ -47,6 +37,15 @@ spec:
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
-  strategy: 
-    type: Recreate
-  revisionHistoryLimit: 0
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{ .Values.pvc.storageClassName }}
+        resources:
+          requests:
+            storage: {{ .Values.pvc.size }}
+    {{- if .Values.volumeMounts }}
+      {{- toYaml .Values.volumes | nindent 4 }}
+    {{- end }}
