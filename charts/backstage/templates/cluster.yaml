@@ -1,0 +1,89 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: backstage
+spec:
+  resources:
+    limits:
+        memory: "500Mi"
+  instances: 3
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  affinity:
+    podAntiAffinityType: required
+  env:
+  - name: TZ
+    value: America/Denver
+  imageName: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4
+  bootstrap:
+    initdb:
+      database: backstage
+      owner: backstage
+      secret:
+        name: backstage-postgresql-password
+    recovery:
+      source: backstage
+      database: backstage
+      owner: backstage
+      secret:
+        name: backstage-postgresql-password
+  managed:
+    roles:
+    - name: backstage
+      ensure: present
+      login: true
+      passwordSecret:
+        name: backstage-postgresql-password
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 4Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
+  walStorage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: "7d"
+    barmanObjectStore:
+      destinationPath: s3://backstage-database/
+      endpointURL: http://minio.minio:9000
+      data:
+        compression: gzip
+      wal:
+        compression: gzip
+      s3Credentials:
+        accessKeyId:
+          name: backstage-minio-credentials
+          key: AccessKey
+        secretAccessKey:
+          name: backstage-minio-credentials
+          key: SecretKey
+  externalClusters:
+    - name: backstage
+      barmanObjectStore:
+        destinationPath: s3://backstage-database/
+        endpointURL: http://minio.minio:9000
+        wal:
+          maxParallel: 8
+        s3Credentials:
+          accessKeyId:
+            name: backstage-minio-credentials
+            key: AccessKey
+          secretAccessKey:
+            name: backstage-minio-credentials
+            key: SecretKey
+  monitoring:
+    enablePodMonitor: true

@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: backstage-backup
+  namespace: backstage
+spec:
+  schedule: "0 40 6 * * *"
+  backupOwnerReference: cluster
+  immediate: true
+  cluster:
+    name: backstage

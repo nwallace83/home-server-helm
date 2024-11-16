@@ -1,0 +1,41 @@
+timezone: America/Denver
+image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5 # {"$imagepolicy": "home-server:bazarr"}
+resources: {}
+localUID: "1000"
+localGID: "1000"
+
+ingress:
+  host: bazarr.localhost
+  annotations: {}
+  ingressClassName: ""
+
+pvc:
+  enabled: false
+  size: 200Mi
+  storageClassName: ""
+
+volumes: {}
+volumeMounts: {}
+
+imagePullPolicy: IfNotPresent
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 6767
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
+readinessProbe:
+  httpGet:
+    path: /
+    port: 6767
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
