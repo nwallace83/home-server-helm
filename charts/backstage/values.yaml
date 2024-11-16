@@ -1,7 +1,6 @@
 backstage:
   backstage:
-    extraAppConfig: 
-    - app-config.production.yaml
+    extraAppConfig: ['app-config.production.yaml']
     extraEnvVars:
       - name: POSTGRES_HOST
         value: backstage-rw
