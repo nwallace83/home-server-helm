@@ -47,5 +47,5 @@ spec:
           requests:
             storage: {{ .Values.pvc.size }}
     {{- if .Values.volumeMounts }}
-      {{- toYaml .Values.volumes | nindent 4 }}
+      {{- toYaml .Values.volumeMounts | nindent 4 }}
     {{- end }}
