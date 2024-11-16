@@ -1,0 +1,13 @@
+volumesShared:
+- name: media
+  nfs_path: /media
+- name: shared
+  nfs_path: /shared
+- name: backup
+  nfs_path: /backup
+- name: images
+  nfs_path: /images
+
+madVolumesShared:
+- name: mad-media
+  nfs_path: /media/mad
