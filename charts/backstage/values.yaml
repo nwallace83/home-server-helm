@@ -6,7 +6,7 @@ backstage:
         title: Nate is amazing
         baseUrl: https://backstage.nwallace.io
       organization:
-        name: Nate ia Amazing inc.
+        name: Nate is Amazing inc.
       backend:
         # Note that the baseUrl should be the URL that the browser and other clients
         # should use when communicating with the backend, i.e. it needs to be
