@@ -20,15 +20,10 @@ pvc:
   storageClassName: longhorn
 
 volumes:
-  - metadata:
-      name: media
-    spec:
-      accessModes: [ "ReadWriteMany" ]
-      storageClassName: nfs
-      volumeName: media
-      resources:
-        requests:
-          storage: 1Gi
+  - name: media
+    nfs:
+      server: 192.168.0.5
+      path: /media
 
 volumeMounts:
   - name: media
