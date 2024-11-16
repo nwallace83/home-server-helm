@@ -28,7 +28,7 @@ spec:
             {{- if .Values.volumeMounts }}
               {{- toYaml .Values.volumeMounts | nindent 12 }}
             {{- end }}
-            - name: {{ .Release.Name }}
+            - name: config
               mountPath: /config
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -43,7 +43,7 @@ spec:
       {{- end }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ .Release.Name }}
+        name: config
       spec:
         accessModes:
           - ReadWriteOnce
