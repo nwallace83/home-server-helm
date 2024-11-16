@@ -5,6 +5,8 @@ backstage:
         value: backstage-rw
       - name: POSTGRES_PORT
         value: "5432"
+      - name: APP_CONFIG_app_baseUrl
+        value: https://backstage.nwallace.io
       - name: POSTGRES_USER
         valueFrom:
           secretKeyRef:
