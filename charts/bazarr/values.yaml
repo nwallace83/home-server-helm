@@ -21,9 +21,8 @@ pvc:
 
 volumes:
   - name: media
-    nfs:
-      server: 192.168.0.5
-      path: /media
+    persistentVolumeClaim:
+      claimName: media
 
 volumeMounts:
   - name: media
