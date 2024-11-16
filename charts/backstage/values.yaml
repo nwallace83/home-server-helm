@@ -2,8 +2,11 @@ backstage:
   backstage:
     appConfig:
       app:
-      # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-      baseUrl: https://backstage.nwallace.io
+        # Should be the same as backend.baseUrl when using the `app-backend` plugin.
+        title: Nate is amazing
+        baseUrl: https://backstage.nwallace.io
+      organization:
+        name: Nate ia Amazing inc.
       backend:
         # Note that the baseUrl should be the URL that the browser and other clients
         # should use when communicating with the backend, i.e. it needs to be
