@@ -11,25 +11,3 @@ spec:
         kind: GitRepository
         name: home-server
       interval: 1m
-  values:
-    ingress:
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-        nginx.ingress.kubernetes.io/limit-rps: "5"
-      ingressClassName: nginx-ext
-      host: bazarr.nwallace.io
-    pvc:
-      enabled: true
-      size: 200Mi
-      storageClassName: longhorn
-    volumes:
-      - name: media
-        persistentVolumeClaim:
-          claimName: media
-    volumeMounts:
-      - name: media
-        mountPath: /media
-    resources:
-      limits:
-        memory: 2048M
