@@ -16,10 +16,14 @@ backstage:
         # all interfaces, the most permissive setting. The right value depends on your specific deployment.
         listen:
           port: 7007
-
+        plugin:
+          auth:
+            connection:
+              database: backstage
         # config options: https://node-postgres.com/apis/client
         database:
           client: pg
+          pluginDivisionMode: schema
           connection:
             host: ${POSTGRES_HOST}
             port: ${POSTGRES_PORT}
@@ -31,11 +35,9 @@ backstage:
             # ssl:
             #   ca: # if you have a CA file and want to verify it you can uncomment this section
             #     $file: <file-path>/ca/server.crt
-
       auth:
         providers:
           guest: {}
-
       catalog:
         # Overrides the default list locations from app-config.yaml as these contain example data.
         # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
@@ -45,13 +47,11 @@ backstage:
           # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
           - type: file
             target: ./examples/entities.yaml
-
           # Local example template
           - type: file
             target: ./examples/template/template.yaml
             rules:
               - allow: [Template]
-
           # Local example organizational data
           - type: file
             target: ./examples/org.yaml
