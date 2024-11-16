@@ -15,7 +15,7 @@ spec:
       author:
         email: nathan.wallace114@gmail.com
         name: Nathan Wallace
-      messageTemplate: {{ `"{{range .Changed.Changes}}{{print .OldValue}} -> {{println .NewValue}}{{end}}"` }}
+      messageTemplate: '{{range .Changed.Changes}}{{print .OldValue}} -> {{println .NewValue}}{{end}}'
     push:
       branch: main
   update:
