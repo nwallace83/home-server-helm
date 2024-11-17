@@ -1,6 +1,6 @@
 apiVersion: v2
-name: html-external
-description: html-external
+name: pihole
+description: pihole
 
 # A chart can be either an 'application' or a 'library' chart.
 #

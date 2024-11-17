@@ -1,46 +1,41 @@
-{{- $appName := "pihole" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $appName }}
-  annotations:
-    checksum/config: {{ .Values.pihole.customList | sha256sum }}
+  name: {{ .Release.Name }}
 spec:
-  replicas: {{ .Values.pihole.replicas }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ $appName }}
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ $appName }}
+        app: {{ .Release.Name }}
       annotations:
-        checksum/config: {{ .Values.pihole.customList | sha256sum }}
+        checksum/config: {{ .Values.customList | sha256sum }}
     spec:
       volumes:
         - name: custom-list
           configMap:
-            name: {{ print $appName "-custom-list" }}
+            name: {{ printf "%s-custom-list" .Release.Name }}
             items:
               - key: custom.list
                 path: custom.list
             defaultMode: 420
-        - name: {{ print $appName "-poststart-script" }}
+        - name: {{ printf "%s-poststart-script" .Release.Name }}
           configMap:
-            name: {{ print $appName "-poststart-script" }}
+            name: {{ printf "%s-poststart-script" .Release.Name }}
             items:
               - key: poststart.sh
                 path: poststart.sh
         - name: etc-pihole
           emptyDir:
             medium: Memory
-            sizeLimit: 1Gi
         - name: etc-dnsmasq-d
           emptyDir:
             medium: Memory
-            sizeLimit: 512Mi
       containers:
-        - name: {{ $appName }}
+        - name: {{ .Release.Name }}
           image: pihole/pihole:latest
           ports:
             - containerPort: 80
@@ -49,11 +44,15 @@ spec:
               protocol: TCP
             - containerPort: 53
               protocol: UDP
+          env:
+          - name: WEBPASSWORD
+            valueFrom:
+              secretKeyRef: 
+                name: {{ .Release.Name }}-env
+                key: WEBPASSWORD
           envFrom:
             - configMapRef:
-                name: {{ print $appName "-env" }}
-            - secretRef:
-                name: {{ $appName }}-env
+                name: {{ printf "%s-env" .Release.Name }}
           volumeMounts:
             - name: etc-pihole
               mountPath: /etc/pihole
@@ -62,39 +61,25 @@ spec:
             - name: custom-list
               mountPath: /etc/pihole/custom.list
               subPath: custom.list
-            - name: {{ print $appName "-poststart-script" }}
-              mountPath: /tmp/poststart.sh
+            - name: {{ printf "%s-poststart-script" .Release.Name }}
+              mountPath: /poststart.sh
               subPath: poststart.sh
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
-            httpGet:
-              path: /admin
-              port: 80
-              scheme: HTTP
-            initialDelaySeconds: 10
-            timeoutSeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 12
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
-            httpGet:
-              path: /admin
-              port: 80
-              scheme: HTTP
-            initialDelaySeconds: 10
-            timeoutSeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 12
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
           lifecycle:
             postStart:
               exec:
                 command:
                   - sh
                   - -c
-                  - 'nohup sh /tmp/poststart.sh > /proc/1/fd/1 2>&1 &'
+                  - 'nohup sh /poststart.sh &>/proc/1/fd/1 &'
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 0
+      maxUnavailable: 50%
       maxSurge: 100%
   revisionHistoryLimit: 0

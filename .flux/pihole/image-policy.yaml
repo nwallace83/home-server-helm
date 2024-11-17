@@ -1,0 +1,10 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: pihole
+spec:
+  imageRepositoryRef:
+    name: pihole
+  policy:
+    semver:
+      range: ">=2024.07.0"

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-env" .Release.Name }}
+data:
+  DNSMASQ_LISTENING: {{ .Values.dnsMasqListening | default "all" | quote }}
+  FTLCONF_LOCAL_IPV4: {{ .Values.loadBalancerIP }}
+  FTLCONF_MAXDBDAYS: {{ .Values.ftlConfMaxDBDays | default "7" | quote }}
+  IPv6: {{ .Values.ipv6 | default "false" | quote }}
+  PIHOLE_DNS_: {{ .Values.dnsOrigins | default "1.1.1.1;8.8.8.8;8.8.4.4" | quote }}
+  PIHOLE_GID: {{ .Values.localGID | quote }}
+  PIHOLE_UID: {{ .Values.localUID | quote }}
+  TZ: {{ .Values.timezone | quote }}

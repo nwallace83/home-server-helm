@@ -1,0 +1,83 @@
+image: docker.io/pihole/pihole:2024.07.0 # {"$imagepolicy": "home-server:pihole"}
+loadBalancerIP: 192.168.0.10
+replicas: 3
+timezone: America/Denver
+localUID: "1000"
+localGID: "1000"
+resources: {}
+
+ingress:
+  host: pihole.nwallace.io
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/configuration-snippet: if ($uri = /) {return 302 /admin;}
+    nginx.ingress.kubernetes.io/session-cookie-max-age: '3600'
+    nginx.ingress.kubernetes.io/session-cookie-name: INGRESSCOOKIE
+    nginx.ingress.kubernetes.io/session-cookie-path: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+  ingressClassName: nginx
+
+livenessProbe:
+  httpGet:
+    path: /admin
+    port: 80
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
+readinessProbe:
+  httpGet:
+    path: /admin
+    port: 80
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
+
+customList: |
+  192.168.0.1 router.local
+  192.168.0.5 server.nwallace.io
+  192.168.0.5 server.local
+  192.168.0.6 node1.local
+  192.168.0.6 node1.nwallace.io
+  192.168.0.7 node2.local
+  192.168.0.7 node2.nwallace.io
+  192.168.0.10 argocd.nwallace.io
+  192.168.0.11 bazarr.nwallace.io
+  192.168.0.10 backstage.nwallace.io
+  192.168.0.5 cockpit.nwallace.io
+  192.168.0.11 delugevpn.nwallace.io
+  192.168.0.10 flux.nwallace.io
+  192.168.0.12 gitlab.nwallace.io
+  192.168.0.10 grafana.nwallace.io
+  192.168.0.10 handbrake.nwallace.io
+  192.168.0.10 harbor.nwallace.io
+  192.168.0.10 homeassistant.nwallace.io
+  192.168.0.12 kas.nwallace.io
+  192.168.0.12 minio-gitlab.nwallace.io
+  192.168.0.11 minio-web.nwallace.io
+  192.168.0.11 minio.nwallace.io
+  192.168.0.10 pihole.nwallace.io
+  192.168.0.10 plex.nwallace.io
+  192.168.0.10 prometheus.nwallace.io
+  192.168.0.10 prowlarr.nwallace.io
+  192.168.0.11 radarr.nwallace.io
+  192.168.0.11 readarr.nwallace.io
+  192.168.0.11 sonarr.nwallace.io
+  192.168.0.10 vault.nwallace.io
+  192.168.0.10 vaultwarden.nwallace.io
+  192.168.0.11 mad-sonarr.nwallace.io
+  192.168.0.11 mad-radarr.nwallace.io
+  192.168.0.11 mad-delugevpn.nwallace.io
+  192.168.0.11 mad-bazarr.nwallace.io
+  192.168.0.10 longhorn.nwallace.io
+  192.168.0.10 nexus-rm.nwallace.io
+  192.168.0.10 dockerhub.nexus-rm.nwallace.io
+  192.168.0.10 nexus-iq.nwallace.io
+  192.168.0.10 nzbget.nwallace.io
