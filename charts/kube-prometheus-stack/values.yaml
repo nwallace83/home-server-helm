@@ -28,6 +28,8 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 30Gi
+      serviceMonitorSelector:
+        matchLabels: {}
       retention: 7d
   prometheusOperator:
     image:
