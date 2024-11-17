@@ -1,19 +1,18 @@
-{{- $appName := "vaultwarden" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $appName }}-pgpool
+  name: {{ printf "%s-pgpool" .Release.Name }}
   labels:
-    app: {{ $appName }}-pgpool
+    app: {{ printf "%s-pgpool" .Release.Name }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: {{ $appName }}-pgpool
+      app: {{ printf "%s-pgpool" .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ $appName }}-pgpool
+        app: {{ printf "%s-pgpool" .Release.Name }}
     spec:
       affinity:
         nodeAffinity:
@@ -29,12 +28,12 @@ spec:
           projected:
             sources:
             - secret:
-                name: vaultwarden-postgresql-password
+                name: {{ printf "%s-postgresql-password" .Release.Name }}
                 items:
                   - key: password
                     path: password
             - secret:
-                name: vaultwarden-postgresql-password
+                name: {{ printf "%s-postgresql-password" .Release.Name }}
                 items:
                   - key: username
                     path: username
@@ -42,7 +41,7 @@ spec:
           configMap:
             name: pgpool-conf
       containers:
-        - name: {{ $appName }}-pgpool
+        - name: {{ printf "%s-pgpool" .Release.Name }}
           image: harbor.nwallace.io/home-server/pgpool:latest
           imagePullPolicy: Always
           volumeMounts:
@@ -85,6 +84,6 @@ spec:
   strategy: 
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
+      maxUnavailable: 50%
       maxSurge: 100%
   revisionHistoryLimit: 0

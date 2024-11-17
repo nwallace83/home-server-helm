@@ -1,8 +1,7 @@
-{{- $appName := "vaultwarden" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ print $appName "-env"}}
+  name: {{ printf "%s-env" .Release.Name }}
 data:
   PGID: {{ .Values.localGID | quote }}
   PUID: {{ .Values.localUID | quote }}

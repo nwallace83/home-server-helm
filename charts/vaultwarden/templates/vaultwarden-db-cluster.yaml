@@ -14,12 +14,10 @@ spec:
   primaryUpdateMethod: switchover
   affinity:
     podAntiAffinityType: required
-  # minSyncReplicas: 1
-  # maxSyncReplicas: 2
   env:
   - name: TZ
-    value: America/Denver
-  imageName: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4-12
+    value: {{ .Values.timezone }}
+  imageName: {{ .Values.dbImage }}
   bootstrap:
     initdb:
       database: vaultwarden

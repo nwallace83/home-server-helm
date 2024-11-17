@@ -1,8 +1,7 @@
-{{- $appName := "vaultwarden" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $appName }}
+  name: {{ .Release.Name }}
 spec:
   ports:
     - name: http
@@ -10,4 +9,4 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: {{ $appName }}
+    app: {{ .Release.Name }}

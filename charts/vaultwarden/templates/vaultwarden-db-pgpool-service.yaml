@@ -1,8 +1,7 @@
-{{- $appName := "vaultwarden" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $appName }}-db
+  name: {{ printf "%s-db" .Release.Name }}
 spec:
   ports:
     - name: http
@@ -10,4 +9,4 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    app: {{ $appName }}-pgpool
+    app: {{ printf "%s-pgpool" .Release.Name }}

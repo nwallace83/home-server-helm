@@ -1,10 +1,10 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: vaultwarden-backup
+  name: {{ printf "%s-backup" .Release.Name }}
 spec:
   schedule: "0 20 6 * * *"
   backupOwnerReference: cluster
   immediate: true
   cluster:
-    name: vaultwarden
+    name: {{ .Release.Name }}

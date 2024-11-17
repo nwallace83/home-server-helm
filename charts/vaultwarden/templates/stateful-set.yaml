@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  serviceName: {{ .Release.Name }}
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: vaultwarden
+          image: {{ .Values.image }}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+          - name: ADMIN_TOKEN
+            valueFrom:
+              secretKeyRef: 
+                name: {{ .Release.Name }}-env
+                key: ADMIN_TOKEN
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef: 
+                name: {{ .Release.Name }}-env
+                key: DATABASE_URL
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.pvc.storageClassName }}
+        resources:
+          requests:
+            storage: {{ .Values.pvc.size }}
