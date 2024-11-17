@@ -27,10 +27,19 @@ spec:
               protocol: TCP
             - containerPort: 58846
               protocol: TCP
+          env:
+          - name: VPN_USER
+            valueFrom:
+              secretKeyRef: 
+                name: {{ .Release.Name }}-env
+                key: VPN_USER
+          - name: VPN_PASS
+            valueFrom:
+              secretKeyRef: 
+                name: {{ .Release.Name }}-env
+                key: VPN_PASS
           envFrom:
             - configMapRef:
-                name: {{ .Release.Name }}-env
-            - secretRef:
                 name: {{ .Release.Name }}-env
           volumeMounts:
             {{- if .Values.volumeMounts }}
