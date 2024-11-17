@@ -3,5 +3,5 @@ kind: ImageRepository
 metadata:
   name: nginx
 spec:
-  image: harbor.nwallace.io/docker-hub/nginx
+  image: harbor.nwallace.io/docker-hub/library/nginx
   interval: 30m
