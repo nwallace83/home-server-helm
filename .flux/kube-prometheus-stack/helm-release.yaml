@@ -13,5 +13,7 @@ spec:
         kind: GitRepository
         name: home-server
       interval: 1m
+  install:
+    disableSchemaValidation: true
   driftDetection:
     mode: enabled
