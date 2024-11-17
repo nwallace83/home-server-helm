@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Release.Name }}
+  name: minio
 spec:
   capacity:
     storage: 4Ti
   hostPath:
-    path: {{ printf "/mnt/ssd/%s" .Release.Name }}
+    path: /mnt/ssd/minio
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
