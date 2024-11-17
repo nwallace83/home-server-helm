@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-env
+data:
+  VPN_INPUT_PORTS: {{ .Values.vpnInputPorts | default "" | quote}}
+  DEBUG: {{ .Values.debug | default "false" | quote }}
+  DELUGE_DAEMON_LOG_LEVEL: {{ .Values.delugeDaemonLogLevel | default "info" | quote }}
+  DELUGE_ENABLE_WEBUI_PASSWORD: {{ .Values.delugeEnableWebUIPassword | default "yes" | quote }}
+  DELUGE_WEB_LOG_LEVEL: {{ .Values.delugeWebLogLevel | default "info" | quote }}
+  ENABLE_PRIVOXY: {{ .Values.enablePrivoxy | default "yes" | quote }}
+  LAN_NETWORK: {{ .Values.lanNetwork | default "10.0.0.0/8,192.168.0.0/16" | quote }}
+  NAME_SERVERS: {{ .Values.nameServers | default "84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1" | quote }}
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
+  STRICT_PORT_FORWARD: {{ .Values.strictPortForward | default "yes" | quote }}
+  TZ: {{ .Values.timezone }}
+  UMASK: {{ .Values.umask | default "000" | quote }}
+  VPN_CLIENT: {{ .Values.vpnClient | default "wireguard" | quote }}
+  VPN_ENABLED: {{ .Values.vpnEnabled | default "yes" | quote}}
+  VPN_PROV: {{ .Values.vpnProv | default "pia" | quote }}

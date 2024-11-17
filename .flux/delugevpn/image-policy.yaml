@@ -1,0 +1,12 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: delugevpn
+spec:
+  imageRepositoryRef:
+    name: delugevpn
+  filterTags:
+    pattern: '.*-.*-.*'
+  policy:
+    semver:
+      range: ">=2.1.1"
