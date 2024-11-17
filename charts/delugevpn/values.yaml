@@ -5,7 +5,7 @@ localGID: "1000"
 
 resources:
   limits:
-    memory: 4096M
+    memory: 4096Mi
 
 vaultSecretPath: delugevpn
 
