@@ -17,7 +17,7 @@ spec:
     volumes:
       - name: mad-media
         persistentVolumeClaim:
-          claimName: media
+          claimName: mad-media
     volumeMounts:
       - name: mad-media
         mountPath: /media
