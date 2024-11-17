@@ -21,10 +21,10 @@ minio:
     ingressClassName: nginx-ext
     tls: true
   containerSecurityContext:
-    runAsGroup: '1000'
-    runAsUser: '1000'
+    runAsGroup: 1000
+    runAsUser: 1000
   podSecurityContext:
-    fsGroup: '1000'
+    fsGroup: 1000
   persistence:
     storageClass: minio
     existingClaim: minio
