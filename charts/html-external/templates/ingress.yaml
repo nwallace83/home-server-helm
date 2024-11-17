@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  tls:
+    - hosts:
+      - {{  .Values.ingress.host }}
+      secretName: {{ printf "%s-tls-secret" .Values.ingress.host }}
+    - hosts:
+      - {{ print "www."  .Values.ingress.host }}
+      secretName: {{ printf "www.%s-tls-secret"  .Values.ingress.host }}
+  rules:
+    - host: {{  .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  number: 80
+    - host: {{ printf "www.%s"  .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  number: 80       
