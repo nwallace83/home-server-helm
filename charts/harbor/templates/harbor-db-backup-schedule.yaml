@@ -1,11 +1,11 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: harbor-backup
+  name: {{ .Release.Name }}-backup
   namespace: harbor
 spec:
   schedule: "0 10 6 * * *"
   backupOwnerReference: cluster
   immediate: true
   cluster:
-    name: harbor
+    name: {{ .Release.Name }}

@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: harbor
+  name: {{ .Release.Name }}
   namespace: harbor
 spec:
   resources:
@@ -15,12 +15,10 @@ spec:
   primaryUpdateMethod: switchover
   affinity:
     podAntiAffinityType: required
-  # minSyncReplicas: 1
-  # maxSyncReplicas: 2
   env:
   - name: TZ
     value: America/Denver
-  imageName: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4-12
+  imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:
     #   database: registry
@@ -28,18 +26,18 @@ spec:
     #   secret:
     #     name: harbor-postgresql-password
     recovery:
-      source: harbor
+      source: {{ .Release.Name }}-old
       database: harbor
       owner: harbor
       secret:
-        name: harbor-postgresql-password
+        name: {{ .Release.Name }}-postgresql-password
   managed:
     roles:
     - name: harbor
       ensure: present
       login: true
       passwordSecret:
-        name: harbor-postgresql-password
+        name: {{ .Release.Name }}-postgresql-password
   storage:
     pvcTemplate:
       accessModes:
@@ -61,7 +59,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: s3://harbor-database/2024-07-20
+      destinationPath: {{ printf "s3://%s-database/2024-07-20" .Release.Name }}
       endpointURL: http://minio.minio:9000
       data:
         compression: gzip
@@ -69,24 +67,24 @@ spec:
         compression: gzip
       s3Credentials:
         accessKeyId:
-          name: harbor-postgresql-minio
+          name: {{ .Release.Name }}-postgresql-minio
           key: AccessKey
         secretAccessKey:
-          name: harbor-postgresql-minio
+          name: {{ .Release.Name }}-postgresql-minio
           key: SecretKey
   externalClusters:
-    - name: harbor
+    - name: {{ .Release.Name }}-old
       barmanObjectStore:
-        destinationPath: s3://harbor-database/2024-07-18
+        destinationPath: {{ printf "s3://%s-database/2024-07-20" .Release.Name }}
         endpointURL: http://minio.minio:9000
         wal:
           maxParallel: 8
         s3Credentials:
           accessKeyId:
-            name: harbor-postgresql-minio
+            name: {{ .Release.Name }}-postgresql-minio
             key: AccessKey
           secretAccessKey:
-            name: harbor-postgresql-minio
+            name: {{ .Release.Name }}-postgresql-minio
             key: SecretKey
   monitoring:
     enablePodMonitor: true

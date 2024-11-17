@@ -1,8 +1,7 @@
-{{- $appName := "harbor" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $appName }}-db
+  name: {{ .Release.Name }}-db
   namespace: harbor
 spec:
   ports:
@@ -11,4 +10,4 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    app: {{ $appName }}-pgpool
+    app: {{ .Release.Name }}-pgpool

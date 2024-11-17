@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $appName }}-pgpool
+  name: {{ .Release.Name }}-pgpool
   namespace: harbor
   labels:
-    app: {{ $appName }}-pgpool
+    app: {{ .Release.Name }}-pgpool
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: {{ $appName }}-pgpool
+      app: {{ .Release.Name }}-pgpool
   template:
     metadata:
       labels:
-        app: {{ $appName }}-pgpool
+        app: {{ .Release.Name }}-pgpool
     spec:
       affinity:
         nodeAffinity:
@@ -30,12 +30,12 @@ spec:
           projected:
             sources:
             - secret:
-                name: harbor-postgresql-password
+                name: {{ .Release.Name }}-postgresql-password
                 items:
                   - key: password
                     path: password
             - secret:
-                name: harbor-postgresql-password
+                name: {{ .Release.Name }}-postgresql-password
                 items:
                   - key: username
                     path: username
@@ -43,7 +43,7 @@ spec:
           configMap:
             name: pgpool-conf
       containers:
-        - name: {{ $appName }}-pgpool
+        - name: {{ .Release.Name }}-pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
@@ -86,6 +86,6 @@ spec:
   strategy: 
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
+      maxUnavailable: 50%
       maxSurge: 100%
   revisionHistoryLimit: 0

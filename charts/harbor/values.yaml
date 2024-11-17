@@ -1,0 +1,66 @@
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4 # {"$imagepolicy": "home-server:postgresql-16"}
+
+harbor:
+  expose:
+    ingress:
+      annotations: 
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
+        core: harbor.nwallace.io
+      className: nginx
+  core:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    replicas: 1
+  registry:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    replicas: 1
+  portal:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    replicas: 1
+  jobservice:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    replicas: 1
+  redis:
+    internal:
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
+  persistence:
+    enabled: true
+    persistentVolumeClaim:
+      database:
+        accessMode: ReadWriteOnce
+      jobservice:
+        jobLog:
+          size: 100Mi
+          storageClass: longhorn
+      redis:
+        size: 100Mi
+        storageClass: longhorn
+      registry:
+        existingClaim:  harbor-registry
+        size: 1Gi
+        storageClass: nfs
+      trivy:
+        size: 9Gi
+        storageClass: longhorn
+  externalURL: https://harbor.nwallace.io
+  existingSecretAdminPassword: harbor-admin
+  existingSecretAdminPasswordKey: password
+  exporter:
+    replicas: 1
+  nginx:
+    replicas: 0
+  internalTLS:
+    enabled: true
+  database:
+    external:
+      existingSecret: harbor-postgresql-password
+      host: harbor-db
+      username: harbor
+    type: external
+  trivy:
+    gitHubToken: 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
