@@ -24,6 +24,8 @@ spec:
       owner: backstage
       secret:
         name: backstage-postgresql-password
+      postInitSQL:
+        - ALTER USER backstage CREATEDB;
     # recovery:
     #   source: backstage
     #   database: backstage
