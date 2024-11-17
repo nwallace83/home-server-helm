@@ -4,6 +4,7 @@ metadata:
   name: vaultwarden
 spec:
   interval: 1m
+  targetNamespace: home-server
   chart:
     spec:
       chart: ./charts/vaultwarden
