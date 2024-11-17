@@ -10,7 +10,6 @@ spec:
       sourceRef:
         kind: GitRepository
         name: home-server
-        namespace: home-server
       reconcileStrategy: Revision
   driftDetection:
     mode: enabled
