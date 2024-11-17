@@ -8,6 +8,10 @@ harbor:
       hosts:
         core: harbor.nwallace.io
       className: nginx
+    tls:
+      certSource: secret
+      secret:
+        secretName: harbor.nwallace.io-tls-secret
   core:
     nodeSelector:
       kubernetes.io/arch: amd64
@@ -54,6 +58,8 @@ harbor:
     replicas: 1
   nginx:
     replicas: 0
+  internalTLS:
+    enabled: true
   database:
     external:
       existingSecret: harbor-postgresql-password
