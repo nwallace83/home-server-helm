@@ -6,7 +6,7 @@ spec:
   capacity:
     storage: 4Ti
   hostPath:
-    path: {{ printf "/mnt/ssd/%s" .Values.fullNameOverride }}
+    path: {{ printf "/mnt/ssd/%s" .Values.fullnameOverride }}
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
