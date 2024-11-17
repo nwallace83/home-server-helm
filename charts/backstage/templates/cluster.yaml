@@ -17,7 +17,7 @@ spec:
   env:
   - name: TZ
     value: America/Denver
-  imageName: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4
+  imageName: {{ .Values.dbImage }}
   bootstrap:
     initdb:
       database: backstage
@@ -25,7 +25,7 @@ spec:
       secret:
         name: backstage-postgresql-password
       postInitSQL:
-        - ALTER USER backstage CREATEDB;
+        - ALTER USER backstage CREATEDB
     # recovery:
     #   source: backstage
     #   database: backstage
