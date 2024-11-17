@@ -1,6 +1,6 @@
 apiVersion: v2
-name: radarr
-description: radarr
+name: delugevpn
+description: delugevpn
 
 # A chart can be either an 'application' or a 'library' chart.
 #
