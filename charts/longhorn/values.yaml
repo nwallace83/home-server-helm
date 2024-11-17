@@ -1,0 +1,33 @@
+longhorn:
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+    enabled: true
+    host: longhorn.nwallace.io
+    tls: true
+    ingressClassName: nginx
+    tlsSecret: longhorn.nwallace.io-tls-secret
+  persistence:
+    recurringJobSelector:
+      jobList: '[{"name":"backup", "isGroup":true},{"name":"default", "isGroup":true}]'
+      enable: true
+    defaultClassReplicaCount: 2
+    reclaimPolicy: Retain
+    defaultDataLocality: best-effort
+  defaultSettings:
+    defaultReplicaCount: 1
+    storageReservedPercentageForDefaultDisk: 10
+    defaultDataLocality: best-effort
+  csi:
+    attacherReplicaCount: 1
+    provisionerReplicaCount: 1
+    resizerReplicaCount: 1
+    snapshotterReplicaCount: 1
+  metrics:
+    serviceMonitor:
+      enabled: true
+  global:
+    cattle:
+      systemDefaultRegistry: harbor.nwallace.io/docker-hub
