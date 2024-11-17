@@ -36,7 +36,7 @@ spec:
             medium: Memory
       containers:
         - name: {{ .Release.Name }}
-          image: pihole/pihole:latest
+          image: {{ .Values.image }}
           ports:
             - containerPort: 80
               protocol: TCP
