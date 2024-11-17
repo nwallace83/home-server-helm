@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: minio
+  name: {{ .Values.fullnameOverride }}
 spec:
   capacity:
     storage: 4Ti
   hostPath:
-    path: /mnt/ssd/minio
+    path: {{ printf "/mnt/ssd/%s" .Values.fullNameOverride }}
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: minio
+  storageClassName: {{ .Values.fullnameOverride }}
   nodeAffinity:
     required:
       nodeSelectorTerms:

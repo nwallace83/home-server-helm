@@ -1,4 +1,7 @@
+fullnameOverride: minio
+
 minio:
+  fullnameOverride: minio
   nodeSelector:
     kubernetes.io/hostname: server
   ingress:
