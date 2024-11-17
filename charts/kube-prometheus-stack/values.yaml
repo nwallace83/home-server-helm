@@ -28,8 +28,7 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 30Gi
-      serviceMonitorSelectorNilUsesHelmValues: false
-      scrapeConfigSelector:
+      serviceMonitorSelector:
         matchLabels: null
       retention: 7d
   prometheusOperator:
