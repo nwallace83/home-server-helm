@@ -10,7 +10,7 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "5"
-  ingressClassName: nginx
+  ingressClassName: nginx-ext
 
 imagePullPolicy: IfNotPresent
 
