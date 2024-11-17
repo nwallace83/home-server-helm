@@ -1,0 +1,43 @@
+minio:
+  nodeSelector:
+    kubernetes.io/hostname: server
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+    enabled: true
+    hostname: minio-web.nwallace.io
+    tls: true
+    ingressClassName: nginx-ext
+  apiIngress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+      nginx.ingress.kubernetes.io/proxy-body-size: '0'
+    enabled: true
+    hostname: minio.nwallace.io
+    ingressClassName: nginx-ext
+    tls: true
+  containerSecurityContext:
+    runAsGroup: '1000'
+    runAsUser: '1000'
+  podSecurityContext:
+    fsGroup: '1000'
+  persistence:
+    storageClass: minio
+    existingClaim: minio
+  auth:
+    existingSecret: minio-root-credentials
+    rootPasswordSecretKey: password
+    rootUserSecretKey: username
+  metrics:
+    serviceMonitor:
+      enabled: true
+      apiVersion: monitoring.coreos.com/v1
+      namespace: minio
+  clientImage:
+    registry: harbor.nwallace.io/docker-hub
+  image:
+    registry: harbor.nwallace.io/docker-hub
