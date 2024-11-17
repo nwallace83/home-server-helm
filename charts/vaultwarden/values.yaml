@@ -21,7 +21,7 @@ ingress:
 ingressExternal:
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: if ($uri = /admin) {return 302 /;}
-    ingressClassName: nginx-ext
+  ingressClassName: nginx-ext
 
 livenessProbe:
   httpGet:
