@@ -9,4 +9,4 @@ spec:
     pattern: '.*-.*-.*'
   policy:
     semver:
-      range: ">=2.1.1"
+      range: ">=2.1.1-0"
