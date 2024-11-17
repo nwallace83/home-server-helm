@@ -7,4 +7,4 @@ spec:
     name: nginx
   policy:
     semver:
-      range: ">=1.27"
+      range: ">=1.27.2"

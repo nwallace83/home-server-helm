@@ -1,4 +1,4 @@
-image: harbor.nwallace.io/docker-hub/nginx:1.27 # {"$imagepolicy": "home-server:nginx"}
+image: harbor.nwallace.io/docker-hub/nginx:1.27.2 # {"$imagepolicy": "home-server:nginx"}
 
 resources: {}
 
