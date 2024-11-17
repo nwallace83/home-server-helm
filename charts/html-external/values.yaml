@@ -1,9 +1,6 @@
-image: harbor.nwallace.io/docker-hub/nginx:1.27.2 # {"$imagepolicy": "home-server:nginx"}
-
+image: harbor.nwallace.io/docker-hub/library/nginx:1.27.2 # {"$imagepolicy": "home-server:nginx"}
 resources: {}
-
 replicas: 3
-  
 ingress:
   host: nwallace.io
   annotations:
@@ -11,9 +8,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "5"
   ingressClassName: nginx-ext
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
