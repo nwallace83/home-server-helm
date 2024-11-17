@@ -12,3 +12,5 @@ spec:
         kind: GitRepository
         name: home-server
       interval: 1m
+  driftDetection:
+    mode: enabled
