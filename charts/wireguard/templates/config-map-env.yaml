@@ -10,6 +10,5 @@ data:
   PEERS: {{ .Values.peers | default "5" | quote }}
   LOG_CONFS: {{ .Values.logConfs | default "true" | quote }}
   SERVERPORT: {{ .Values.serverPort | default "51820" | quote }}
-  LOG_CONFS: {{ .Values.logConfs | default "true" | quote }}
   ALLOWEDIPS: {{ .Values.allowedIPs | quote }}
   PEERDNS: {{ .Values.peerDNS | quote }}

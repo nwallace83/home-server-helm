@@ -39,6 +39,8 @@ spec:
               mountPath: {{ .container_path }}
             {{- end }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             privileged: true
             capabilities:
