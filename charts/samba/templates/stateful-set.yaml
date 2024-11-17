@@ -13,9 +13,8 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
-    spec:
-      nodeSelector:
-        kubernetes.io/hostname: server
+    nodeSelector:
+      kubernetes.io/hostname: server
     spec:
       terminationGracePeriodSeconds: 10
       containers:
