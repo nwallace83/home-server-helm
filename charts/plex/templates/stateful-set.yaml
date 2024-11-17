@@ -23,7 +23,6 @@ spec:
                 operator: In
                 values:
                 - "true"
-    spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: plex
