@@ -1,10 +1,9 @@
-{{- $appName := "plex" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ print $appName "-env"}}
+  name: {{ printf "%s-env" .Release.Name }}
 data:
   TZ: {{ .Values.timezone | quote }}
   PGID: {{ .Values.localGID | quote }}
   PUID: {{ .Values.localUID | quote }}
-  VERSION: {{ .Values.plex.version | default "docker" | quote }}
+  VERSION: {{ .Values.version | default "docker" | quote }}

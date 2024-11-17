@@ -64,7 +64,7 @@ customList: |
   192.168.0.11 minio-web.nwallace.io
   192.168.0.11 minio.nwallace.io
   192.168.0.10 pihole.nwallace.io
-  192.168.0.10 plex.nwallace.io
+  192.168.0.11 plex.nwallace.io
   192.168.0.10 prometheus.nwallace.io
   192.168.0.10 prowlarr.nwallace.io
   192.168.0.11 radarr.nwallace.io
