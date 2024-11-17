@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  serviceName: {{ .Release.Name }}
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: server
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: samba
+          image: {{ .Values.image }}
+          args: ["-I", "/app/smb.conf", "-r"]
+          ports:
+            - containerPort: 139
+              protocol: TCP
+            - containerPort: 445
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          volumeMounts:
+            {{- if .Values.volumeMounts }}
+              {{- toYaml .Values.volumeMounts | nindent 12 }}
+            {{- end }}
+            - name: {{ printf "%s-smb-config" .Release.Name }}
+              mountPath: /app
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+      volumes:
+        - name: {{ printf "%s-smb-config" .Release.Name }}
+          configMap:
+            name: {{ printf "%s-smb-config" .Release.Name }}
+        {{- if .Values.volumes }}
+          {{- toYaml .Values.volumes | nindent 8 }}
+        {{- end }}

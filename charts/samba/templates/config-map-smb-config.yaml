@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-smb-config
+data:
+  smb.conf: |
+    [shared]
+      path = /shared
+      read only = no
+      guest ok = yes
+      guest only = yes
+
+    [images]
+      path = /images
+      read only = no
+      guest ok = yes
+      guest only = yes
+
+    [backup]
+      path = /backup
+      read only = no
+      guest ok = yes
+      guest only = yes
+
+    [Media]
+      path = /media
+      read only = no
+      guest ok = yes
+      guest only = yes

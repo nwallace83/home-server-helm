@@ -1,0 +1,34 @@
+timezone: America/Denver
+image: harbor.nwallace.io/docker-hub/upagge/samba:4.16.8 # {"$imagepolicy": "home-server:samba"}
+localUID: "1000"
+localGID: "1000"
+
+resources: {}
+
+imagePullPolicy: IfNotPresent
+
+volumes:
+  - name: media
+    persistentVolumeClaim:
+      claimName: media
+  - name: images
+    persistentVolumeClaim:
+      claimName: images
+  - name: shared
+    persistentVolumeClaim:
+      claimName: shared
+  - name: backup
+    persistentVolumeClaim:
+      claimName: backup
+
+volumeMounts:
+  - name: media
+    mountPath: /media
+  - name: images
+    mountPath: /images
+  - name: shared
+    mountPath: /shared
+  - name: backup
+    mountPath: /backup
+
+loadBalancerIP: 192.168.0.5
