@@ -19,17 +19,17 @@ spec:
     value: {{ .Values.timezone }}
   imageName: {{ .Values.dbImage }}
   bootstrap:
-    initdb:
-      database: vaultwarden
-      owner: vaultwarden
-      secret:
-        name: vaultwarden-postgresql-password
-    # recovery:
-    #   source: vaultwarden
+    # initdb:
     #   database: vaultwarden
     #   owner: vaultwarden
     #   secret:
     #     name: vaultwarden-postgresql-password
+    recovery:
+      source: vaultwarden
+      database: vaultwarden-old
+      owner: vaultwarden
+      secret:
+        name: vaultwarden-postgresql-password
   managed:
     roles:
     - name: vaultwarden
