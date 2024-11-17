@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: home-server
-      interval: 1m
+      reconcileStrategy: Revision
   values:
     ingress:
       host: mad-radarr.nwallace.io

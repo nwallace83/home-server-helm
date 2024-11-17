@@ -8,8 +8,7 @@ spec:
   chart:
     spec:
       chart: ./charts/kube-prometheus-stack
-      version: '*'
       sourceRef:
         kind: GitRepository
         name: home-server
-      interval: 1m
+      reconcileStrategy: Revision

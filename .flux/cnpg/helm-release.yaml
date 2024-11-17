@@ -8,11 +8,9 @@ spec:
   chart:
     spec:
       chart: cloudnative-pg
-      version: '*'
       sourceRef:
         kind: HelmRepository
         name: cloudnative-pg
-      interval: 30m
   values:
     monitoring:
       grafanaDashboard:
