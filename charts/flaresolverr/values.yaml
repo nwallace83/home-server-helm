@@ -1,0 +1,31 @@
+timezone: America/Denver
+image: harbor.nwallace.io/docker-hub/flaresolverr/flaresolverr:v3.3.21 # {"$imagepolicy": "home-server:flaresolverr"}
+localUID: "1000"
+localGID: "1000"
+
+resources: {}
+
+replicas: 1
+
+imagePullPolicy: IfNotPresent
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8191
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8191
+    scheme: HTTP
+  initialDelaySeconds: 10
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 12
