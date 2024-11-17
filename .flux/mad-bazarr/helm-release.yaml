@@ -11,13 +11,13 @@ spec:
         kind: GitRepository
         name: home-server
       interval: 1m
-      values:
-        ingress:
-          host: mad-bazarr.nwallace.io
-        volumes:
-          - name: mad-media
-            persistentVolumeClaim:
-              claimName: media
-        volumeMounts:
-          - name: mad-media
-            mountPath: /media
+  values:
+    ingress:
+      host: mad-bazarr.nwallace.io
+    volumes:
+      - name: mad-media
+        persistentVolumeClaim:
+          claimName: media
+    volumeMounts:
+      - name: mad-media
+        mountPath: /media
