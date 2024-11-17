@@ -7,4 +7,4 @@ spec:
     name: postgresql
   policy:
     semver:
-      range: "16.x"
+      range: "16"
