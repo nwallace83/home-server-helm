@@ -1,22 +1,21 @@
-{{- $appName := "wireguard" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $appName }}
+  name: {{ .Release.Name }}
   labels:
-    app: {{ $appName }}
+    app: {{ .Release.Name }}
 spec:
-  replicas: {{ .Values.wireguard.replicas }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ $appName }}
+      app: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ $appName }}
+        app: {{ .Release.Name }}
     spec:
       volumes:
-        {{- range .Values.wireguard.volumes  }}
+        {{- with .Values.volume  }}
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .name }}
@@ -27,19 +26,19 @@ spec:
           value: "1"
       containers:
         - name: wireguard
-          image: harbor.nwallace.io/home-server/wireguard:latest
+          image: {{ .Values.image }}
           ports:
             - containerPort: 51820
               protocol: UDP
           envFrom:
             - configMapRef:
-                name: {{ print $appName "-env"}}
+                name: {{ printf "%s-env" .Release.Name }}
           volumeMounts:
-            {{- range .Values.wireguard.volumes }}
+            {{- with .Values.volume }}
             - name: {{ .name }}
               mountPath: {{ .container_path }}
             {{- end }}
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           securityContext:
             privileged: true
             capabilities:

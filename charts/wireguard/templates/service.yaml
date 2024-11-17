@@ -1,16 +1,15 @@
-{{- $appName := "wireguard" }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $appName }}
+  name: {{ .Release.Name }}
   annotations:
     metallb.universe.tf/allow-shared-ip: shared-ip
 spec:
   type: LoadBalancer
-  loadBalancerIP: {{ .Values.wireguard.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.loadBalancerIP }}
   ports:
     - protocol: UDP
       port: 51820
       targetPort: 51820
   selector:
-    app: {{ $appName }}
+    app: {{ .Release.Name }}
