@@ -27,7 +27,7 @@ kube-prometheus-stack:
             accessModes: ["ReadWriteOnce"]
             resources:
               requests:
-                storage: 30Gi
+                storage: 5Gi
       serviceMonitorSelector:
         matchLabels: null
       podMonitorSelector:
