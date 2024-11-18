@@ -22,8 +22,8 @@ vault:
       size: 200Mi
     ingress:
       enabled: true
-      hosts[0]:
-        host: vault.nwallace.io
+      hosts:
+        - host: vault.nwallace.io
       ingressClassName: nginx
       tls:
         - hosts:
