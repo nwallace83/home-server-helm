@@ -16,7 +16,7 @@ vault:
       path: "/v1/sys/health?standbyok=true"
       initialDelaySeconds: 60
     extraEnvironmentVars:
-      VAULT_CACERT: /vault/userconfig/tls-secret/ca.crt
+      VAULT_CACERT: /vault/userconfig/vault-tls-secret/ca.crt
     extraSecretEnvironmentVars:
       - envName: AWS_ACCESS_KEY_ID
         secretName: vault-unseal-credentials
@@ -56,28 +56,28 @@ vault:
             tls_disable = 0
             address = "[::]:8200"
             cluster_address = "[::]:8201"
-            tls_cert_file = "/vault/userconfig/tls-secret/tls.crt"
-            tls_key_file = "/vault/userconfig/tls-secret/tls.key"
+            tls_cert_file = "/vault/userconfig/vault-tls-secret/tls.crt"
+            tls_key_file = "/vault/userconfig/vault-tls-secret/tls.key"
           }
           storage "raft" {
             path = "/vault/data"
             retry_join {
               leader_api_addr = "https://vault-0.vault-internal:8200"
-              leader_ca_cert_file = "/vault/userconfig/tls-secret/ca.crt"
-              leader_client_cert_file = "/vault/userconfig/tls-secret/tls.crt"
-              leader_client_key_file = "/vault/userconfig/tls-secret/tls.key"
+              leader_ca_cert_file = "/vault/userconfig/vault-tls-secret/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/vault-tls-secret/tls.crt"
+              leader_client_key_file = "/vault/userconfig/vault-tls-secret/tls.key"
             }
             retry_join {
               leader_api_addr = "https://vault-1.vault-internal:8200"
-              leader_ca_cert_file = "/vault/userconfig/tls-secret/ca.crt"
-              leader_client_cert_file = "/vault/userconfig/tls-secret/tls.crt"
-              leader_client_key_file = "/vault/userconfig/tls-secret/tls.key"
+              leader_ca_cert_file = "/vault/userconfig/vault-tls-secret/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/vault-tls-secret/tls.crt"
+              leader_client_key_file = "/vault/userconfig/vault-tls-secret/tls.key"
             }
             retry_join {
               leader_api_addr = "https://vault-2.vault-internal:8200"
-              leader_ca_cert_file = "/vault/userconfig/tls-secret/ca.crt"
-              leader_client_cert_file = "/vault/userconfig/tls-secret/tls.crt"
-              leader_client_key_file = "/vault/userconfig/tls-secret/tls.key"
+              leader_ca_cert_file = "/vault/userconfig/vault-tls-secret/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/vault-tls-secret/tls.crt"
+              leader_client_key_file = "/vault/userconfig/vault-tls-secret/tls.key"
             }
             autopilot {
               server_stabilization_time = "30s"
