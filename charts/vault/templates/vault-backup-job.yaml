@@ -44,10 +44,12 @@ spec:
                 - name: vault-backup
                   mountPath: /backup
               env:
-                - name: VAULT_SKIP_VERIFY
-                  value: 'true'
                 - name: VAULT_ADDR
                   value: https://vault-active:8200
+                - name: VAULT_CACERT
+                  valueFrom:
+                    secretKeyRef: {{ printf "%s-tls-secret" }}
+                    key: ca.crt
                 - name: VAULT_TOKEN
                   valueFrom:
                     secretKeyRef: 
