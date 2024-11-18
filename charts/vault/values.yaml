@@ -7,7 +7,7 @@ vault:
   server:
     extraVolumes:
       - type: secret
-        name: tls-secret
+        name: vault-tls-secret
     readinessProbe:
       enabled: true
       path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
@@ -121,7 +121,8 @@ vault-secrets-operator:
   defaultVaultConnection:
     address: https://vault.vault.svc.cluster.local:8200
     enabled: true
-    caCertSecret: tls-secret
+    skipTLSVerify: true
+    caCertSecret: vault-tls-secret
   defaultAuthMethod:
     enabled: true
     namespace: vault
