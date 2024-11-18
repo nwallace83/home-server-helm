@@ -5,6 +5,8 @@ metadata:
 spec:
   imageRepositoryRef:
     name: pihole
+  filterTags:
+    pattern: '^\d{4}\.\d+\.\d+$'
   policy:
-    semver:
-      range: ">=2024.07.0"
+    alphabetical:
+      order: asc
