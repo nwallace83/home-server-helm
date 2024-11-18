@@ -13,4 +13,4 @@ spec:
         name: home-server
       reconcileStrategy: Revision
   driftDetection:
-    mode: enabled
+    mode: warn

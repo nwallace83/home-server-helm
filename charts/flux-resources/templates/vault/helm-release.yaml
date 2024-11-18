@@ -14,4 +14,4 @@ spec:
         namespace: home-server
       reconcileStrategy: Revision
   driftDetection:
-    mode: enabled
+    mode: warn

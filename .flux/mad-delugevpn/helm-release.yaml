@@ -27,4 +27,4 @@ spec:
       - name: mad-media
         mountPath: /media
   driftDetection:
-    mode: enabled
+    mode: warn
