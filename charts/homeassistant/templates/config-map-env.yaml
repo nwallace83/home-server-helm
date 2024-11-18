@@ -1,7 +1,6 @@
-{{- $appName := "homeassistant" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $appName }}-env
+  name: {{ printf "%s-env" .Release.Name }}
 data:
   TZ: {{ .Values.timezone }}

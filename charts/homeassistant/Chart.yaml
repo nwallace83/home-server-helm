@@ -1,6 +1,6 @@
 apiVersion: v2
-name: home-assistant
-description: home-assistant
+name: homeassistant
+description: homeassistant
 
 # A chart can be either an 'application' or a 'library' chart.
 #
