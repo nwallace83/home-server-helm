@@ -5,6 +5,8 @@ metadata:
 spec:
   imageRepositoryRef:
     name: postgresql
+  filterTags:
+    pattern: '^16\.\d+-\d+$'
   policy:
-    semver:
-      range: ">16.0 <17.0"
+    alphabetical:
+      order: asc
