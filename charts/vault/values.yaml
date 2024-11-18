@@ -121,7 +121,7 @@ vault-secrets-operator:
   defaultVaultConnection:
     address: https://vault.vault.svc.cluster.local:8200
     enabled: true
-    caCertSecret: vault-tls-secret
+    skipTLSVerify: true
   defaultAuthMethod:
     enabled: true
     namespace: vault
