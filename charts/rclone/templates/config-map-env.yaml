@@ -1,0 +1,9 @@
+{{- $appName := "rclone" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-env" .Release.Name }}
+data:
+  PGID: {{ .Values.localGID | quote }}
+  PUID: {{ .Values.localUID | quote }}
+  TZ: {{ .Values.timezone }}

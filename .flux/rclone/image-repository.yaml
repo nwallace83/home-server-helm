@@ -1,0 +1,7 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: rclone
+spec:
+  image: harbor.nwallace.io/docker-hub/bitnami/rclone
+  interval: 30m

@@ -1,0 +1,28 @@
+timezone: America/Denver
+image: harbor.nwallace.io/docker-hub/bitnami/rclone:1.68.2 # {"$imagepolicy": "home-server:rclone"}
+localUID: "1000"
+localGID: "1000"
+
+resources:
+  limits:
+    smarter-devices/fuse: 1
+  requests:
+    smarter-devices/fuse: 1
+
+pvc:
+  size: 10Mi
+  storageClassName: longhorn
+
+volumes:
+  - name: backup
+    persistentVolumeClaim:
+      claimName: backup
+
+volumeMounts:
+  - name: backup
+    mountPath: /backup
+
+imagePullPolicy: IfNotPresent
+
+livenessProbe: {}
+readinessProbe: {}
