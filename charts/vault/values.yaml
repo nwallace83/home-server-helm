@@ -18,21 +18,15 @@ vault:
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/tls-secret/ca.crt
     extraSecretEnvironmentVars:
-      - name: AWS_ACCESS_KEY_ID
-        valueFrom:
-          secretKeyRef:
-            name: vault-unseal-credentials
-            key: AWS_ACCESS_KEY_ID
-      - name: AWS_SECRET_ACCESS_KEY
-        valueFrom:
-          secretKeyRef:
-            name: vault-unseal-credentials
-            key: AWS_SECRET_ACCESS_KEY
-      - name: VAULT_AWSKMS_SEAL_KEY_ID
-        valueFrom:
-          secretKeyRef:
-            name: vault-unseal-credentials
-            key: VAULT_AWSKMS_SEAL_KEY_ID
+      - envName: AWS_ACCESS_KEY_ID
+        secretName: vault-unseal-credentials
+        secretKey: AWS_ACCESS_KEY_ID
+      - envName: AWS_SECRET_ACCESS_KEY
+        secretName: vault-unseal-credentials
+        secretKey: AWS_SECRET_ACCESS_KEY
+      - envName: VAULT_AWSKMS_SEAL_KEY_ID
+        secretName: vault-unseal-credentials
+        secretKey: VAULT_AWSKMS_SEAL_KEY_ID
     dataStorage:
       storageClass: longhorn-general
       size: 200Mi
