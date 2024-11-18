@@ -1,0 +1,26 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: mc
+  namespace: vault
+spec:
+  imageRepositoryRef:
+    name: mc
+  filterTags:
+    pattern: '^RELEASE\.(?P<timestamp>.*)Z$'
+    extract: '$timestamp'
+  policy:
+    alphabetical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  imageRepositoryRef:
+    name: vault
+  policy:
+    semver:
+      range: ">=1.18"

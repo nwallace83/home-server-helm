@@ -1,0 +1,121 @@
+imagePullPolicy: IfNotPresent
+timezone: America/Denver
+mcImage: harbor.nwallace.io/docker-hub/minio/mc:RELEASE.2024-11-05T11-29-45Z # {"$imagepolicy": "vault:mc"}
+vaultImage: harbor.nwallace.io/docker-hub/hashicorp/vault:1.18 # {"$imagepolicy": "vault:vault"}
+
+vault:
+  server:
+    extraVolumes:
+      - type: secret
+        name: tls-secret
+    readinessProbe:
+      enabled: true
+      path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+    livenessProbe:
+      enabled: true
+      path: "/v1/sys/health?standbyok=true"
+      initialDelaySeconds: 60
+    extraEnvironmentVars:
+      VAULT_CACERT: /vault/userconfig/tls-secret/ca.crt
+    dataStorage:
+      storageClass: longhorn-general
+      size: 200Mi
+    ingress:
+      enabled: true
+      hosts[0]:
+        host: vault.nwallace.io
+      ingressClassName: nginx
+      tls:
+        - hosts:
+            - vault.nwallace.io
+          secretName: vault.nwallace.io-tls-secret
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+        nginx.ingress.kubernetes.io/use-regex: 'true'
+    ha:
+      enabled: true
+      replicas: 3
+      raft:
+        enabled: true
+        setNodeId: true
+        config: |
+          ui = true
+          cluster_name = "vault-integrated-storage"
+          listener "tcp" {
+            tls_disable = 0
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
+            tls_cert_file = "/vault/userconfig/tls-secret/tls.crt"
+            tls_key_file = "/vault/userconfig/tls-secret/tls.key"
+          }
+          storage "raft" {
+            path = "/vault/data"
+            retry_join {
+              leader_api_addr = "https://vault-0.vault-internal:8200"
+              leader_ca_cert_file = "/vault/userconfig/tls-secret/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/tls-secret/tls.crt"
+              leader_client_key_file = "/vault/userconfig/tls-secret/tls.key"
+            }
+            retry_join {
+              leader_api_addr = "https://vault-1.vault-internal:8200"
+              leader_ca_cert_file = "/vault/userconfig/tls-secret/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/tls-secret/tls.crt"
+              leader_client_key_file = "/vault/userconfig/tls-secret/tls.key"
+            }
+            retry_join {
+              leader_api_addr = "https://vault-2.vault-internal:8200"
+              leader_ca_cert_file = "/vault/userconfig/tls-secret/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/tls-secret/tls.crt"
+              leader_client_key_file = "/vault/userconfig/tls-secret/tls.key"
+            }
+            autopilot {
+              server_stabilization_time = "30s"
+              last_contact_threshold = "30s"
+              min_quorum = 3
+              cleanup_dead_servers = false
+              dead_server_last_contact_threshold = "10m"
+              max_trailing_logs = 1000
+              disable_upgrade_migration = false
+            }
+          }
+          service_registration "kubernetes" {}
+          seal "awskms" { 
+            region = "us-east-1" 
+            access_key = "AKIAYOT33Z7FVONLNDXN" 
+            secret_key = "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" 
+            kms_key_id = "4d9384d8-4168-4348-ba67-e03b668022c1" 
+          }
+    standalone:
+      enabled: false
+    image:
+      repository: harbor.nwallace.io/docker-hub/hashicorp/vault
+    updateStrategyType: RollingUpdate
+  injector:
+    enabled: false
+  global:
+    tlsDisable: false
+  csi:
+    agent:
+      image:
+        repository: harbor.nwallace.io/docker-hub/hashicorp/vault
+    image:
+      repository: harbor.nwallace.io/docker-hub/hashicorp/vault-csi-provider
+
+vault-secrets-operator:
+  controller:
+    replicas: 1
+    manager:
+      image:
+        repository: harbor.nwallace.io/docker-hub/hashicorp/vault-secrets-operator
+    kubeRbacProxy:
+      image:
+        repository: harbor.nwallace.io/quay/brancz/kube-rbac-proxy
+  defaultVaultConnection:
+    address: https://vault.vault.svc.cluster.local:8200
+    enabled: true
+    caCertSecret: tls-secret
+  defaultAuthMethod:
+    enabled: true
+    kubernetes:
+      role: home-server

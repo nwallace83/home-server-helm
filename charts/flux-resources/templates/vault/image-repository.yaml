@@ -1,0 +1,17 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: mc
+  namespace: vault
+spec:
+  image: harbor.nwallace.io/docker-hub/minio/mc
+  interval: 30m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  image: harbor.nwallace.io/docker-hub/hashicorp/vault
+  interval: 30m

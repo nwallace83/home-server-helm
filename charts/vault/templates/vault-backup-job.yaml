@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-vault
+  namespace: vault
+spec:
+  schedule: "1 * * * *"
+  timeZone: {{ .Values.timezone }}
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: vault-backup
+              emptyDir: {}
+          containers:
+            - name: minio-mc
+              image: {{ .Values.mcImage }}
+              env:
+                - name: MINIO_HOST
+                  value: http://minio.minio:9000
+                - name: MINIO_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef: 
+                      name: {{ printf "%s-backup-secret" .Release.Name }}
+                      key: MINIO_ACCESS_KEY
+                - name: MINIO_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef: 
+                      name: {{ printf "%s-backup-secret" .Release.Name }}
+                      key: MINIO_SECRET_KEY
+              volumeMounts:
+                - name: vault-backup
+                  mountPath: /backup
+              command: ["/bin/sh","-c","mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY && mc cp /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap minio/vault-backups/"]
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+          initContainers:
+            - name: backup-vault
+              image: {{ .Values.vaultImage }}
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              command: ["/bin/sh","-c","vault operator raft snapshot save /backup/vault-backup-$(date +%Y-%m-%d_%H-%M).snap"]
+              volumeMounts:
+                - name: vault-backup
+                  mountPath: /backup
+              env:
+                - name: VAULT_SKIP_VERIFY
+                  value: 'true'
+                - name: VAULT_ADDR
+                  value: https://vault-active:8200
+                - name: VAULT_TOKEN
+                  valueFrom:
+                    secretKeyRef: 
+                      name: {{ printf "%s-backup-secret" .Release.Name }}
+                      key: VAULT_TOKEN
+              securityContext:
+                runAsUser: 0
+                runAsGroup: 0
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
