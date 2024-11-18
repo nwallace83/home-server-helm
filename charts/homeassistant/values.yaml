@@ -9,7 +9,7 @@ ingress:
     nginx.ingress.kubernetes.io/limit-rps: "5"
   ingressClassName: nginx-ext
 pvc:
-  size: 6Gi
+  size: 8Gi
   storageClassName: longhorn
 imagePullPolicy: IfNotPresent
 livenessProbe:
