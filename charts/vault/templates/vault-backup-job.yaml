@@ -15,9 +15,9 @@ spec:
           volumes:
             - name: vault-backup
               emptyDir: {}
-            - name: vault-tls-secret
+            - name: userconfig-vault-tls-secret
               secret:
-                secretName: userconfig-vault-tls-secret
+                secretName: vault-tls-secret
                 defaultMode: 420
           containers:
             - name: minio-mc
