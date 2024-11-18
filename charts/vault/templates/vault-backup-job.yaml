@@ -14,6 +14,10 @@ spec:
           volumes:
             - name: vault-backup
               emptyDir: {}
+            - name: vault-tls-secret
+              secret:
+                secretName: userconfig-vault-tls-secret
+                defaultMode: 420
           containers:
             - name: minio-mc
               image: {{ .Values.mcImage }}
@@ -43,14 +47,14 @@ spec:
               volumeMounts:
                 - name: vault-backup
                   mountPath: /backup
+                - name: userconfig-vault-tls-secret
+                  readOnly: true
+                  mountPath: /vault/userconfig/vault-tls-secret
               env:
                 - name: VAULT_ADDR
                   value: https://vault-active:8200
                 - name: VAULT_CACERT
-                  valueFrom:
-                    secretKeyRef: 
-                      name: {{ printf "%s-tls-secret" .Release.Name }}
-                      key: ca.crt
+                  value: /vault/userconfig/vault-tls-secret/ca.crt
                 - name: VAULT_TOKEN
                   valueFrom:
                     secretKeyRef: 
