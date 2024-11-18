@@ -32,10 +32,6 @@ spec:
               mountPath: /rclone
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           securityContext:
             runAsUser: 1000

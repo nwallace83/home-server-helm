@@ -23,6 +23,3 @@ volumeMounts:
     mountPath: /backup
 
 imagePullPolicy: IfNotPresent
-
-livenessProbe: {}
-readinessProbe: {}
