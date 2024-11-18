@@ -48,8 +48,9 @@ spec:
                   value: https://vault-active:8200
                 - name: VAULT_CACERT
                   valueFrom:
-                    secretKeyRef: {{ printf "%s-tls-secret" }}
-                    key: ca.crt
+                    secretKeyRef: 
+                      name: {{ printf "%s-tls-secret" }}
+                      key: ca.crt
                 - name: VAULT_TOKEN
                   valueFrom:
                     secretKeyRef: 
