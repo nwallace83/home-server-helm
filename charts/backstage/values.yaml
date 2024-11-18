@@ -1,5 +1,4 @@
-dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4 # {"$imagepolicy": "home-server:postgresql-16"}
-
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.5-1 # {"$imagepolicy": "home-server:postgresql-16"}
 backstage:
   backstage:
     appConfig:

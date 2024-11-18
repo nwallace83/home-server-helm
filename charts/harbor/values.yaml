@@ -1,9 +1,8 @@
-dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.4 # {"$imagepolicy": "home-server:postgresql-16"}
-
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.5-1 # {"$imagepolicy": "home-server:postgresql-16"}
 harbor:
   expose:
     ingress:
-      annotations: 
+      annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
         core: harbor.nwallace.io
@@ -45,7 +44,7 @@ harbor:
         size: 100Mi
         storageClass: longhorn
       registry:
-        existingClaim:  harbor-registry
+        existingClaim: harbor-registry
         size: 1Gi
         storageClass: nfs
       trivy:
