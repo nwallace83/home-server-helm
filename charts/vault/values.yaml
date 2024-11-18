@@ -117,5 +117,6 @@ vault-secrets-operator:
     caCertSecret: tls-secret
   defaultAuthMethod:
     enabled: true
+    namespace: vault
     kubernetes:
       role: home-server
