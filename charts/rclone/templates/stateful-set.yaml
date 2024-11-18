@@ -18,6 +18,7 @@ spec:
       containers:
         - name: rclone
           image: {{ .Values.image }}
+          command: ["sh", "-c", "/rclone/start.sh"]
           ports:
             - containerPort: 8989
               protocol: TCP
