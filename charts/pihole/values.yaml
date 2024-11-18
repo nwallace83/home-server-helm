@@ -58,7 +58,7 @@ customList: |
   192.168.0.10 grafana.nwallace.io
   192.168.0.10 handbrake.nwallace.io
   192.168.0.10 harbor.nwallace.io
-  192.168.0.10 homeassistant.nwallace.io
+  192.168.0.11 homeassistant.nwallace.io
   192.168.0.12 kas.nwallace.io
   192.168.0.12 minio-gitlab.nwallace.io
   192.168.0.11 minio-web.nwallace.io
