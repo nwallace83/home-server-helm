@@ -1,0 +1,25 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ingress-nginx-ext
+  namespace: ingress-nginx-ext
+spec:
+  interval: 1m
+  chart:
+    spec:
+      chart: ./charts/ingress-nginx-ext
+      sourceRef:
+        kind: GitRepository
+        name: home-server
+        namespace: home-server
+      reconcileStrategy: Revision
+  driftDetection:
+    mode: warn
+  values:
+    controller:
+      service:
+        loadBalancerIP: 192.168.0.11
+      ingressClassResource:
+        name: nginx-ext
+        controllerValue: k8s.io/ingress-nginx-ext
+      ingressClass: nginx-ext
