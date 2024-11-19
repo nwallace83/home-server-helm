@@ -14,7 +14,7 @@ spec:
       labels:
         app: {{ printf "%s-pgpool" .Release.Name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/gitlab-db-pgpool-conf.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/pgpool-conf.yaml") . | sha256sum }}
     spec:
       affinity:
         nodeAffinity:
