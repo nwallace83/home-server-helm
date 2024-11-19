@@ -3,6 +3,8 @@ apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: {{ regexReplaceAll "/[0-9]{1,3}" . "" }}
+  annotations:
+    helm.toolkit.fluxcd.io/driftDetection: disabled
 spec:
   addresses:
   - {{ . }}
