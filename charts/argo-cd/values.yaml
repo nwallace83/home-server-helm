@@ -1,0 +1,67 @@
+global:
+  domain: argocd.nwallace.io
+  image:
+    repository: harbor.nwallace.io/quay/argoproj/argocd
+
+argo-cd:
+  configs:
+    params:
+      "server.insecure": true
+  server:
+    nodeSelector: 
+      kubernetes.io/hostname: server
+    metrics:
+      enabled: true
+      serviceMonitor:
+        additionalLabels:
+          release: kube-prometheus-stack
+        enabled: true
+    replicas: 1
+    ingress:
+      ingressClassName: nginx
+      enabled: true
+      hostname: argocd.nwallace.io
+      annotations:
+        "cert-manager.io/cluster-issuer": letsencrypt-prod
+      extraTls:
+        - hosts:
+          - argocd.nwallace.io
+          secretName: argocd-nwallace.io-tls-secret
+    extensions:
+      image:
+        repository: harbor.nwallace.io/quay/argoprojlabs/argocd-extension-installer
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+  applicationSet:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+  repoServer:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+    replicas: 1
+    autoscaling:
+      maxReplicas: 1
+  redis:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
+  notifications:
+    enabled: false
+  dex:
+    enabled: false
