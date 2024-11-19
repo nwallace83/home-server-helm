@@ -1,6 +1,7 @@
-agent:
-  organizationUrl: https://dev.azure.com/nathanwallace114
-  patSecret: azure-devops-agent-pat
-  patSecretKey: agent-pat
-image:
-  registry: harbor.nwallace.io/docker-hubx
+azure-devops-agent:
+  agent:
+    organizationUrl: https://dev.azure.com/nathanwallace114
+    patSecret: azure-devops-agent-pat
+    patSecretKey: agent-pat
+  image:
+    registry: harbor.nwallace.io/docker-hubx
