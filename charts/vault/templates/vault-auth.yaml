@@ -81,3 +81,15 @@ spec:
   kubernetes:
     role: grafana
     serviceAccount: default
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+  namespace: azure-devops-agent
+spec:
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: admin
+    serviceAccount: default
