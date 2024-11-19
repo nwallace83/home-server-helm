@@ -39,6 +39,7 @@ harbor:
       jobservice:
         jobLog:
           size: 100Mi
+          accessMode: ReadWriteMany
           storageClass: longhorn-rwx-retain
       redis:
         size: 100Mi
