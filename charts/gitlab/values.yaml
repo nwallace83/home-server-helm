@@ -1,0 +1,153 @@
+global:
+  hosts:
+    domain: nwallace.io
+  externalIP: 192.168.0.12
+  monitoring:
+    enabled: true
+  certificates:
+    image:
+      repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates
+  gitlabBase:
+    image:
+      repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base
+  kubectl:
+    image:
+      repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/kubectl
+  minio:
+    enabled: false
+  psql:
+    host: gitlab-db
+    username: gitlab
+    password:
+      secret: gitlab-postgresql-password
+      key: password
+  ingress:
+    configureCertmanager: false
+    annotations:
+      "cert-manager.io/cluster-issuer": letsencrypt-prod
+  nodeSelector:
+    kubernetes.io/arch: amd64
+  appConfig:
+    object_store:
+      enabled: true
+      proxy_download: true
+      connection:
+        secret: gitlab-minio
+    backups:
+      bucket: gitlab-backups
+
+gitlab:
+  gitlab-runner:
+    runners:
+      config: |
+        [[runners]]
+          [runners.kubernetes]
+          image = "ubuntu:22.04"
+          privileged = true
+          [[runners.kubernetes.volumes.empty_dir]]
+            name = "docker-certs"
+            mount_path = "/certs/client"
+            medium = "Memory"
+          [runners.kubernetes.node_selector]
+            "beta.kubernetes.io/arch" = "amd64"
+          {{- if .Values.global.minio.enabled }}
+          [runners.cache]
+            Type = "s3"
+            Path = "gitlab-runner"
+            Shared = true
+            [runners.cache.s3]
+              ServerAddress = {{ include "gitlab-runner.cache-tpl.s3ServerAddress" . }}
+              BucketName = "runner-cache"
+              BucketLocation = "us-east-1"
+              Insecure = false
+          {{ end }}
+  postgresql:
+    install: false
+  gitlab:
+    sidekiq:
+      resources:
+        requests:
+          cpu: 500m
+      minReplicas: 1
+      maxReplicas: 1
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-sidekiq-ee
+    gitaly:
+      persistence:
+        storageClass: longhorn-general
+        size: 100Mi
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitaly
+    kas:
+      minReplicas: 1
+      maxReplicas: 1
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas
+    gitlab-shell:
+      minReplicas: 1
+      maxReplicas: 1
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell
+    webservice:
+      ingress:
+        tls:
+          secretName: gitlab.nwallace.io-tls-secret
+      minReplicas: 1
+      maxReplicas: 1
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-webservice-ee
+      gitlab:
+        webservice:
+          workhorse:
+            image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-workhorse-ee
+    toolbox:
+      backups:
+        cron:
+          enabled: true
+        objectStorage:
+          config:
+            secret: gitlab-minio
+            key: config
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-toolbox-ee
+    gitlab-exporter:
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-exporter
+    migrations:
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-toolbox-ee
+      init:
+        image:
+          repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base
+  nginx-ingress:
+    controller:
+      replicaCount: 1
+      image:
+        registry: harbor.nwallace.io/gitlab
+  redis:
+    master:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      persistence:
+        storageClass: longhorn
+        size: 1Gi
+    image:
+      registry: harbor.nwallace.io/docker-hub
+  registry:
+    hpa:
+      minReplicas: 1
+      maxReplicas: 1
+    enabled: false
+  webservice:
+    minReplicas: 1
+    maxReplicas: 1
+  prometheus:
+    install: false
+  certmanager:
+    install: false
+  upgradeCheck:
+    enabled: false
+  shared-secrets:
+    selfsign:
+      image:
+        repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/cfssl-self-sign
