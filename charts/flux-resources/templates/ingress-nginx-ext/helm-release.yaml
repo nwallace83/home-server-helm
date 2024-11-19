@@ -7,7 +7,7 @@ spec:
   interval: 1m
   chart:
     spec:
-      chart: ./charts/ingress-nginx-ext
+      chart: ./charts/ingress-nginx
       sourceRef:
         kind: GitRepository
         name: home-server
