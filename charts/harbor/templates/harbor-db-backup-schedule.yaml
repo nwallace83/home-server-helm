@@ -4,8 +4,9 @@ metadata:
   name: {{ printf "%s-backup" .Release.Name }}
   namespace: harbor
 spec:
-  schedule: "0 10 6 * * *"
   backupOwnerReference: cluster
-  immediate: true
   cluster:
     name: {{ .Release.Name }}
+  immediate: true
+  method: barmanObjectStore
+  schedule: 0 10 6 * * *
