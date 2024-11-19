@@ -15,3 +15,8 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: warn
+  driftDetection:
+    ignore:
+     - paths: [""]
+       target:
+         kind: NodeFeatureRule
