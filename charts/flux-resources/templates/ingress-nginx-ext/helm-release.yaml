@@ -15,6 +15,10 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: warn
+    ignore:
+      - paths: [""]
+        target:
+          kind: ServiceMonitor
   values:
     ingress-nginx:
       controller:
