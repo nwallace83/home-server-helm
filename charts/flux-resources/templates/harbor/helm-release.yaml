@@ -13,9 +13,3 @@ spec:
         name: home-server
         namespace: home-server
       reconcileStrategy: Revision
-  driftDetection:
-    mode: warn
-    ignore:
-      - paths: ["/"]
-        target:
-          kind: 
