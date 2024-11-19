@@ -4,4 +4,4 @@ azure-devops-agent:
     patSecret: azure-devops-agent-pat
     patSecretKey: agent-pat
   image:
-    registry: harbor.nwallace.io/docker-hubx
+    registry: harbor.nwallace.io/docker-hub
