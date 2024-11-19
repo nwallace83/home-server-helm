@@ -1,0 +1,17 @@
+email: nathan.wallace114@gmail.com
+
+cert-manager:
+  acmesolver:
+    image:
+      repository: harbor.nwallace.io/quay/jetstack/cert-manager-acmesolver
+  cainjector:
+    image:
+      repository: harbor.nwallace.io/quay/jetstack/cert-manager-cainjector
+  image:
+    repository: harbor.nwallace.io/quay/jetstack/cert-manager-controller
+  startupapicheck:
+    image:
+      repository: harbor.nwallace.io/quay/jetstack/cert-manager-startupapicheck
+  webhook:
+    image:
+      repository: harbor.nwallace.io/quay/jetstack/cert-manager-webhook
