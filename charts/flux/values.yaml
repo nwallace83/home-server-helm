@@ -1,0 +1,15 @@
+flux2: 
+  helmController:
+    image: harbor.nwallace.io/github/fluxcd/helm-controller
+  imageAutomationController:
+    image: harbor.nwallace.io/github/fluxcd/image-automation-controller
+  imageReflectionController:
+    image: harbor.nwallace.io/github/fluxcd/image-reflector-controller
+  kustomizeController:
+    image: harbor.nwallace.io/github/fluxcd/kustomize-controller
+  notificationController:
+    image: harbor.nwallace.io/github/fluxcd/notification-controller
+  sourceController:
+    image: harbor.nwallace.io/github/fluxcd/source-controller
+  cli:
+    image:  harbor.nwallace.io/github/fluxcd/flux-cli
