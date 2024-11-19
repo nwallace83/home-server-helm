@@ -1,0 +1,3 @@
+node-feature-discovery:
+  image:
+    repository: harbor.nwallace.io/k8s/nfd/node-feature-discovery
