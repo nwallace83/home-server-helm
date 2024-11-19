@@ -1,0 +1,27 @@
+ingress-nginx:
+  controller:
+    metrics:
+      serviceMonitor:
+        additionalLabels:
+          release: kube-prometheus-stack
+        enabled: true
+      enabled: true
+    allowSnippetAnnotations: true
+    service:
+      loadBalancerIP: 192.168.0.10
+    ingressClassResource:
+      default: true
+    ingressClassByName: true
+    kind: DaemonSet
+    admissionWebhooks:
+      patch:
+        image:
+          registry: harbor.nwallace.io/k8s
+    image:
+      registry: harbor.nwallace.io/k8s
+    opentelemetry:
+      image:
+        registry: harbor.nwallace.io/k8s
+  defaultBackend:
+    image:
+      registry: harbor.nwallace.io/k8s
