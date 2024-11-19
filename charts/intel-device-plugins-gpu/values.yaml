@@ -1,0 +1,4 @@
+intel-device-plugins-operator:
+  kubeRbacProxy:
+    image:
+      hub: harbor.nwallace.io/quay
