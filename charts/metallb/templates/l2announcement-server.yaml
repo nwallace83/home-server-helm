@@ -2,6 +2,8 @@ apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
   name: server-address
+  annotations:
+    helm.toolkit.fluxcd.io/driftDetection: disabled
 spec:
   ipAddressPools:
   - server-address
