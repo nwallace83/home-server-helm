@@ -13,9 +13,9 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
-    nodeSelector:
-      kubernetes.io/hostname: server
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: server
       terminationGracePeriodSeconds: 10
       containers:
         - name: delugevpn
