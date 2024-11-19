@@ -1,0 +1,6 @@
+metrics-server:
+  addonResizer:
+    image:
+      repository: harbor.nwallace.io/k8s/autoscaling/addon-resizer
+  image:
+    repository: harbor.nwallace.io/k8s/metrics-server/metrics-server
