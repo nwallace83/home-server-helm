@@ -1,0 +1,6 @@
+smarter-device-manager:
+  config: |
+    - devicematch: ^fuse$
+      nummaxdevices: 20
+  image:
+    repository: harbor.nwallace.io/gitlab/arm-research/smarter/smarter-device-manager
