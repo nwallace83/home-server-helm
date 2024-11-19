@@ -1,0 +1,21 @@
+ipPoolName: server-address-pool
+adresses:
+- 192.168.0.10/32
+- 192.168.0.11/32
+- 192.168.0.12/32
+- 192.168.0.13/32
+- 192.168.0.14/32
+
+metallb:
+  controller:
+    image:
+      repository: harbor.nwallace.io/quay/metallb/controller
+  prometheus:
+    rbacProxy:
+      repository: harbor.nwallace.io/quay/kubebuilder/kube-rbac-proxy
+  speaker:
+    frr:
+      image:
+        repository: harbor.nwallace.io/quay/frrouting/frr
+    image:
+      repository: harbor.nwallace.io/quay/metallb/speaker
