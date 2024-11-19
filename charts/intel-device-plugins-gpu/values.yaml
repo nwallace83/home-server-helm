@@ -1,4 +1,4 @@
 intel-device-plugins-operator:
-  kubeRbacProxy:
-    image:
-      hub: harbor.nwallace.io/quay
+  name: gpudeviceplugin-1
+  image:
+    hub: harbor.nwallace.io/docker-hub/intel
