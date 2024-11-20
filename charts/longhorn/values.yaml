@@ -28,8 +28,6 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
-      annotations:
-        helm.toolkit.fluxcd.io/driftDetection: disabled
   global:
     cattle:
       systemDefaultRegistry: harbor.nwallace.io/docker-hub

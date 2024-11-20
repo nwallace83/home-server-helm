@@ -2,8 +2,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: gitlab-backup
-  annotations:
-    helm.toolkit.fluxcd.io/driftDetection: disabled
 spec:
   schedule: "0 0 6 * * *"
   backupOwnerReference: cluster

@@ -15,3 +15,10 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: warn
+    ignore:
+      - target:
+          kind: Certificate
+          name: inteldeviceplugins-serving-cert
+        paths:
+          - /metadata/labels/helm.toolkit.fluxcd.io~1name
+          - /metadata/labels/helm.toolkit.fluxcd.io~1namespace

@@ -4,8 +4,6 @@ metadata:
   name: gitlab
   labels:
     workload: database
-  annotations:
-    helm.toolkit.fluxcd.io/driftDetection: disabled
 spec:
   resources:
     limits:
