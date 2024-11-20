@@ -14,7 +14,7 @@ spec:
         namespace: home-server
       reconcileStrategy: Revision
   driftDetection:
-    mode: warn
+    mode: enabled
     ignore:
       - target:
           kind: Certificate

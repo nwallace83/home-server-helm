@@ -22,4 +22,4 @@ spec:
       mutating:
         create: true
   driftDetection:
-    mode: warn
+    mode: enabled
