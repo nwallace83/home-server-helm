@@ -59,3 +59,15 @@ spec:
         - /spec/template/metadata/annotations/checksum~1secret
         - /spec/template/metadata/annotations/checksum~1secret-jobservice
         - /spec/template/metadata/annotations/checksum~1secret-core
+    - group: apps
+      kind: StatefulSet
+      name: harbor-redis
+      jsonPointers:
+        - /spec/volumeClaimTemplates/0/apiVersion
+        - /spec/volumeClaimTemplates/0/kind
+    - group: apps
+      kind: StatefulSet
+      name: harbor-trivy
+      jsonPointers:
+        - /spec/volumeClaimTemplates/0/apiVersion
+        - /spec/volumeClaimTemplates/0/kind
