@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: harbor
+  name: gitlab
   namespace: argo-cd
 spec:
   destination:
-    namespace: harbor
+    namespace: gitlab
     server: https://kubernetes.default.svc
   project: home-server
   source:
-    path: charts/harbor
+    path: charts/gitlab
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
   syncPolicy:

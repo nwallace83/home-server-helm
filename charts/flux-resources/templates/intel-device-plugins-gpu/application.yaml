@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: harbor
+  name: intel-device-plugins-gpu
   namespace: argo-cd
 spec:
   destination:
-    namespace: harbor
+    namespace: kube-system
     server: https://kubernetes.default.svc
   project: home-server
   source:
-    path: charts/harbor
+    path: charts/intel-device-plugins-gpu
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
   syncPolicy:
