@@ -1,4 +1,5 @@
-flux2: 
+flux2:
+  logLevel: debug
   helmController:
     image: harbor.nwallace.io/github/fluxcd/helm-controller
   imageAutomationController:
