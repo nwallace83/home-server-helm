@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cron-jobs
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: home-server
+    server: https://kubernetes.default.svc
+  project: home-server
+  source:
+    path: charts/cron-jobs
+    repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
