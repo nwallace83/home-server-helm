@@ -15,3 +15,9 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: warn
+    ignore:
+      - target:
+          kind: GpuDevicePlugin
+          name: gpudeviceplugin-1
+        paths:
+          - /spec/resourceManager

@@ -12,6 +12,12 @@ spec:
     path: charts/intel-device-plugins-gpu
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
+  ignoreDifferences:
+    - group: deviceplugin.intel.com
+      kind: GpuDevicePlugin
+      name: gpudeviceplugin-1
+      jsonPointers:
+        - /spec/resourceManager
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
