@@ -18,6 +18,7 @@ spec:
       name: gpudeviceplugin-1
       jsonPointers:
         - /spec/resourceManager
+        - /spec/tolerations
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
