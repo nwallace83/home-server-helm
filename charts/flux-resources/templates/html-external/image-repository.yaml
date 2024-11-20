@@ -1,8 +1,0 @@
-apiVersion: image.toolkit.fluxcd.io/v1beta2
-kind: ImageRepository
-metadata:
-  name: nginx
-  namespace: home-server
-spec:
-  image: harbor.nwallace.io/docker-hub/library/nginx
-  interval: 30m

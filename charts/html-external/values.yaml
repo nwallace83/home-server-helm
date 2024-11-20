@@ -1,30 +1,9 @@
-image: harbor.nwallace.io/docker-hub/library/nginx:1.27.2 # {"$imagepolicy": "home-server:nginx"}
-
-resources: {}
-replicas: 3
 ingress:
   host: nwallace.io
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "5"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      return 301 https://github.com/nwallace83;
   ingressClassName: nginx-ext
-imagePullPolicy: IfNotPresent
-livenessProbe:
-  httpGet:
-    path: /
-    port: 80
-    scheme: HTTP
-  timeoutSeconds: 1
-  periodSeconds: 10
-  successThreshold: 1
-  failureThreshold: 3
-readinessProbe:
-  httpGet:
-    path: /
-    port: 80
-    scheme: HTTP
-  timeoutSeconds: 1
-  periodSeconds: 10
-  successThreshold: 1
-  failureThreshold: 3
