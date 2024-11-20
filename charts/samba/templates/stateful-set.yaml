@@ -13,10 +13,10 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
-    nodeSelector:
-      kubernetes.io/hostname: server
     spec:
       terminationGracePeriodSeconds: 10
+      nodeSelector:
+        kubernetes.io/hostname: server
       containers:
         - name: samba
           image: {{ .Values.image }}
