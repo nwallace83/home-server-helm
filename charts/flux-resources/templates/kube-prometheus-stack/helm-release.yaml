@@ -13,3 +13,11 @@ spec:
         name: home-server
         namespace: home-server
       reconcileStrategy: Revision
+  driftDetection:
+    mode: warn
+    ignore:
+      - target:
+          kind: Prometheus
+          name: kube-prometheus-stack-prometheus
+        paths:
+          - /spec/podMonitorSelector

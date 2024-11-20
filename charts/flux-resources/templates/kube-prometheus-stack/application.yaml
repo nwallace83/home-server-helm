@@ -16,3 +16,9 @@ spec:
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: monitoring.coreos.com
+      kind: Prometheus
+      name: kube-prometheus-stack-prometheus
+      jsonPointers:
+        - /spec/podMonitorSelector
