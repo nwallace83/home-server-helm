@@ -64,6 +64,9 @@ gitlab:
   postgresql:
     install: false
   gitlab:
+    nginx:
+      service:
+        loadBalancerIP: 192.168.0.12
     sidekiq:
       resources:
         requests:
