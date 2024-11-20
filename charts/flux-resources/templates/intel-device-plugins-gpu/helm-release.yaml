@@ -21,3 +21,4 @@ spec:
           name: gpudeviceplugin-1
         paths:
           - /spec/resourceManager
+          - /spec/tolerations

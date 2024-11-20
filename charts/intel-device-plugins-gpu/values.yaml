@@ -2,3 +2,4 @@ intel-device-plugins-gpu:
   name: gpudeviceplugin-1
   image:
     hub: harbor.nwallace.io/docker-hub/intel
+  tolerations: null
