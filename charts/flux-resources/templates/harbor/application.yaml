@@ -70,4 +70,3 @@ ignoreDifferences:
       - /spec/template/metadata/annotations/checksum~1secret
       - /spec/template/metadata/annotations/checksum~1secret-jobservice
       - /spec/template/metadata/annotations/checksum~1secret-core
-      
