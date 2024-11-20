@@ -22,3 +22,6 @@ spec:
       name: kube-prometheus-stack-prometheus
       jsonPointers:
         - /spec/podMonitorSelector
+        - /spec/serviceMonitorSelector
+        - /spec/podMonitorSelector/matchLabels
+        - /spec/serviceMonitorSelector/matchLabels
