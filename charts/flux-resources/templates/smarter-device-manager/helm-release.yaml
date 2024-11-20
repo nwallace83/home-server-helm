@@ -4,7 +4,7 @@ metadata:
   name: smarter-device-manager
   namespace: kube-system
 spec:
-  interval: 1m
+  interval: 10m
   chart:
     spec:
       chart: ./charts/smarter-device-manager

@@ -3,7 +3,7 @@ kind: HelmRelease
 metadata:
   name: minio
 spec:
-  interval: 1m
+  interval: 10m
   targetNamespace: minio
   chart:
     spec:
