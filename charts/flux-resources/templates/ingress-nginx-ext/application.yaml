@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: home-server
   source:
-    path: charts/ingress-nginx-ext
+    path: charts/ingress-nginx
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
     helm:
