@@ -16,3 +16,16 @@ spec:
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      name: gitlab-gitaly
+      jsonPointers:
+        - /spec/volumeClaimTemplates/0/apiVersion
+        - /spec/volumeClaimTemplates/0/kind
+    - group: apps
+      kind: StatefulSet
+      name: gitlab-redis-master
+      jsonPointers:
+        - /spec/volumeClaimTemplates/0/apiVersion
+        - /spec/volumeClaimTemplates/0/kind
