@@ -1,0 +1,11 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: samba
+  namespace: home-server
+spec:
+  imageRepositoryRef:
+    name: samba
+  policy:
+    semver:
+      range: ">=4.16.8"

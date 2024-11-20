@@ -1,7 +1,0 @@
-apiVersion: image.toolkit.fluxcd.io/v1beta2
-kind: ImageRepository
-metadata:
-  name: homeassistant
-spec:
-  image: harbor.nwallace.io/docker-hub/homeassistant/home-assistant
-  interval: 30m

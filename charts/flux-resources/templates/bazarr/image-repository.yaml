@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: bazarr
+  namespace: home-server
+spec:
+  image: harbor.nwallace.io/docker-hub/linuxserver/bazarr
+  interval: 30m

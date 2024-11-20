@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: delugevpn
+  namespace: home-server
+spec:
+  image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn
+  interval: 30m

@@ -1,0 +1,13 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: readarr
+  namespace: home-server
+spec:
+  imageRepositoryRef:
+    name: readarr
+  filterTags:
+    pattern: '.*-develop'
+  policy:
+    semver:
+      range: ">=0.4.3-develop"
