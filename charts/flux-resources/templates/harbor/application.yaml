@@ -40,6 +40,11 @@ ignoreDifferences:
     kind: Secret
     name: harbor-registry
     jsonPointers:
+      - /data/REGISTRY_HTTP_SECRET
+  - group: ''
+    kind: Secret
+    name: harbor-jobservice
+    jsonPointers:
       - /data/JOBSERVICE_SECRET
   - group: ''
     kind: Secret
@@ -51,17 +56,17 @@ ignoreDifferences:
     name: harbor-core
     jsonPointers:
       - /spec/template/metadata/annotations/checksum~1secret
-      - /spec/template/metadata/annotations/checksum/secret~1jobservice
+      - /spec/template/metadata/annotations/checksum~1secret-jobservice
   - group: apps
     kind: Deployment
     name: harbor-jobservice
     jsonPointers:
       - /spec/template/metadata/annotations/checksum~1secret
-      - /spec/template/metadata/annotations/checksum/checksum/secret~1core
+      - /spec/template/metadata/annotations/checksum~1checksum-secret-core
   - group: apps
     kind: Deployment
-    name: harbor-jobservice
+    name: harbor-registry
     jsonPointers:
       - /spec/template/metadata/annotations/checksum~1secret
-      - /spec/template/metadata/annotations/checksum/secret~1jobservice
-      - /spec/template/metadata/annotations/checksum/checksum/secret~1core
+      - /spec/template/metadata/annotations/checksum~1secret-jobservice
+      - /spec/template/metadata/annotations/checksum~1checksum/secret-core
