@@ -41,6 +41,8 @@ spec:
   managed:
     roles:
     - name: gitlab
+      connectionLimit: -1
+      inherit: true
       ensure: present
       login: true
       passwordSecret:

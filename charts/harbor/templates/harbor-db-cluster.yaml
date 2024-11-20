@@ -34,6 +34,8 @@ spec:
   managed:
     roles:
     - name: harbor
+      connectionLimit: -1
+      inherit: true
       ensure: present
       login: true
       passwordSecret:

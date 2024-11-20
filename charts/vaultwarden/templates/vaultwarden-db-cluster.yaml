@@ -34,6 +34,8 @@ spec:
     roles:
     - name: vaultwarden
       ensure: present
+      connectionLimit: -1
+      inherit: true
       login: true
       passwordSecret:
         name: vaultwarden-postgresql-password

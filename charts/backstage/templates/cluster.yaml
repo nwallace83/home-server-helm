@@ -35,6 +35,8 @@ spec:
   managed:
     roles:
     - name: backstage
+      connectionLimit: -1
+      inherit: true
       ensure: present
       login: true
       passwordSecret:
