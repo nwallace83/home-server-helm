@@ -5,7 +5,7 @@ metadata:
   namespace: argo-cd
 spec:
   destination:
-    namespace: home-server
+    namespace: vaultwarden
     server: https://kubernetes.default.svc
   project: home-server
   source:
