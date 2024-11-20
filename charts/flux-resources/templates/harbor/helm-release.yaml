@@ -13,3 +13,48 @@ spec:
         name: home-server
         namespace: home-server
       reconcileStrategy: Revision
+  driftDetection:
+    mode: warn
+    ignore:
+      - target:
+          kind: Secret
+          name: harbor-core
+        paths:
+          - /data/CSRF_KEY
+          - /data/secret
+          - /data/tls.crt
+          - /data/tls.key
+      - target:
+          kind: Secret
+          name: harbor-registry
+        paths:
+          - /data/REGISTRY_HTTP_SECRET
+      - target:
+          kind: Secret
+          name: harbor-jobservice
+        paths:
+          - /data/JOBSERVICE_SECRET
+      - target:
+          kind: Secret
+          name: harbor-registry-htpasswd
+        paths:
+          - /data/REGISTRY_HTPASSWD
+      - target:
+          kind: Deployment
+          name: harbor-core
+        paths:
+          - /spec/template/metadata/annotations/checksum~1secret
+          - /spec/template/metadata/annotations/checksum~1secret-jobservice
+      - target:
+          kind: Deployment
+          name: harbor-jobservice
+        paths:
+          - /spec/template/metadata/annotations/checksum~1secret
+          - /spec/template/metadata/annotations/checksum~1secret-core
+      - target:
+          kind: Deployment
+          name: harbor-registry
+        paths:
+          - /spec/template/metadata/annotations/checksum~1secret
+          - /spec/template/metadata/annotations/checksum~1secret-jobservice
+          - /spec/template/metadata/annotations/checksum~1secret-core

@@ -15,7 +15,3 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: warn
-    ignore:
-      - paths: [""]
-        target:
-          kind: APIService
