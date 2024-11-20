@@ -13,7 +13,7 @@ spec:
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
     helm:
-      values:
+      values: |
         ingress-nginx:
           controller:
             ingressClassResource:
