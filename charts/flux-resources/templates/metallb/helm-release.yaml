@@ -15,3 +15,9 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: enabled
+    ignore:
+      - target:
+          kind: CustomResourceDefinition
+          name: bgppeers.metallb.io
+        paths:
+          - /spec/conversion/webhook/clientConfig/caBundle
