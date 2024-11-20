@@ -42,7 +42,9 @@ spec:
         {{- toYaml .Values.volumes | nindent 8 }}
       {{- end }}
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: config
       spec:
         accessModes:

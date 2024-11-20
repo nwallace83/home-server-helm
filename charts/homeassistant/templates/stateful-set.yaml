@@ -35,7 +35,9 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: config
       spec:
         accessModes:
