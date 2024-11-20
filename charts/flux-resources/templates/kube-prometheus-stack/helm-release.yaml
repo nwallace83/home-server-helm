@@ -14,7 +14,6 @@ spec:
         namespace: home-server
       reconcileStrategy: Revision
   driftDetection:
-    mode: enabled
     ignore:
       - target:
           kind: Prometheus
