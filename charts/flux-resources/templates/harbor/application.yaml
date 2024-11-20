@@ -15,3 +15,53 @@ spec:
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
+  ignoreDifferences:
+project: home-server
+source:
+  repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
+  path: charts/harbor
+  targetRevision: HEAD
+destination:
+  server: https://kubernetes.default.svc
+  namespace: harbor
+syncPolicy:
+  syncOptions:
+    - RespectIgnoreDifferences=true
+ignoreDifferences:
+  - group: ''
+    kind: Secret
+    name: harbor-core
+    jsonPointers:
+      - /data/CSRF_KEY
+      - /data/secret
+      - /data/tls.crt
+      - /data/tls.key
+  - group: ''
+    kind: Secret
+    name: harbor-registry
+    jsonPointers:
+      - /data/JOBSERVICE_SECRET
+  - group: ''
+    kind: Secret
+    name: harbor-registry-htpasswd
+    jsonPointers:
+      - /data/REGISTRY_HTPASSWD
+  - group: apps
+    kind: Deployment
+    name: harbor-core
+    jsonPointers:
+      - /spec/template/metadata/annotations/checksum~1secret
+      - /spec/template/metadata/annotations/checksum/secret~1jobservice
+  - group: apps
+    kind: Deployment
+    name: harbor-jobservice
+    jsonPointers:
+      - /spec/template/metadata/annotations/checksum~1secret
+      - /spec/template/metadata/annotations/checksum/checksum/secret~1core
+  - group: apps
+    kind: Deployment
+    name: harbor-jobservice
+    jsonPointers:
+      - /spec/template/metadata/annotations/checksum~1secret
+      - /spec/template/metadata/annotations/checksum/secret~1jobservice
+      - /spec/template/metadata/annotations/checksum/checksum/secret~1core
