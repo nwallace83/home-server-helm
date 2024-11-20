@@ -21,3 +21,6 @@ spec:
           name: kube-prometheus-stack-prometheus
         paths:
           - /spec/podMonitorSelector
+          - /spec/serviceMonitorSelector
+          - /spec/podMonitorSelector/matchLabels
+          - /spec/serviceMonitorSelector/matchLabels
