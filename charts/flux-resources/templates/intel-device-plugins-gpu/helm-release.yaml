@@ -15,10 +15,3 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: warn
-    ignore:
-      - paths: [""]
-        target:
-          kind: NodeFeatureRule
-      - paths: [""]
-        target:
-          kind: GpuDevicePlugin
