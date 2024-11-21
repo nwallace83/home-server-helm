@@ -2,14 +2,15 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   annotations:
-  name: longhorn-general
+  name: longhorn-rwo-r1-retain
 parameters:
-  dataLocality: strict-local
+  dataLocality: best-effort
   fromBackup: ""
   fsType: ext4
   numberOfReplicas: "1"
+  recurringJobSelector: '[{"name":"backup", "isGroup":true},{"name":"default", "isGroup":true}]'
   staleReplicaTimeout: "30"
 provisioner: driver.longhorn.io
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: Immediate
 allowVolumeExpansion: true

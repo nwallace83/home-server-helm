@@ -74,7 +74,7 @@ gitlab:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-sidekiq-ee
     gitaly:
       persistence:
-        storageClass: longhorn-general
+        storageClass: longhorn
         size: 100Mi
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitaly

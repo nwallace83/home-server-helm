@@ -28,7 +28,7 @@ vault:
         secretName: vault-unseal-credentials
         secretKey: VAULT_AWSKMS_SEAL_KEY_ID
     dataStorage:
-      storageClass: longhorn-general
+      storageClass: longhorn-rwo-r1-retain
       size: 200Mi
     ingress:
       enabled: true
