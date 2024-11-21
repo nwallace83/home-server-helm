@@ -1,0 +1,6 @@
+dependencies:
+- name: smarter-device-manager
+  repository: https://charts.gabe565.com
+  version: 0.5.2
+digest: sha256:447ec818b3a691ebdc47b4630d685ab46aa1b01029e03663468ec62a4195517e
+generated: "2024-11-21T03:40:49.623900093Z"
