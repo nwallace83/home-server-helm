@@ -30,7 +30,7 @@ spec:
               volumeMounts:
                 - name: images
                   mountPath: /images
-              command: ["/bin/sh","-c","aws --endpoint-url http://minio.nwallace.io s3 cp /images/images.tar.gz s3://backup-images/ && rm -f /images/images.tar.gz"]
+              command: ["/bin/sh","-c","aws --endpoint-url https://minio.nwallace.io s3 cp /images/images.tar.gz s3://backup-images/ && rm -f /images/images.tar.gz"]
               imagePullPolicy: {{ .Values.imagePullPolicy }}
           initContainers:
             - name: backup-images
