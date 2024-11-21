@@ -15,3 +15,6 @@ cert-manager:
   webhook:
     image:
       repository: harbor.nwallace.io/quay/jetstack/cert-manager-webhook
+  prometheus:
+    servicemonitor:
+      enabled: true
