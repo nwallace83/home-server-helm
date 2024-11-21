@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: home-server
   source:
-    path: charts/mad-bazarr
+    path: charts/bazarr
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
     helm:
