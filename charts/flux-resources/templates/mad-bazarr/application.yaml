@@ -12,6 +12,17 @@ spec:
     path: charts/mad-bazarr
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
+    helm:
+      values: |
+        ingress:
+          host: mad-bazarr.nwallace.io
+        volumes:
+          - name: mad-media
+            persistentVolumeClaim:
+              claimName: mad-media
+        volumeMounts:
+          - name: mad-media
+            mountPath: /media
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true

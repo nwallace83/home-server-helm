@@ -9,9 +9,25 @@ spec:
     server: https://kubernetes.default.svc
   project: home-server
   source:
-    path: charts/mad-delugevpn
+    path: charts/delugevpn
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
+    helm:
+      values: |
+        resources:
+          limits:
+            memory: 256Mi
+        ingress:
+          host: mad-delugevpn.nwallace.io
+        pvc:
+          size: 50Mi
+        volumes:
+          - name: mad-media
+            persistentVolumeClaim:
+              claimName: mad-media
+        volumeMounts:
+          - name: mad-media
+            mountPath: /media
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true

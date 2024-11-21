@@ -12,6 +12,19 @@ spec:
     path: charts/mad-sonarr
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
+    helm:
+      values: |
+        ingress:
+          host: mad-sonarr.nwallace.io
+        pvc:
+          size: 600Mi
+        volumes:
+          - name: mad-media
+            persistentVolumeClaim:
+              claimName: mad-media
+        volumeMounts:
+          - name: mad-media
+            mountPath: /media
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true

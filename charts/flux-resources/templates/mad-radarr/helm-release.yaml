@@ -18,11 +18,11 @@ spec:
     pvc:
       size: 1Gi
     volumes:
-    - name: mad-media
-      persistentVolumeClaim:
-        claimName: mad-media
+      - name: mad-media
+        persistentVolumeClaim:
+          claimName: mad-media
     volumeMounts:
-    - name: mad-media
-      mountPath: /media
+      - name: mad-media
+        mountPath: /media
   driftDetection:
     mode: enabled
