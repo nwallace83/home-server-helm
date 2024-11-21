@@ -32,7 +32,19 @@ spec:
           containers:
             - name: git-push
               image: {{ .Values.gitImage }}
-              command: ["/bin/sh","-c","git -C home-server-helm status"]
+              command: 
+                - /bin/sh
+                - -c
+                - >-
+                  cd home-server-helm && 
+                    if [ $(git status --porcelain | wc -l) -gt 0 ];then
+                      git config --global user.email 'nathan.wallace114@gmail.com' &&
+                      git config --global user.name 'Nathan Wallace' &&
+                      git remote set-url origin https://nate:$GITLAB_PAT@gitlab.nwallace.io/home-server/home-server-helm.git &&
+                      git add . &&
+                      git commit -m 'Update helm charts' &&
+                      git push; 
+                    fi
               env:
                 - name: GITLAB_PAT
                   valueFrom:
