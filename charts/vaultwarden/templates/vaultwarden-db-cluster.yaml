@@ -63,7 +63,7 @@ spec:
     retentionPolicy: "7d"
     barmanObjectStore:
       destinationPath: s3://vaultwarden-database
-      endpointURL: http://minio.minio:9000
+      endpointURL: http://minio.nwallace.io
       data:
         compression: gzip
       wal:
@@ -79,7 +79,7 @@ spec:
     - name: vaultwarden-old
       barmanObjectStore:
         destinationPath: s3://vaultwarden-database
-        endpointURL: http://minio.minio:9000
+        endpointURL: http://minio.nwallace.io
         wal:
           maxParallel: 8
         s3Credentials:

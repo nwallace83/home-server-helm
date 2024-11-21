@@ -64,7 +64,7 @@ spec:
     retentionPolicy: "7d"
     barmanObjectStore:
       destinationPath: {{ printf "s3://%s-database/" .Release.Name }}
-      endpointURL: http://minio.minio:9000
+      endpointURL: http://minio.nwallace.io
       data:
         compression: gzip
       wal:
@@ -80,7 +80,7 @@ spec:
     - name: {{ .Release.Name }}
       barmanObjectStore:
         destinationPath: {{ printf "s3://%s-database/2024-07-20" .Release.Name }}
-        endpointURL: http://minio.minio:9000
+        endpointURL: http://minio.nwallace.io
         wal:
           maxParallel: 8
         s3Credentials:

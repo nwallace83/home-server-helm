@@ -24,7 +24,7 @@ spec:
               image: {{ .Values.mcImage }}
               env:
                 - name: MINIO_HOST
-                  value: http://minio.minio:9000
+                  value: http://minio.nwallace.io
                 - name: MINIO_ACCESS_KEY
                   valueFrom:
                     secretKeyRef: 
