@@ -24,7 +24,7 @@ spec:
               imagePullPolicy: {{ .Values.imagePullPolicy}}
             - name: helm-dependency-update
               image: {{ .Values.helmImage }}
-              command: ["/bin/sh","-c","for I in $(find home-server-helm -name Chart.yaml | sed 's/\\/Chart.yaml//g'); do helm dependency update $I; done"]
+              command: ["/bin/sh","-c","for I in $(find home-server-helm -name Chart.yaml | sed 's/Chart.yaml//g'); do helm dependency update $I; done"]
               volumeMounts:
                 - name: git-repo
                   mountPath: /apps/home-server-helm
