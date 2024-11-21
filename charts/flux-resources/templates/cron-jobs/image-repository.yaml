@@ -15,3 +15,21 @@ metadata:
 spec:
   image: harbor.nwallace.io/docker-hub/amazon/aws-cli
   interval: 30m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: git
+  namespace: home-server
+spec:
+  image: harbor.nwallace.io/docker-hub/bitnami/git
+  interval: 30m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: helm
+  namespace: home-server
+spec:
+  image: harbor.nwallace.io/docker-hub/alpine/helm
+  interval: 30m
