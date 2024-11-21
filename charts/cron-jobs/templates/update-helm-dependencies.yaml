@@ -14,6 +14,21 @@ spec:
           volumes:
             - name: git-repo
               emptyDir: {}
+          initContainers:
+            - name: git-pull
+              image: {{ .Values.gitImage }}
+              command: ["/bin/sh","-c","git clone https://gitlab.nwallace.io/home-server/home-server-helm.git"]
+              volumeMounts:
+                - name: git-repo
+                  mountPath: /home-server-helm
+              imagePullPolicy: {{ .Values.imagePullPolicy}}
+            - name: helm-dependency-update
+              image: {{ .Values.gitImage }}
+              command: ["/bin/sh","-c","find home-server-helm -name Chart.yaml | xargs helm dependency update"]
+              volumeMounts:
+                - name: git-repo
+                  mountPath: /home-server-helm
+              imagePullPolicy: {{ .Values.imagePullPolicy}}
           containers:
             - name: git-push
               image: {{ .Values.gitImage }}
@@ -28,21 +43,6 @@ spec:
                 - name: git-repo
                   mountPath: /home-server-helm
               imagePullPolicy: {{ .Values.imagePullPolicy }}
-          initContainers:
-            - name: git-pull
-              image: {{ .Values.gitImage }}
-              command: ["/bin/sh","-c","git clone https://gitlab.nwallace.io/home-server/home-server-helm.git"]
-              volumeMounts:
-                - name: git-repo
-                  mountPath: /home-server-helm
-              imagePullPolicy: {{ .Values.imagePullPolicy}}
-            - name: helm-dependency-update
-              image: {{ .Values.gitImage }}
-              command: ["/bin/sh","-c","find home-server-helm -name Chart.yaml | xargs helm dependency update"]
-              volumeMounts:
-                - name: git-repo
-                  mountPath: /apps
-              imagePullPolicy: {{ .Values.imagePullPolicy}}
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
