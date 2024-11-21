@@ -43,6 +43,7 @@ spec:
                       git remote set-url origin https://nate:$GITLAB_PAT@gitlab.nwallace.io/home-server/home-server-helm.git &&
                       git add . &&
                       git commit -m 'Update helm charts' &&
+                      git pull -r &&
                       git push; 
                     fi
               env:
