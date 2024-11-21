@@ -41,7 +41,7 @@ spec:
               command: ["/bin/sh","-c","find home-server-helm -name Chart.yaml | xargs helm dependency update"]
               volumeMounts:
                 - name: git-repo
-                  mountPath: /apps/home-server-helm
+                  mountPath: /apps
               imagePullPolicy: {{ .Values.imagePullPolicy}}
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
