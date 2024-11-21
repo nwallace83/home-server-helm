@@ -14,8 +14,8 @@ spec:
       reconcileStrategy: Revision
   values:
     resources:
-    limits:
-      memory: 256Mi
+      limits:
+        memory: 256Mi
     ingress:
       host: mad-delugevpn.nwallace.io
     pvc:
