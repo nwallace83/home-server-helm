@@ -23,7 +23,7 @@ spec:
                   mountPath: /home-server-helm
               imagePullPolicy: {{ .Values.imagePullPolicy}}
             - name: helm-dependency-update
-              image: {{ .Values.gitImage }}
+              image: {{ .Values.helmImage }}
               command: ["/bin/sh","-c","find home-server-helm -name Chart.yaml | xargs helm dependency update"]
               volumeMounts:
                 - name: git-repo
