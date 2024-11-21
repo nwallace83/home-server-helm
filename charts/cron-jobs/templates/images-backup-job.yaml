@@ -1,13 +1,14 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: backup-images
+  name: update-helm-dependencies
 spec:
-  schedule: "1  6 * * 0"
+  schedule: "20 * * * *"
   timeZone: {{ .Values.timezone }}
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
+      backoffLimit: 1
       template:
         spec:
           nodeSelector:
