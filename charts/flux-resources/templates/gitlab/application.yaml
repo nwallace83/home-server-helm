@@ -29,3 +29,8 @@ spec:
       jsonPointers:
         - /spec/volumeClaimTemplates/0/apiVersion
         - /spec/volumeClaimTemplates/0/kind
+    - group: batch
+      kind: Job
+      name: gitlab-migrations-*
+      jsonPointers:
+        - /metadata/labels/argocd.argoproj.io~1instance
