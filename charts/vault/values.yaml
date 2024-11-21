@@ -119,11 +119,10 @@ vault-secrets-operator:
       image:
         repository: harbor.nwallace.io/quay/brancz/kube-rbac-proxy
   defaultVaultConnection:
-    address: https://vault.vault.svc.cluster.local:8200
+    address: https://vault.nwallace.io
     enabled: true
-    skipTLSVerify: true
   defaultAuthMethod:
     enabled: true
     namespace: vault
     kubernetes:
-      role: home-server
+      role: admin
