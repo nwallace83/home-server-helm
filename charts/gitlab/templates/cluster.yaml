@@ -4,6 +4,8 @@ metadata:
   name: gitlab
   labels:
     workload: database
+  annotations:
+    helm.sh/resource-policy: keep
 spec:
   resources:
     limits:

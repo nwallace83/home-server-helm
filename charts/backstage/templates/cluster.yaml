@@ -2,6 +2,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: backstage
+  annotations:
+    helm.sh/resource-policy: keep
 spec:
   resources:
     limits:

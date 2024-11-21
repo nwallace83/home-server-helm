@@ -2,6 +2,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: vaultwarden
+  annotations:
+    helm.sh/resource-policy: keep
 spec:
   resources:
     limits:
