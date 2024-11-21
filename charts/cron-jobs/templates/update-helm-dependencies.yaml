@@ -40,7 +40,7 @@ spec:
                     if [ $(git status --porcelain | wc -l) -gt 0 ];then
                       git config --global user.email 'nathan.wallace114@gmail.com' &&
                       git config --global user.name 'Nathan Wallace' &&
-                      git remote set-url origin https://nate:$GITLAB_PAT@gitlab.nwallace.io/home-server/home-server-helm.git &&
+                      git remote set-url origin https://:$GITLAB_PAT@gitlab.nwallace.io/home-server/home-server-helm.git &&
                       git add . &&
                       git commit -m 'Update helm charts' &&
                       git push; 
