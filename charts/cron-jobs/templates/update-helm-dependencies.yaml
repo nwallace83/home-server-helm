@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-images
+spec:
+  schedule: "20 * * * *"
+  timeZone: {{ .Values.timezone }}
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          volumes:
+            - name: git-repo
+              emptyDir: {}
+          containers:
+            - name: git-push
+              image: {{ .Values.gitImage }}
+              command: ["/bin/sh","-c","git -C home-server-helm status"]
+              env:
+                - name: GITLAB_PAT
+                  valueFrom:
+                    secretKeyRef: 
+                      name: gitlab-pat
+                      key: password
+              volumeMounts:
+                - name: git-repo
+                  mountPath: /home-server-helm
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+          initContainers:
+            - name: git-pull
+              image: {{ .Values.gitImage }}
+              command: ["/bin/sh","-c","git clone https://gitlab.nwallace.io/home-server/home-server-helm.git"]
+              volumeMounts:
+                - name: git-repo
+                  mountPath: /home-server-helm
+              imagePullPolicy: {{ .Values.imagePullPolicy}}
+            - name: helm-dependency-update
+              image: {{ .Values.gitImage }}
+              command: ["/bin/sh","-c","find home-server-helm -name Chart.yaml | xargs helm dependency update"]
+              volumeMounts:
+                - name: git-repo
+                  mountPath: /apps/home-server-helm
+              imagePullPolicy: {{ .Values.imagePullPolicy}}
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
