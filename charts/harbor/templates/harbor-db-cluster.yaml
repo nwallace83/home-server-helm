@@ -26,7 +26,7 @@ spec:
     #   secret:
     #     name: harbor-postgresql-password
     recovery:
-      source: {{ .Release.Name }}-old
+      source: {{ .Release.Name }}
       database: harbor
       owner: harbor
       secret:
@@ -61,7 +61,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: {{ printf "s3://%s-database/2024-07-20" .Release.Name }}
+      destinationPath: {{ printf "s3://%s-database/" .Release.Name }}
       endpointURL: http://minio.minio:9000
       data:
         compression: gzip
@@ -75,7 +75,7 @@ spec:
           name: {{ .Release.Name }}-postgresql-minio
           key: SecretKey
   externalClusters:
-    - name: {{ .Release.Name }}-old
+    - name: {{ .Release.Name }}
       barmanObjectStore:
         destinationPath: {{ printf "s3://%s-database/2024-07-20" .Release.Name }}
         endpointURL: http://minio.minio:9000
