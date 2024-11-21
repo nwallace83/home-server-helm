@@ -31,6 +31,5 @@ spec:
         - /spec/volumeClaimTemplates/0/kind
     - group: batch
       kind: Job
-      name: gitlab-migrations-*
       jsonPointers:
         - /metadata/labels/argocd.argoproj.io~1instance
