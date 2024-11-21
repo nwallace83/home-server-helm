@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: update-helm-dependencies
 spec:
-  schedule: "20 * * * *"
+  schedule: "20 */4 * * *"
   timeZone: {{ .Values.timezone }}
   concurrencyPolicy: Replace
   jobTemplate:
