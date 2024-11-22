@@ -14,18 +14,22 @@ headlamp:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-  persistentVolumeClaim:
-    enabled: true
-    accessModes:
-      - ReadWriteMany
-    size: 100Mi
-    storageClass: longhorn-rwx-retain
   volumes:
-    - name: headlamp
-      persistentVolumeClaim: 
-        claimName: headlamp
+    - name: headlamp-plugins
+      emptyDir: {}
   volumeMounts:
-    - name: headlamp
+    - name: headlamp-plugins
       mountPath: /headlamp/plugins
   image:
     registry: harbor.nwallace.io/github
+  initContainers:
+    - command:
+        - /bin/sh
+        - -c
+        - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
+      image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:latest
+      imagePullPolicy: Always
+      name: headlamp-plugins
+      volumeMounts:
+        - mountPath: /build/plugins
+          name: headlamp-plugins
