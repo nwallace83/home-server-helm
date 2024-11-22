@@ -20,5 +20,12 @@ headlamp:
       - ReadWriteOnce
     size: 100Mi
     storageClassName: longhorn
+  volumes:
+    - name: headlamp
+      persistentVolumeClaim: 
+        claimName: headlamp
+  volumeMounts:
+    - name: headlamp
+      mountPath: /headlamp
   image:
     registry: harbor.nwallace.io/github
