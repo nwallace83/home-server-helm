@@ -8,4 +8,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.volume.size }}
-  storageClassName: longhorn-rwx
+  storageClassName: longhorn-rwx-retain
