@@ -5,8 +5,8 @@ headlamp:
     hosts: 
       - host: headlamp.nwallace.io
         paths:
-          path: /
-          type: Prefix
+          - path: /
+            type: Prefix
     tls:
       - hosts:
           - headlamp.nwallace.io
