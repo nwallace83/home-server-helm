@@ -1,0 +1,20 @@
+headlamp:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts: headlamp.nwallace.io
+    tls:
+      - hosts:
+          - headlamp.nwallace.io
+        secretName: headlamp.nwallace.io-tls-secret
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  persistentVolumeClaim:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 100Mi
+    storageClassName: longhorn
+  image:
+    registry: harbor.nwallace.io/github
