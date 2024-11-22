@@ -4,6 +4,9 @@ headlamp:
     ingressClassName: nginx
     hosts: 
       - host: headlamp.nwallace.io
+        paths:
+          path: /
+          type: Prefix
     tls:
       - hosts:
           - headlamp.nwallace.io
