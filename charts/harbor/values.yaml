@@ -1,4 +1,4 @@
-dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.5-1 # {"$imagepolicy": "home-server:postgresql-16"}
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.5-5 # {"$imagepolicy": "home-server:postgresql-16"}
 harbor:
   expose:
     ingress:
