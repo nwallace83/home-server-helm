@@ -1,3 +1,4 @@
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:15.1 # {"$imagepolicy": "home-server:postgresql-15"}
 global:
   hosts:
     domain: nwallace.io

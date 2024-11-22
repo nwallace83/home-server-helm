@@ -23,7 +23,7 @@ spec:
     podAntiAffinityType: required
   # minSyncReplicas: 1
   # maxSyncReplicas: 2
-  imageName: harbor.nwallace.io/github/cloudnative-pg/postgresql:15.1
+  imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:
     #   database: gitlabhq_production
