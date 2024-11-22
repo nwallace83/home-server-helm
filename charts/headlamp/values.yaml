@@ -17,9 +17,9 @@ headlamp:
   persistentVolumeClaim:
     enabled: true
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     size: 100Mi
-    storageClassName: longhorn
+    storageClassName: longhorn-rwx-retain
   volumes:
     - name: headlamp
       persistentVolumeClaim: 
