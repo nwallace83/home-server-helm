@@ -3,7 +3,7 @@ headlamp:
     enabled: true
     ingressClassName: nginx
     hosts: 
-      - headlamp.nwallace.io
+      - host: headlamp.nwallace.io
     tls:
       - hosts:
           - headlamp.nwallace.io
