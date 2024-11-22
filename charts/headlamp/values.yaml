@@ -19,7 +19,7 @@ headlamp:
     accessModes:
       - ReadWriteMany
     size: 100Mi
-    storageClassName: longhorn-rwx-retain
+    storageClass: longhorn-rwx-retain
   volumes:
     - name: headlamp
       persistentVolumeClaim: 
