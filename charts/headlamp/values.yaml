@@ -26,6 +26,6 @@ headlamp:
         claimName: headlamp
   volumeMounts:
     - name: headlamp
-      mountPath: /headlamp
+      mountPath: /headlamp/plugins
   image:
     registry: harbor.nwallace.io/github
