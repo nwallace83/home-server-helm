@@ -2,15 +2,29 @@ flux2:
   logLevel: debug
   helmController:
     image: harbor.nwallace.io/github/fluxcd/helm-controller
+    labels: 
+      backstage.io/kubernetes-id: flux
   imageAutomationController:
     image: harbor.nwallace.io/github/fluxcd/image-automation-controller
+    labels: 
+      backstage.io/kubernetes-id: flux
   imageReflectionController:
     image: harbor.nwallace.io/github/fluxcd/image-reflector-controller
+    labels: 
+      backstage.io/kubernetes-id: flux
   kustomizeController:
     image: harbor.nwallace.io/github/fluxcd/kustomize-controller
+    labels: 
+      backstage.io/kubernetes-id: flux
   notificationController:
     image: harbor.nwallace.io/github/fluxcd/notification-controller
+    labels: 
+      backstage.io/kubernetes-id: flux
   sourceController:
     image: harbor.nwallace.io/github/fluxcd/source-controller
+    labels: 
+      backstage.io/kubernetes-id: flux
   cli:
     image:  harbor.nwallace.io/github/fluxcd/flux-cli
+    labels: 
+      backstage.io/kubernetes-id: flux
