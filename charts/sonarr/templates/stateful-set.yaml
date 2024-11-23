@@ -16,7 +16,7 @@ spec:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}
-       spec:
+    spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: sonarr
