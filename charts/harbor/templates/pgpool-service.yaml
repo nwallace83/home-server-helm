@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-db
   namespace: harbor
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   ports:
     - name: http

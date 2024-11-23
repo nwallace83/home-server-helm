@@ -2,10 +2,11 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: gitlab
-  labels:
-    workload: database
   annotations:
     helm.sh/resource-policy: keep
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
+    workload: database
 spec:
   resources:
     limits:

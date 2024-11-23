@@ -2,6 +2,8 @@ apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
   name: server-address
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   ipAddressPools:
   - server-address

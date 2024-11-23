@@ -2,7 +2,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: harbor-registry
-  namespace: harbor
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteOnce

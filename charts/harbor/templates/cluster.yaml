@@ -2,9 +2,10 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: {{ .Release.Name }}
-  namespace: harbor
   annotations:
     helm.sh/resource-policy: keep
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   resources:
     limits:

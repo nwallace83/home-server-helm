@@ -4,6 +4,8 @@ metadata:
   name: backstage
   annotations:
     helm.sh/resource-policy: keep
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   resources:
     limits:

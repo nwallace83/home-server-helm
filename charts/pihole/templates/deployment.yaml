@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
@@ -10,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}
       annotations:
         checksum/config: {{ .Values.customList | sha256sum }}

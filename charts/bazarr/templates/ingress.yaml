@@ -4,6 +4,8 @@ metadata:
   name: {{ .Release.Name }}
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
   tls:

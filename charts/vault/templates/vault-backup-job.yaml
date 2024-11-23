@@ -2,7 +2,8 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-vault
-  namespace: vault
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   schedule: "1 * * * *"
   timeZone: {{ .Values.timezone }}

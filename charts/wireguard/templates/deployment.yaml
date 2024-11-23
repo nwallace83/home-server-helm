@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels:
+    {{- include "commonLabels" . | nindent 4 }}
     app: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicas }}
@@ -12,6 +13,7 @@ spec:
   template:
     metadata:
       labels:
+        {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}
     spec:
       volumes:

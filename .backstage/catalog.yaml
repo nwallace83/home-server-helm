@@ -2,9 +2,6 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: home-server
-  annotations:
-    'backstage.io/kubernetes-id': home-server
-    'backstage.io/kubernetes-cluster': home-server
 spec:
   owner: user:nwallace83
   lifecycle: production
@@ -16,5 +13,4 @@ metadata:
   name: helm-charts
 spec:
   targets:
-    - ./charts/harbor/catalog-info.yaml
-    - ./charts/sonarr/catalog-info.yaml
+    - ./catalog-sonarr.yaml

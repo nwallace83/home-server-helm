@@ -2,9 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-pgpool
-  namespace: harbor
   labels:
-    app: {{ .Release.Name }}-pgpool
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   replicas: 2
   selector:
@@ -13,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}-pgpool
     spec:
       affinity:

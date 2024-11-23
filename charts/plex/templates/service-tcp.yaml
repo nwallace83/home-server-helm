@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ printf "%s-tcp" .Release.Name }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.loadBalancerIP }}

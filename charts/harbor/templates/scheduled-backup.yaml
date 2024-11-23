@@ -2,7 +2,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: {{ printf "%s-backup" .Release.Name }}
-  namespace: harbor
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   backupOwnerReference: cluster
   cluster:

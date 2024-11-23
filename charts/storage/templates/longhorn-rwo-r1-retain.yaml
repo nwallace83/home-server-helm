@@ -1,8 +1,9 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  annotations:
   name: longhorn-rwo-r1-retain
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 parameters:
   dataLocality: best-effort
   fromBackup: ""

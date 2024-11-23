@@ -2,6 +2,8 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-images
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   schedule: "1 6 * * 0"
   timeZone: {{ .Values.timezone }}

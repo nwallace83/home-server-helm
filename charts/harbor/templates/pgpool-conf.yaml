@@ -2,7 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pgpool-conf
-  namespace: harbor
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 data:
   pgpool.conf: |
     backend_clustering_mode = 'streaming_replication'

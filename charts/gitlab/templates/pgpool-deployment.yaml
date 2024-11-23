@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ printf "%s-pgpool" .Release.Name }}
   labels:
-    app: {{ printf "%s-pgpool" .Release.Name }}
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   replicas: 2
   selector:
@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        {{- include "commonLabels" . | nindent 8 }}
         app: {{ printf "%s-pgpool" .Release.Name }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/pgpool-conf.yaml") . | sha256sum }}
@@ -43,7 +44,7 @@ spec:
           configMap:
             name: pgpool-conf
       containers:
-        - name: {{ printf "%s-pgpool" .Release.Name }}
+        - name: pgpool
           image: harbor.nwallace.io/home-server/pgpool:latest
           imagePullPolicy: Always
           volumeMounts:

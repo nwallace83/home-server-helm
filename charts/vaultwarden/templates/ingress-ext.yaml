@@ -5,6 +5,8 @@ metadata:
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
     {{- toYaml .Values.ingressExternal.annotations | nindent 4 }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   ingressClassName: {{ .Values.ingressExternal.ingressClassName }}
   tls:

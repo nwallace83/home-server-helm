@@ -2,6 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-smb-config
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 data:
   smb.conf: |
     [shared]

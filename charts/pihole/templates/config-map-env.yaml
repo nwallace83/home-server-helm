@@ -2,6 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ printf "%s-env" .Release.Name }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 data:
   DNSMASQ_LISTENING: {{ .Values.dnsMasqListening | default "all" | quote }}
   FTLCONF_LOCAL_IPV4: {{ .Values.loadBalancerIP }}
