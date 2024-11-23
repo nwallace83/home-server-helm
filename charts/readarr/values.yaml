@@ -1,13 +1,10 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/readarr:0.4.3-develop # {"$imagepolicy": "home-server:readarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/readarr:0.4.4-develop # {"$imagepolicy": "home-server:readarr"}
 localUID: "1000"
 localGID: "1000"
-
 commonLabels:
   backstage.io/kubernetes-id: readarr
-
 resources: {}
-  
 ingress:
   host: readarr.nwallace.io
   annotations:
@@ -15,22 +12,17 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "5"
   ingressClassName: nginx-ext
-
 pvc:
   size: 400Mi
   storageClassName: longhorn
-
 volumes:
   - name: media
     persistentVolumeClaim:
       claimName: media
-
 volumeMounts:
   - name: media
     mountPath: /media
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
