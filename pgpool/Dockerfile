@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM harbor.nwallace.io/docker-hub/alpine:latest
 RUN \
   addgroup -S pgpool &&\
   adduser -S pgpool -G pgpool &&\
