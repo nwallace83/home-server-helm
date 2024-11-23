@@ -3,7 +3,7 @@ kind: HelmRelease
 metadata:
   name: flux-resources
 spec:
-  interval: 10m
+  interval: 1m
   chart:
     spec:
       chart: ./charts/flux-resources
