@@ -4,7 +4,7 @@ metadata:
   name: longhorn-rwo-r1-retain
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 parameters:
   dataLocality: best-effort
   fromBackup: ""

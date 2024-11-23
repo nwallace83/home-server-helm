@@ -4,7 +4,7 @@ metadata:
   name: server-address
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   addresses:
   - 192.168.0.5/32

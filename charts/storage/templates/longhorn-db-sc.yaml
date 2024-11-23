@@ -4,7 +4,7 @@ metadata:
   name: longhorn-db
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 parameters:
   dataLocality: strict-local
   diskSelector: fast

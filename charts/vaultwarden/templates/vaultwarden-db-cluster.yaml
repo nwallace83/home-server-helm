@@ -6,7 +6,7 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   resources:
     limits:
@@ -19,6 +19,9 @@ spec:
   primaryUpdateMethod: switchover
   affinity:
     podAntiAffinityType: required
+  inheritedMetadata:
+    {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4}}
   env:
   - name: TZ
     value: {{ .Values.timezone }}

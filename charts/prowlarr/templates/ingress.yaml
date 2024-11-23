@@ -6,7 +6,7 @@ metadata:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
   tls:

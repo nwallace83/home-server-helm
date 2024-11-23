@@ -4,7 +4,7 @@ metadata:
   name: {{ printf "config-%s-0" .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   capacity:
     storage: {{ .Values.pvc.size }}

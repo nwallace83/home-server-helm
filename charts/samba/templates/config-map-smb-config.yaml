@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}-smb-config
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 data:
   smb.conf: |
     [shared]

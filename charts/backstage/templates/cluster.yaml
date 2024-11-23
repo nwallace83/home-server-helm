@@ -6,7 +6,7 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   resources:
     limits:
@@ -17,6 +17,9 @@ spec:
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
+  inheritedMetadata:
+    {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4}}
   affinity:
     podAntiAffinityType: required
   env:

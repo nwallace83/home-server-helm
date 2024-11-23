@@ -6,7 +6,7 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4 }}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
     workload: database
 spec:
   resources:
@@ -18,6 +18,9 @@ spec:
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
+  inheritedMetadata:
+    {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4}}
   postgresql:
     parameters:
       max_connections: '200'
