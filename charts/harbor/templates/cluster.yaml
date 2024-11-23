@@ -19,11 +19,11 @@ spec:
   inheritedMetadata:
     labels:
       {{- include "commonLabels" . | nindent 6 }}
-   affinity:
+  affinity:
     podAntiAffinityType: required
   env:
-  - name: TZ
-    value: America/Denver
+    - name: TZ
+      value: America/Denver
   imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:

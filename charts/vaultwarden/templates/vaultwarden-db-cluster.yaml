@@ -16,14 +16,14 @@ spec:
   stopDelay: 60
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
-  affinity:
-    podAntiAffinityType: required
   inheritedMetadata:
     labels:
       {{- include "commonLabels" . | nindent 6 }}
-   env:
-  - name: TZ
-    value: {{ .Values.timezone }}
+  affinity:
+    podAntiAffinityType: required
+  env:
+    - name: TZ
+      value: {{ .Values.timezone }}
   imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:

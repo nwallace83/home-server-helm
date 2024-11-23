@@ -20,11 +20,14 @@ spec:
   inheritedMetadata:
     labels:
       {{- include "commonLabels" . | nindent 6 }}
-   postgresql:
+  postgresql:
     parameters:
       max_connections: '200'
   affinity:
     podAntiAffinityType: required
+  env:
+    - name: TZ
+      value: America/Denver
   # minSyncReplicas: 1
   # maxSyncReplicas: 2
   imageName: {{ .Values.dbImage }}
