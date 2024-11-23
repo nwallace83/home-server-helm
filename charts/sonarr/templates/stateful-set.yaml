@@ -17,7 +17,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
         {{- include "commonLabels" . | nindent 8 }}
-        {{- .Values.commonLabels | nindent 8 }}
+        {{- toYaml .Values.commonLabels | nindent 8 }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -53,7 +53,7 @@ spec:
         name: config
         labels:
           {{- include "commonLabels" . | nindent 10 }}
-          {{- .Values.commonLabels | nindent 10 }}
+          {{- toYaml .Values.commonLabels | nindent 10 }}
       spec:
         accessModes:
           - ReadWriteOnce

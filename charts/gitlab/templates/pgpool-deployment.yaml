@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
-        {{- .Values.commonLabels | nindent 8 }}
+        {{- toYaml .Values.commonLabels | nindent 8 }}
         app: {{ printf "%s-pgpool" .Release.Name }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/pgpool-conf.yaml") . | sha256sum }}
