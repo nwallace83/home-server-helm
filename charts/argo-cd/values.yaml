@@ -3,7 +3,7 @@ global:
   image:
     repository: harbor.nwallace.io/quay/argoproj/argocd
 
-argocd:
+argo-cd:
   configs:
     params:
       "server.insecure": true
