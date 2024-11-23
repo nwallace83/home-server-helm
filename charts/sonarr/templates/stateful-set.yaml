@@ -49,8 +49,8 @@ spec:
       kind: PersistentVolumeClaim
       metadata:
         name: config
-      labels:
-        {{- include "commonLabels" . | nindent 4 }}
+        labels:
+          {{- include "commonLabels" . | nindent 10 }}
       spec:
         accessModes:
           - ReadWriteOnce
