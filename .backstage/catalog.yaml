@@ -17,10 +17,12 @@ spec:
     - ./catalog-azure-devops-agent.yaml
     - ./catalog-backstage.yaml
     - ./catalog-bazarr.yaml
+    - ./catalog-mad-bazarr.yaml
     - ./catalog-cert-manager.yaml
     - ./catalog-cloudnative-pg.yaml
     - ./catalog-cron-jobs.yaml
     - ./catalog-delugevpn.yaml
+    - ./catalog-mad-delugevpn.yaml
     - ./catalog-flannel.yaml
     - ./catalog-flaresolverr.yaml
     - ./catalog-flux.yaml
@@ -43,11 +45,13 @@ spec:
     - ./catalog-plex.yaml
     - ./catalog-prowlarr.yaml
     - ./catalog-radarr.yaml
+    - ./catalog-mad-radarr.yaml
     - ./catalog-rclone.yaml
     - ./catalog-readarr.yaml
     - ./catalog-samba.yaml
     - ./catalog-smarter-device-manager.yaml
     - ./catalog-sonarr.yaml
+    - ./catalog-mad-sonarr.yaml
     - ./catalog-storage.yaml
     - ./catalog-vault.yaml
     - ./catalog-vaultwarden.yaml
