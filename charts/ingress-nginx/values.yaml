@@ -25,3 +25,5 @@ ingress-nginx:
   defaultBackend:
     image:
       registry: harbor.nwallace.io/k8s
+  commonLabels:
+    backstage.io/kubernetes-id: ingress-nginx

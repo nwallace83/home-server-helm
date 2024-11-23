@@ -15,7 +15,3 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: enabled
-  values:
-    ingress-nginx:
-      commonLabels:
-        backstage.io/kubernetes-id: ingress-nginx
