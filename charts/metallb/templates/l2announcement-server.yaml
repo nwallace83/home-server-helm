@@ -4,7 +4,6 @@ metadata:
   name: server-address
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   ipAddressPools:
   - server-address

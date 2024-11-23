@@ -4,7 +4,6 @@ metadata:
   name: letsencrypt-prod
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   acme:
     email: {{ .Values.email }}

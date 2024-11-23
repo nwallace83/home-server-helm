@@ -4,7 +4,6 @@ metadata:
   name: {{ printf "%s-pgpool" .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   replicas: 2
   selector:

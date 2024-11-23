@@ -4,7 +4,6 @@ metadata:
   name: {{ printf "%s-db" .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   ports:
     - name: http

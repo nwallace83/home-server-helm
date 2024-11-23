@@ -6,7 +6,6 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
     workload: database
 spec:
   resources:
