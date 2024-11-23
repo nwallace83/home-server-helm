@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: node-feature-discovery
+  annotations:
+    'backstage.io/kubernetes-id': node-feature-discovery
+    'backstage.io/kubernetes-cluster': home-server
+spec:
+  owner: user:nwallace83
+  lifecycle: production
+  type: service

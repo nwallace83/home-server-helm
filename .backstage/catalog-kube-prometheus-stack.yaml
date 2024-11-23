@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kube-prometheus-stack
+  annotations:
+    'backstage.io/kubernetes-id': kube-prometheus-stack
+    'backstage.io/kubernetes-cluster': home-server
+spec:
+  owner: user:nwallace83
+  lifecycle: production
+  type: service

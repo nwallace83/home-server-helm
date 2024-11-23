@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: argo-cd
+  annotations:
+    'backstage.io/kubernetes-id': argo-cd
+    'backstage.io/kubernetes-cluster': home-server
+spec:
+  owner: user:nwallace83
+  lifecycle: production
+  type: service

@@ -13,4 +13,42 @@ metadata:
   name: helm-charts
 spec:
   targets:
+    - ./catalog-argo-cd.yaml
+    - ./catalog-azure-devops-agent.yaml
+    - ./catalog-backstage.yaml
+    - ./catalog-bazarr.yaml
+    - ./catalog-cert-manager.yaml
+    - ./catalog-cloudnative-pg.yaml
+    - ./catalog-cron-jobs.yaml
+    - ./catalog-delugevpn.yaml
+    - ./catalog-flannel.yaml
+    - ./catalog-flaresolverr.yaml
+    - ./catalog-flux.yaml
+    - ./catalog-flux-resources.yaml
+    - ./catalog-gitlab.yaml
+    - ./catalog-harbor.yaml
+    - ./catalog-headlamp.yaml
+    - ./catalog-homeassistant.yaml
+    - ./catalog-html-external.yaml
+    - ./catalog-ingress-nginx.yaml
+    - ./catalog-intel-device-plugins-gpu.yaml
+    - ./catalog-intel-device-plugins-operator.yaml
+    - ./catalog-kube-prometheus-stack.yaml
+    - ./catalog-longhorn.yaml
+    - ./catalog-metallb.yaml
+    - ./catalog-metrics-server.yaml
+    - ./catalog-minio.yaml
+    - ./catalog-node-feature-discovery.yaml
+    - ./catalog-pihole.yaml
+    - ./catalog-plex.yaml
+    - ./catalog-prowlarr.yaml
+    - ./catalog-radarr.yaml
+    - ./catalog-rclone.yaml
+    - ./catalog-readarr.yaml
+    - ./catalog-samba.yaml
+    - ./catalog-smarter-device-manager.yaml
     - ./catalog-sonarr.yaml
+    - ./catalog-storage.yaml
+    - ./catalog-vault.yaml
+    - ./catalog-vaultwarden.yaml
+    - ./catalog-wireguard.yaml
