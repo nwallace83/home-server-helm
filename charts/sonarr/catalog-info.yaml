@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sonarr
+  annotations:
+    'backstage.io/kubernetes-id': sonarr
+    'backstage.io/kubernetes-cluster': home-server
+spec:
+  owner: user:nwallace83
+  lifecycle: production
+  type: service

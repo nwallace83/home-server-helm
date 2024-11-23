@@ -17,3 +17,4 @@ metadata:
 spec:
   targets:
     - ./charts/harbor/catalog-info.yaml
+    - ./charts/sonarr/catalog-info.yaml

@@ -14,3 +14,9 @@ spec:
       reconcileStrategy: Revision
   driftDetection:
     mode: enabled
+  postRenderers:
+    - kustomize:
+        patch: |
+          - op: add
+            path: /metadata/labels/backstage.io~1kubernetes-id
+            value: sonarr
