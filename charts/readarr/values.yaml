@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/linuxserver/readarr:0.4.3-develop # {"$imag
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: readarr
+
 resources: {}
   
 ingress:

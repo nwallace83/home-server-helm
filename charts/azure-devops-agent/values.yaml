@@ -1,3 +1,6 @@
+commonLabels:
+  backstage.io/kubernetes-id: azure-devops-agent
+
 azure-devops-agent:
   agent:
     organizationUrl: https://dev.azure.com/nathanwallace114

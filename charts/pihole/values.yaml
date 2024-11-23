@@ -6,6 +6,9 @@ localUID: "1000"
 localGID: "1000"
 resources: {}
 
+commonLabels:
+  backstage.io/kubernetes-id: pihole
+
 ingress:
   host: pihole.nwallace.io
   annotations:

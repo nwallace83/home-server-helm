@@ -1,3 +1,6 @@
+commonLabels:
+  backstage.io/kubernetes-id: storage
+
 volumesShared:
 - name: media
   nfs_path: /media

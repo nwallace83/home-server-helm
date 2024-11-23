@@ -3,11 +3,18 @@ image: harbor.nwallace.io/docker-hub/vaultwarden/server:1.32.5 # {"$imagepolicy"
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.6-2 # {"$imagepolicy": "home-server:postgresql-16"}
 localUID: "1000"
 localGID: "1000"
+
+commonLabels:
+  backstage.io/kubernetes-id: vaultwarden
+
 imagePullPolicy: IfNotPresent
+
 resources: {}
+
 pvc:
   size: 100Mi
   storageClassName: longhorn
+
 ingress:
   host: vaultwarden.nwallace.io
   annotations:
@@ -15,10 +22,12 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "5"
   ingressClassName: nginx
+
 ingressExternal:
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: if ($uri = /admin) {return 302 /;}
   ingressClassName: nginx-ext
+
 livenessProbe:
   httpGet:
     path: /
@@ -29,6 +38,7 @@ livenessProbe:
   periodSeconds: 10
   successThreshold: 1
   failureThreshold: 12
+
 readinessProbe:
   httpGet:
     path: /

@@ -1,3 +1,6 @@
+commonLabels:
+  backstage.io/kubernetes-id: kube-prometheus-stack
+
 kube-prometheus-stack:
   prometheus:
     ingress:

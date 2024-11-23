@@ -3,6 +3,9 @@ timezone: America/Denver
 mcImage: harbor.nwallace.io/docker-hub/minio/mc:RELEASE.2024-11-05T11-29-45Z # {"$imagepolicy": "vault:mc"}
 vaultImage: harbor.nwallace.io/docker-hub/hashicorp/vault:1.18 # {"$imagepolicy": "vault:vault"}
 
+commonLabels:
+  backstage.io/kubernetes-id: vault
+
 vault:
   server:
     extraVolumes:

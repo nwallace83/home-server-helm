@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.fullnameOverride }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteOnce

@@ -1,5 +1,8 @@
 fullnameOverride: minio
 
+commonLabels:
+  backstage.io/kubernetes-id: minio
+
 minio:
   fullnameOverride: minio
   nodeSelector:

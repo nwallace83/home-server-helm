@@ -4,6 +4,7 @@ metadata:
   name: {{ printf "%s-env" .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 data:
   TZ: {{ .Values.timezone | quote }}
   PGID: {{ .Values.localGID | quote }}

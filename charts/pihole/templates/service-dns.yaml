@@ -6,6 +6,7 @@ metadata:
     metallb.universe.tf/allow-shared-ip: shared-ip
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.loadBalancerIP }}

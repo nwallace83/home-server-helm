@@ -4,6 +4,7 @@ metadata:
   name: longhorn-rwx-retain
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 reclaimPolicy: Retain

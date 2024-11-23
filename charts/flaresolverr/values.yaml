@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/flaresolverr/flaresolverr:v3.3.21 # {"$imag
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: flaresolverr
+
 resources: {}
 
 replicas: 1

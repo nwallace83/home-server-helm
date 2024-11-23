@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/bitnami/rclone:1.68.2 # {"$imagepolicy": "h
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: rclone
+
 resources:
   limits:
     smarter-devices/fuse: 1

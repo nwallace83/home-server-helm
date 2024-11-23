@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn:2.1.1-6-05 # {"$image
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: delugevpn
+
 resources:
   limits:
     memory: 4096Mi

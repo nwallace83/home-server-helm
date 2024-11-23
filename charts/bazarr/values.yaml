@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5 # {"$imagepolicy":
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: bazarr
+
 resources:
   limits:
     memory: 2048M

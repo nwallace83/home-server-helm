@@ -1,3 +1,6 @@
+commonLabels:
+  backstage.io/kubernetes-id: html-external
+
 ingress:
   host: nwallace.io
   annotations:

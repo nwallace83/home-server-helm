@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.fullnameOverride }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 provisioner: kubernetes.io/no-provisioner
 reclaimPolicy: Retain
 volumeBindingMode: Immediate

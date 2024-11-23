@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
     app: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicas }}
@@ -14,6 +15,7 @@ spec:
     metadata:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
+        {{- .Values.commonLabels | nindent 8 }}
         app: {{ .Release.Name }}
     spec:
       volumes:

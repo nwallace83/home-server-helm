@@ -4,6 +4,7 @@ metadata:
   name: harbor-registry
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 spec:
   capacity:
     storage: 1Gi

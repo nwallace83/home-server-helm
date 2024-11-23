@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/linuxserver/wireguard:1.0.20210914 # {"$ima
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: wireguard
+
 replicas: 3
 loadBalancerIP: 192.168.0.10
 allowedIPs: 192.168.0.0/24

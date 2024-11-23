@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -16,6 +17,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
         {{- include "commonLabels" . | nindent 8 }}
+        {{- .Values.commonLabels | nindent 8 }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -51,6 +53,7 @@ spec:
         name: config
         labels:
           {{- include "commonLabels" . | nindent 10 }}
+          {{- .Values.commonLabels | nindent 10 }}
       spec:
         accessModes:
           - ReadWriteOnce

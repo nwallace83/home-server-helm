@@ -2,7 +2,12 @@ timezone: America/Denver
 image: harbor.nwallace.io/docker-hub/linuxserver/radarr:5.15.1 # {"$imagepolicy": "home-server:radarr"}
 localUID: "1000"
 localGID: "1000"
+
+commonLabels:
+  backstage.io/kubernetes-id: radarr
+
 resources: {}
+
 ingress:
   host: radarr.nwallace.io
   annotations:

@@ -2,6 +2,10 @@ timezone: America/Denver
 image: harbor.nwallace.io/docker-hub/linuxserver/prowlarr:1.26.1 # {"$imagepolicy": "home-server:prowlarr"}
 localUID: "1000"
 localGID: "1000"
+
+commonLabels:
+  backstage.io/kubernetes-id: prowlarr
+
 resources: {}
 ingress:
   host: prowlarr.nwallace.io

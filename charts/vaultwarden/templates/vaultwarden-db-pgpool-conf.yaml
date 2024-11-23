@@ -4,6 +4,7 @@ metadata:
   name: pgpool-conf
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 data:
   pgpool.conf: |
     backend_clustering_mode = 'streaming_replication'

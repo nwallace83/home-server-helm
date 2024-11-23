@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}-env
   labels:
     {{- include "commonLabels" . | nindent 4 }}
+    {{- .Values.commonLabels | nindent 4 }}
 data:
   PGID: {{ .Values.localGID | quote }}
   PUID: {{ .Values.localUID | quote }}

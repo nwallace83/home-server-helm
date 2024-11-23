@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/upagge/samba:4.16.8 # {"$imagepolicy": "hom
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: samba
+
 resources: {}
 
 imagePullPolicy: IfNotPresent

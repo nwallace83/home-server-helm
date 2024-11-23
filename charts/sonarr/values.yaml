@@ -3,6 +3,9 @@ image: harbor.nwallace.io/docker-hub/linuxserver/sonarr:4.0.10 # {"$imagepolicy"
 localUID: "1000"
 localGID: "1000"
 
+commonLabels:
+  backstage.io/kubernetes-id: sonarr
+
 resources: {}
   
 ingress:

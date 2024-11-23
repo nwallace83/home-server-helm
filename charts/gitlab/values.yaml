@@ -1,4 +1,8 @@
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:15.9-5 # {"$imagepolicy": "home-server:postgresql-15"}
+
+commonLabels:
+  backstage.io/kubernetes-id: gitlab
+
 global:
   hosts:
     domain: nwallace.io
