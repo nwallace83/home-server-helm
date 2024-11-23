@@ -9,8 +9,6 @@ vaultSecretPath: argocd/admin
 
 argo-cd:
   configs:
-    secret:
-      createSecret: false
     params:
       "server.insecure": true
   server:
