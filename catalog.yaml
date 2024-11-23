@@ -3,4 +3,6 @@ kind: Component
 metadata:
   name: home-server
 spec:
-    type: service
+  owner: user:nwallace83
+  lifecycle: production
+  type: service
