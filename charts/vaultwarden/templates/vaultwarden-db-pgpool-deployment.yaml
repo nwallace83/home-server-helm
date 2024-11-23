@@ -12,6 +12,7 @@ spec:
   template:
     metadata:
       labels:
+        {{- include "commonLabels" . | nindent 8 }}
         app: {{ printf "%s-pgpool" .Release.Name }}
     spec:
       affinity:
