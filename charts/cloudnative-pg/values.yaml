@@ -8,3 +8,5 @@ cloudnative-pg:
   webhook:
     mutating:
       create: true
+  podLabels:
+    backstage.io/kubernetes-id: bazarr
