@@ -2,6 +2,8 @@ global:
   domain: argocd.nwallace.io
   image:
     repository: harbor.nwallace.io/quay/argoproj/argocd
+  additionalLabels:
+    backstage.io/kubernetes-id: argo-cd
 
 argo-cd:
   configs:
