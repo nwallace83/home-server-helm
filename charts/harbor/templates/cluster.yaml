@@ -19,8 +19,8 @@ spec:
   primaryUpdateMethod: switchover
   inheritedMetadata:
     labels:
-      {{- include "commonLabels" . | nindent 4 }}
-      {{- toYaml .Values.commonLabels | nindent 4 }}
+      {{- include "commonLabels" . | nindent 6 }}
+      {{- toYaml .Values.commonLabels | nindent 6 }}
   affinity:
     podAntiAffinityType: required
   env:
