@@ -12,6 +12,8 @@ argo-cd:
     params:
       "server.insecure": true
   server:
+    extraArgs:
+      - '--disable-auth'
     nodeSelector: 
       kubernetes.io/hostname: server
     metrics:
