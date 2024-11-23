@@ -13,6 +13,8 @@ metallb:
   controller:
     image:
       repository: harbor.nwallace.io/quay/metallb/controller
+    labels:
+      backstage.io/kubernetes-id: metallb
   prometheus:
     rbacProxy:
       repository: harbor.nwallace.io/quay/kubebuilder/kube-rbac-proxy
@@ -22,3 +24,5 @@ metallb:
         repository: harbor.nwallace.io/quay/frrouting/frr
     image:
       repository: harbor.nwallace.io/quay/metallb/speaker
+    labels:
+      backstage.io/kubernetes-id: metallb
