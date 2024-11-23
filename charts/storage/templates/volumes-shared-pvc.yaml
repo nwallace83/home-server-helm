@@ -4,8 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .name }}
   labels:
-    {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
+    {{- include "commonLabels" $ | nindent 4 }}
+    {{- toYaml $.Values.commonLabels | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteMany
