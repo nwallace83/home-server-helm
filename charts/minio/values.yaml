@@ -47,3 +47,5 @@ minio:
     registry: harbor.nwallace.io/docker-hub
   image:
     registry: harbor.nwallace.io/docker-hub
+  commonLabels:
+    backstage.io/kubernetes-id: minio
