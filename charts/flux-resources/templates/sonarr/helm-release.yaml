@@ -16,7 +16,8 @@ spec:
     mode: enabled
   postRenderers:
     - kustomize:
-        patch: |
-          - op: add
-            path: /metadata/labels/backstage.io~1kubernetes-id
-            value: sonarr
+        patches:
+          patch: |
+            - op: add
+              path: /metadata/labels/backstage.io~1kubernetes-id
+              value: sonarr
