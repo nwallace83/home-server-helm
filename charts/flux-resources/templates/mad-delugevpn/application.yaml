@@ -29,7 +29,7 @@ spec:
           - name: mad-media
             mountPath: /media
         commonLabels:
-          backstage.io/kubernetes-id: mad-bazarr
+          backstage.io/kubernetes-id: mad-delugevpn
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
