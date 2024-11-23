@@ -14,8 +14,7 @@ spec:
     metadata:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
-        {{- toYaml .Values.commonLabels | nindent 8 }}
-        app: {{ .Release.Name }}
+           app: {{ .Release.Name }}
     spec:
       volumes:
         {{- with .Values.volume  }}

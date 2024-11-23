@@ -19,8 +19,7 @@ spec:
   inheritedMetadata:
     labels:
       {{- include "commonLabels" . | nindent 6 }}
-      {{- toYaml .Values.commonLabels | nindent 6 }}
-  affinity:
+   affinity:
     podAntiAffinityType: required
   env:
   - name: TZ

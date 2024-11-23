@@ -15,8 +15,7 @@ spec:
     metadata:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
-        {{- toYaml .Values.commonLabels | nindent 8 }}
-        app: {{ .Release.Name }}
+           app: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -52,8 +51,7 @@ spec:
         name: config
         labels:
           {{- include "commonLabels" . | nindent 10 }}
-          {{- toYaml .Values.commonLabels | nindent 10 }}
-      spec:
+           spec:
         accessModes:
           - ReadWriteOnce
         storageClassName: {{ .Values.pvc.storageClassName }}

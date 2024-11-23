@@ -20,8 +20,7 @@ spec:
   inheritedMetadata:
     labels:
       {{- include "commonLabels" . | nindent 6 }}
-      {{- toYaml .Values.commonLabels | nindent 6 }}
-  postgresql:
+   postgresql:
     parameters:
       max_connections: '200'
   affinity:
