@@ -8,6 +8,8 @@ commonLabels:
 
 vault:
   server:
+    extraLabels:
+      backstage.io/kubernetes-id: vault
     extraVolumes:
       - type: secret
         name: vault-tls-secret
@@ -33,6 +35,11 @@ vault:
     dataStorage:
       storageClass: longhorn-rwo-r1-retain
       size: 200Mi
+      labels:
+        backstage.io/kubernetes-id: vault
+    serviceAccount:
+      extraLabels:
+        backstage.io/kubernetes-id: vault
     ingress:
       enabled: true
       hosts:
@@ -46,6 +53,11 @@ vault:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         nginx.ingress.kubernetes.io/ssl-redirect: 'true'
         nginx.ingress.kubernetes.io/use-regex: 'true'
+      labels:
+        backstage.io/kubernetes-id: vault
+    route:
+      labels:
+        backstage.io/kubernetes-id: vault
     ha:
       enabled: true
       replicas: 3
@@ -106,6 +118,9 @@ vault:
   global:
     tlsDisable: false
   csi:
+    daemonSet:
+      extraLabels:
+        backstage.io/kubernetes-id: vault
     agent:
       image:
         repository: harbor.nwallace.io/docker-hub/hashicorp/vault
@@ -121,6 +136,8 @@ vault-secrets-operator:
     kubeRbacProxy:
       image:
         repository: harbor.nwallace.io/quay/brancz/kube-rbac-proxy
+    extraLabels:
+      backstage.io/kubernetes-id: vault
   defaultVaultConnection:
     address: https://vault.nwallace.io
     enabled: true
