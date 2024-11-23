@@ -5,6 +5,7 @@ metadata:
   annotations:
     'backstage.io/kubernetes-id': harbor
     'backstage.io/kubernetes-cluster': home-server
+    'backstage.io/kubernetes-namespace': harbor
 spec:
   owner: user:nwallace83
   lifecycle: production
