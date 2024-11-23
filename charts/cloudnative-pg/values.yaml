@@ -9,4 +9,4 @@ cloudnative-pg:
     mutating:
       create: true
   podLabels:
-    backstage.io/kubernetes-id: bazarr
+    backstage.io/kubernetes-id: cloudnative-pg
