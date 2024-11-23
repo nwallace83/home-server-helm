@@ -6,7 +6,7 @@ azure-devops-agent:
     organizationUrl: https://dev.azure.com/nathanwallace114
     patSecret: azure-devops-agent-pat
     patSecretKey: agent-pat
-    podLabels:
-      backstage.io/kubernetes-id: bazarr
+  podLabels:
+    backstage.io/kubernetes-id: bazarr
   image:
     registry: harbor.nwallace.io/docker-hub
