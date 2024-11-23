@@ -15,6 +15,7 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+        {{- include "commonLabels" . | nindent 4 }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -48,6 +49,8 @@ spec:
       kind: PersistentVolumeClaim
       metadata:
         name: config
+      labels:
+        {{- include "commonLabels" . | nindent 4 }}
       spec:
         accessModes:
           - ReadWriteOnce
