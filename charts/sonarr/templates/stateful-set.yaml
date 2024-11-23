@@ -14,8 +14,8 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
         {{- include "commonLabels" . | nindent 8 }}
+        app: {{ .Release.Name }}
        spec:
       terminationGracePeriodSeconds: 10
       containers:
