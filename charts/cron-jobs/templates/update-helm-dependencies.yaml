@@ -4,7 +4,6 @@ metadata:
   name: update-helm-dependencies
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
 spec:
   schedule: "20 */4 * * *"
   timeZone: {{ .Values.timezone }}

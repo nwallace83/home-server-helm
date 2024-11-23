@@ -29,3 +29,5 @@ spec:
         service:
           loadBalancerIP: 192.168.0.11
         ingressClass: nginx-ext
+      commonLabels:
+        backstage.io/kubernetes-id: ingress-nginx-ext
