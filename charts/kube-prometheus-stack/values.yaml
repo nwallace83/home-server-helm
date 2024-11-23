@@ -86,3 +86,5 @@ kube-prometheus-stack:
         - hosts:
           - grafana.nwallace.io
           secretName: grafana-nwallace.io-tls-secret
+  commonLabels:
+    backstage.io/kubernetes-id: kube-prometheus-stack
