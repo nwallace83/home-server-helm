@@ -27,5 +27,7 @@ spec:
     volumeMounts:
       - name: mad-media
         mountPath: /media
+    commonLabels:
+      backstage.io/kubernetes-id: mad-delugevpn
   driftDetection:
     mode: enabled

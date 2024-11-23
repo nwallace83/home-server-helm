@@ -24,5 +24,7 @@ spec:
     volumeMounts:
       - name: mad-media
         mountPath: /media
+    commonLabels:
+      backstage.io/kubernetes-id: mad-sonarr
   driftDetection:
     mode: enabled
