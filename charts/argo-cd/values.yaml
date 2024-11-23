@@ -5,8 +5,12 @@ global:
   additionalLabels:
     backstage.io/kubernetes-id: argo-cd
 
+vaultSecretPath: argocd/admin
+
 argo-cd:
   configs:
+    secret:
+      createSecret: false
     params:
       "server.insecure": true
   server:
