@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
