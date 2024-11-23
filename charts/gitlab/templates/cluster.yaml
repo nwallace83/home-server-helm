@@ -20,7 +20,7 @@ spec:
   primaryUpdateMethod: switchover
   inheritedMetadata:
     {{- include "commonLabels" . | nindent 4 }}
-    {{- .Values.commonLabels | nindent 4}}
+    {{- toYaml .Values.commonLabels | nindent 4 }}
   postgresql:
     parameters:
       max_connections: '200'
