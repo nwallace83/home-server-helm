@@ -5,7 +5,7 @@ metadata:
   name: {{ .name }}
   labels:
     {{- include "commonLabels" $ | nindent 4 }}
-    spec:
+spec:
   accessModes:
     - ReadWriteMany
   resources:
