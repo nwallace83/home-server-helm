@@ -18,8 +18,9 @@ spec:
   primaryUpdateStrategy: unsupervised
   primaryUpdateMethod: switchover
   inheritedMetadata:
-    {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
+    labels:
+      {{- include "commonLabels" . | nindent 4 }}
+      {{- toYaml .Values.commonLabels | nindent 4 }}
   affinity:
     podAntiAffinityType: required
   env:

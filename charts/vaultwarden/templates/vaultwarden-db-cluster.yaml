@@ -20,8 +20,9 @@ spec:
   affinity:
     podAntiAffinityType: required
   inheritedMetadata:
-    {{- include "commonLabels" . | nindent 4 }}
-    {{- toYaml .Values.commonLabels | nindent 4 }}
+    labels:
+      {{- include "commonLabels" . | nindent 4 }}
+      {{- toYaml .Values.commonLabels | nindent 4 }}
   env:
   - name: TZ
     value: {{ .Values.timezone }}
