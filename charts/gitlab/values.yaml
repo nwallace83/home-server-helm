@@ -37,9 +37,13 @@ global:
         secret: gitlab-minio
     backups:
       bucket: gitlab-backups
+    defaultProjectsFeatures:
+      containerRegistry: false
   common:
     labels: 
       backstage.io/kubernetes-id: gitlab
+  registry:
+    enabled: false
 
 gitlab:
   gitlab-runner:
