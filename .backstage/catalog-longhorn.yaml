@@ -6,6 +6,6 @@ metadata:
     'backstage.io/kubernetes-id': longhorn
     'backstage.io/kubernetes-cluster': home-server
 spec:
-  owner: user:nwallace83
+  owner: user:nate
   lifecycle: production
   type: service
