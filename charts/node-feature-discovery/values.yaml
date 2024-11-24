@@ -1,7 +1,6 @@
 node-feature-discovery:
   image:
     repository: harbor.nwallace.io/k8s/nfd/node-feature-discovery
-  master:
   prometheus:
     labels:
       backstage.io/kubernetes-id: metrics-server
