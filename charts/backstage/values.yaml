@@ -1,5 +1,5 @@
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.6-2 # {"$imagepolicy": "home-server:postgresql-16"}
-image: harbor.nwallace.io/home-server/backstage::20241125015123 # {"$imagepolicy": "backstage:backstage"}
+image: harbor.nwallace.io/home-server/backstage:20241125015123 # {"$imagepolicy": "backstage:backstage"}
 replicas: 1
 
 imagePullPolicy: IfNotPresent
