@@ -131,10 +131,6 @@ gitlab:
           repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base
   nginx-ingress:
     enabled: false
-    controller:
-      replicaCount: 1
-      image:
-        registry: harbor.nwallace.io/gitlab
   redis:
     master:
       nodeSelector:

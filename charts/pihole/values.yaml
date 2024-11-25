@@ -54,7 +54,7 @@ customList: |
   192.168.0.5 cockpit.nwallace.io
   192.168.0.11 delugevpn.nwallace.io
   192.168.0.10 flux.nwallace.io
-  192.168.0.12 gitlab.nwallace.io
+  192.168.0.11 gitlab.nwallace.io
   192.168.0.10 grafana.nwallace.io
   192.168.0.10 handbrake.nwallace.io
   192.168.0.10 harbor.nwallace.io
