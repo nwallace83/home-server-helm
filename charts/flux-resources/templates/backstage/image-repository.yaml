@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: bazarr
+  namespace: backstage
+spec:
+  image: harbor.nwallace.io/home-server/backstage
+  interval: 10m
