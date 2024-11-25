@@ -17,6 +17,8 @@ global:
       repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/kubectl
   minio:
     enabled: false
+  nginx:
+    enabled: false
   psql:
     host: gitlab-db
     username: gitlab

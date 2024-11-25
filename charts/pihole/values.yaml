@@ -50,7 +50,7 @@ customList: |
   192.168.0.7 node2.nwallace.io
   192.168.0.10 argocd.nwallace.io
   192.168.0.11 bazarr.nwallace.io
-  192.168.0.10 backstage.nwallace.io
+  192.168.0.11 backstage.nwallace.io
   192.168.0.5 cockpit.nwallace.io
   192.168.0.11 delugevpn.nwallace.io
   192.168.0.10 flux.nwallace.io
