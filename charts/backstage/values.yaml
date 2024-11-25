@@ -1,94 +1,44 @@
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16.6-2 # {"$imagepolicy": "home-server:postgresql-16"}
+image: harbor.nwallace.io/home-server/backstage::20241125015123 # {"$imagepolicy": "backstage:backstage"}
+replicas: 1
+
+imagePullPolicy: IfNotPresent
 
 commonLabels:
   backstage.io/kubernetes-id: backstage
 
-backstage:
-  backstage:
-    appConfig:
-      app:
-        # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-        title: Nate is amazing
-        baseUrl: https://backstage.nwallace.io
-      organization:
-        name: Nate is Amazing inc.
-      backend:
-        # Note that the baseUrl should be the URL that the browser and other clients
-        # should use when communicating with the backend, i.e. it needs to be
-        # reachable not just from within the backend host, but from all of your
-        # callers. When its value is "http://localhost:7007", it's strictly private
-        # and can't be reached by others.
-        baseUrl: https://backstage.nwallace.io
-        # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
-        # all interfaces, the most permissive setting. The right value depends on your specific deployment.
-        listen:
-          port: 7007
-        # config options: https://node-postgres.com/apis/client
-        database:
-          client: pg
-          connection:
-            host: ${POSTGRES_HOST}
-            port: ${POSTGRES_PORT}
-            user: ${POSTGRES_USER}
-            password: ${POSTGRES_PASSWORD}
-            # https://node-postgres.com/features/ssl
-            # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
-            # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
-            # ssl:
-            #   ca: # if you have a CA file and want to verify it you can uncomment this section
-            #     $file: <file-path>/ca/server.crt
-      auth:
-        providers:
-          guest: {}
-      catalog:
-        # Overrides the default list locations from app-config.yaml as these contain example data.
-        # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
-        # on how to get entities into the catalog.
-        locations:
-          # Local example data, replace this with your production config, these are intended for demo use only.
-          # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
-          - type: file
-            target: ./examples/entities.yaml
-          # Local example template
-          - type: file
-            target: ./examples/template/template.yaml
-            rules:
-              - allow: [Template]
-          # Local example organizational data
-          - type: file
-            target: ./examples/org.yaml
-            rules:
-              - allow: [User, Group]
-      techdocs:
-        builder: 'local' # Alternatives - 'external'
-        generator:
-          runIn: 'docker' # Alternatives - 'local'
-        publisher:
-          type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
-    extraEnvVars:
-      - name: POSTGRES_HOST
-        value: backstage-rw
-      - name: POSTGRES_PORT
-        value: "5432"
-      - name: APP_CONFIG_app_baseUrl
-        value: https://backstage.nwallace.io
-      - name: POSTGRES_USER
-        valueFrom:
-          secretKeyRef:
-            name: backstage-postgresql-password
-            key: username
-      - name: POSTGRES_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: backstage-postgresql-password
-            key: password
-  ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    host: backstage.nwallace.io
-    tls:
-      enabled: true
-      secretName: backstage.nwallace.io-tls-secret
+ingress:
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  host: backstage.nwallace.io
+
+resources: {}
+
+livenessProbe:
+  httpGet:
+    path: /.backstage/health/v1/liveness
+    port: 7007
+    scheme: HTTP
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+readinessProbe:
+  httpGet:
+    path: /.backstage/health/v1/readiness
+    port: 7007
+    scheme: HTTP
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+startupProbe:
+  httpGet:
+    path: /.backstage/health/v1/liveness
+    port: 7007
+    scheme: HTTP
+  timeoutSeconds: 1
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 6
