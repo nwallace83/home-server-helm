@@ -59,7 +59,7 @@ gitlab:
             mount_path = "/certs/client"
             medium = "Memory"
           [runners.kubernetes.node_selector]
-            "kubernetes.io/hostname": "server"
+            "kubernetes.io/hostname" = "server"
           {{- if .Values.global.minio.enabled }}
           [runners.cache]
             Type = "s3"
