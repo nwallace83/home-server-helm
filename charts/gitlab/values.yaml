@@ -59,7 +59,7 @@ gitlab:
             mount_path = "/certs/client"
             medium = "Memory"
           [runners.kubernetes.node_selector]
-            "beta.kubernetes.io/arch" = "amd64"
+            "kubernetes.io/hostname": "server"
           {{- if .Values.global.minio.enabled }}
           [runners.cache]
             Type = "s3"
@@ -134,7 +134,7 @@ gitlab:
   redis:
     master:
       nodeSelector:
-        'kubernetes.io/hostname': server
+        kubernetes.io/arch: amd64
       persistence:
         storageClass: longhorn
         size: 1Gi
