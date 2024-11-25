@@ -61,7 +61,6 @@ customList: |
   192.168.0.10 headlamp.nwallace.io
   192.168.0.11 homeassistant.nwallace.io
   192.168.0.12 kas.nwallace.io
-  192.168.0.12 minio-gitlab.nwallace.io
   192.168.0.11 minio-web.nwallace.io
   192.168.0.11 minio.nwallace.io
   192.168.0.10 pihole.nwallace.io
