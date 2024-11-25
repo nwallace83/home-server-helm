@@ -4,6 +4,12 @@ stages:
 build-container:
   image: docker:27.0.3
   cache: {}
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - pgpool
+      when: always
+    - when: never
   variables:
     DOCKER_HOST: tcp://docker:2376
     BUILDKIT_HOST: buildkit://buildkitd
