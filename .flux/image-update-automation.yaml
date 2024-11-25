@@ -3,7 +3,7 @@ kind: ImageUpdateAutomation
 metadata:
   name: image-updater
 spec:
-  interval: 30m
+  interval: 2m
   sourceRef:
     kind: GitRepository
     name: home-server
