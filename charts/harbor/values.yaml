@@ -71,4 +71,4 @@ harbor:
       username: harbor
     type: external
   trivy:
-    gitHubToken: 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
+    dbRepository: harbor.nwallace.io/github/aquasecurity/trivy-db
