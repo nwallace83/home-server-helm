@@ -8,7 +8,7 @@ commonLabels:
   backstage.io/kubernetes-id: backstage
 
 ingress:
-  className: nginx
+  ingressClassName: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
