@@ -25,6 +25,8 @@ spec:
             ingressClass: nginx-ext
           commonLabels:
             backstage.io/kubernetes-id: ingress-nginx-ext
+          tcp:
+            '22': 'gitlab/gitlab-gitlab-shell:22::'
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
