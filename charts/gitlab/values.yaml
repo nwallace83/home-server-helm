@@ -134,7 +134,7 @@ gitlab:
   redis:
     master:
       nodeSelector:
-        kubernetes.io/arch: amd64
+        'kubernetes.io/hostname': server
       persistence:
         storageClass: longhorn
         size: 1Gi
