@@ -6,7 +6,6 @@ spec:
   targets:
     - ./catalog-argo-cd.yaml
     - ./catalog-azure-devops-agent.yaml
-    - ./catalog-backstage.yaml
     - ./catalog-bazarr.yaml
     - ./catalog-mad-bazarr.yaml
     - ./catalog-cert-manager.yaml
