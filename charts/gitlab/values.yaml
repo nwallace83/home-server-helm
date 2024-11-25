@@ -17,8 +17,6 @@ global:
       repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/kubectl
   minio:
     enabled: false
-  nginx:
-    enabled: false
   psql:
     host: gitlab-db
     username: gitlab
@@ -131,6 +129,7 @@ gitlab:
         image:
           repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base
   nginx-ingress:
+    enabled: false
     controller:
       replicaCount: 1
       image:
