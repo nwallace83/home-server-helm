@@ -1,13 +1,10 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/sonarr:4.0.10 # {"$imagepolicy": "home-server:sonarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/sonarr:4.0.11 # {"$imagepolicy": "home-server:sonarr"}
 localUID: "1000"
 localGID: "1000"
-
 commonLabels:
   backstage.io/kubernetes-id: sonarr
-
 resources: {}
-  
 ingress:
   host: sonarr.nwallace.io
   annotations:
@@ -15,22 +12,17 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "5"
   ingressClassName: nginx-ext
-
 pvc:
   size: 2Gi
   storageClassName: longhorn
-
 volumes:
   - name: media
     persistentVolumeClaim:
       claimName: media
-
 volumeMounts:
   - name: media
     mountPath: /media
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
