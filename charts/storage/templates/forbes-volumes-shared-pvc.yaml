@@ -1,0 +1,17 @@
+{{- range .Values.forbesVolumesShared }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "commonLabels" $ | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: {{ .name }}
+  storageClassName: nfs
+---
+{{- end }}

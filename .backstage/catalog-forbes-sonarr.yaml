@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: forbes-sonarr
+  annotations:
+    'backstage.io/kubernetes-id': forbes-sonarr
+    'backstage.io/kubernetes-cluster': home-server
+spec:
+  owner: user:nate
+  subcomponentOf: component:default/home-server
+  lifecycle: production
+  type: service

@@ -14,3 +14,7 @@ volumesShared:
 madVolumesShared:
 - name: mad-media
   nfs_path: /media/mad
+
+forbesVolumesShared:
+- name: mad-media
+  nfs_path: /media/forbes
