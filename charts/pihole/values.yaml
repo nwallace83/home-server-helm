@@ -53,6 +53,8 @@ customList: |
   192.168.0.11 backstage.nwallace.io
   192.168.0.5 cockpit.nwallace.io
   192.168.0.11 delugevpn.nwallace.io
+  192.168.0.11 forbes-sonarr.nwallace.io
+  192.168.0.11 forbes-radarr.nwallace.io
   192.168.0.10 flux.nwallace.io
   192.168.0.11 gitlab.nwallace.io
   192.168.0.10 grafana.nwallace.io
