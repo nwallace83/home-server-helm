@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: mad-sonarr
+  name: forbes-sonarr
   namespace: home-server
 spec:
   interval: 10m
@@ -14,7 +14,7 @@ spec:
       reconcileStrategy: Revision
   values:
     ingress:
-      host: mad-sonarr.nwallace.io
+      host: forbes-sonarr.nwallace.io
     pvc:
       size: 600Mi
     volumes:
@@ -25,6 +25,6 @@ spec:
       - name: forbes-media
         mountPath: /media
     commonLabels:
-      backstage.io/kubernetes-id: mad-sonarr
+      backstage.io/kubernetes-id: forbes-sonarr
   driftDetection:
     mode: enabled
