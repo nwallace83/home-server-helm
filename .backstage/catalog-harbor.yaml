@@ -7,5 +7,6 @@ metadata:
     'backstage.io/kubernetes-cluster': home-server
 spec:
   owner: user:nate
+  subcomponentOf: component:default/home-server
   lifecycle: production
   type: service
