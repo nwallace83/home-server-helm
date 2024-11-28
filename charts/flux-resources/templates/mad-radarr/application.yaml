@@ -22,9 +22,14 @@ spec:
           - name: mad-media
             persistentVolumeClaim:
               claimName: mad-media
+          - name: shared
+            persistentVolumeClaim:
+              claimName: shared
         volumeMounts:
           - name: mad-media
-            mountPath: /media  
+            mountPath: /media
+          - name: shared
+            mountPath: /shared
         commonLabels:
           backstage.io/kubernetes-id: mad-radarr   
   syncPolicy:

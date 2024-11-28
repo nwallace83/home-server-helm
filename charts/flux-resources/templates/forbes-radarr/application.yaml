@@ -22,9 +22,14 @@ spec:
           - name: forbes-media
             persistentVolumeClaim:
               claimName: forbes-media
+          - name: shared
+            persistentVolumeClaim:
+              claimName: shared
         volumeMounts:
           - name: forbes-media
-            mountPath: /media  
+            mountPath: /media
+          - name: shared
+            mountPath: /shared
         commonLabels:
           backstage.io/kubernetes-id: forbes-radarr   
   syncPolicy:
