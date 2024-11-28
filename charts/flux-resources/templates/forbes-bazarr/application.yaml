@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: forbes-bazarr
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: home-server
+    server: https://kubernetes.default.svc
+  project: home-server
+  source:
+    path: charts/bazarr
+    repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
+    targetRevision: HEAD
+    helm:
+      values: |
+        ingress:
+          host: forbes-bazarr.nwallace.io
+        volumes:
+          - name: forbes-media
+            persistentVolumeClaim:
+              claimName: forbes-media
+        volumeMounts:
+          - name: forbes-media
+            mountPath: /media
+        commonLabels:
+          backstage.io/kubernetes-id: forbes-bazarr
+  syncPolicy:
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true

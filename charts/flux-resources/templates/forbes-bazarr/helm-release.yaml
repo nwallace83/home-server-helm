@@ -1,35 +1,28 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: forbes-radarr
+  name: forbes-bazarr
   namespace: home-server
 spec:
   interval: 10m
   chart:
     spec:
-      chart: ./charts/radarr
+      chart: ./charts/bazarr
       sourceRef:
         kind: GitRepository
         name: home-server
       reconcileStrategy: Revision
   values:
     ingress:
-      host: forbes-radarr.nwallace.io
-    pvc:
-      size: 1Gi
+      host: forbes-bazarr.nwallace.io
     volumes:
       - name: forbes-media
         persistentVolumeClaim:
           claimName: forbes-media
-      - name: shared
-        persistentVolumeClaim:
-          claimName: shared
     volumeMounts:
       - name: forbes-media
         mountPath: /media
-      - name: shared
-        mountPath: /shared
     commonLabels:
-      backstage.io/kubernetes-id: forbes-radarr
+      backstage.io/kubernetes-id: forbes-bazarr
   driftDetection:
     mode: enabled
