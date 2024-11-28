@@ -16,16 +16,17 @@ spec:
     - .backstage/catalog-argo-cd.yaml
     - .backstage/catalog-azure-devops-agent.yaml
     - .backstage/catalog-bazarr.yaml
-    - .backstage/catalog-mad-bazarr.yaml
     - .backstage/catalog-cert-manager.yaml
     - .backstage/catalog-cloudnative-pg.yaml
     - .backstage/catalog-cron-jobs.yaml
     - .backstage/catalog-delugevpn.yaml
-    - .backstage/catalog-mad-delugevpn.yaml
     - .backstage/catalog-flannel.yaml
     - .backstage/catalog-flaresolverr.yaml
     - .backstage/catalog-flux.yaml
     - .backstage/catalog-flux-resources.yaml
+    - .backstage/catalog-forbes-bazarr.yaml
+    - .backstage/catalog-forbes-radarr.yaml
+    - .backstage/catalog-forbes-sonarr.yaml
     - .backstage/catalog-gitlab.yaml
     - .backstage/catalog-harbor.yaml
     - .backstage/catalog-headlamp.yaml
@@ -36,6 +37,9 @@ spec:
     - .backstage/catalog-intel-device-plugins-operator.yaml
     - .backstage/catalog-kube-prometheus-stack.yaml
     - .backstage/catalog-longhorn.yaml
+    - .backstage/catalog-mad-bazarr.yaml
+    - .backstage/catalog-mad-radarr.yaml
+    - .backstage/catalog-mad-sonarr.yaml
     - .backstage/catalog-metallb.yaml
     - .backstage/catalog-metrics-server.yaml
     - .backstage/catalog-minio.yaml
@@ -44,13 +48,11 @@ spec:
     - .backstage/catalog-plex.yaml
     - .backstage/catalog-prowlarr.yaml
     - .backstage/catalog-radarr.yaml
-    - .backstage/catalog-mad-radarr.yaml
     - .backstage/catalog-rclone.yaml
     - .backstage/catalog-readarr.yaml
     - .backstage/catalog-samba.yaml
     - .backstage/catalog-smarter-device-manager.yaml
     - .backstage/catalog-sonarr.yaml
-    - .backstage/catalog-mad-sonarr.yaml
     - .backstage/catalog-storage.yaml
     - .backstage/catalog-vault.yaml
     - .backstage/catalog-vaultwarden.yaml
