@@ -1,6 +1,6 @@
 apiVersion: v2
-name: flannel
-description: flannel
+name: cilium
+description: cilium
 
 # A chart can be either an 'application' or a 'library' chart.
 #

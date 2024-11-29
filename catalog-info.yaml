@@ -20,7 +20,7 @@ spec:
     - .backstage/catalog-cloudnative-pg.yaml
     - .backstage/catalog-cron-jobs.yaml
     - .backstage/catalog-delugevpn.yaml
-    - .backstage/catalog-flannel.yaml
+    - .backstage/catalog-cilium.yaml
     - .backstage/catalog-flaresolverr.yaml
     - .backstage/catalog-flux.yaml
     - .backstage/catalog-flux-resources.yaml
