@@ -21,9 +21,6 @@ spec:
       {{- include "commonLabels" . | nindent 6 }}
   affinity:
     podAntiAffinityType: required
-  env:
-    - name: TZ
-      value: {{ .Values.timezone }}
   imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:
