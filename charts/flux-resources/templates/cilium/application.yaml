@@ -13,6 +13,24 @@ spec:
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: ''
+      kind: Secret
+      name: hubble-server-certs
+      jsonPointers:
+        - /data/ca.crt
+        - /data/tls.crt
+        - /data/tls.key
+    - group: ''
+      kind: Secret
+      name: cilium-ca
+      jsonPointers:
+        - /data/ca.crt
+        - /data/ca.key
