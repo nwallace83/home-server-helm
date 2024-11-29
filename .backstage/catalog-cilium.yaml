@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: cilium
   annotations:
-    'backstage.io/kubernetes-id': cilium
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=cilium'
     'backstage.io/kubernetes-cluster': home-server
 spec:
   owner: user:nate
