@@ -24,6 +24,6 @@ version: 0.0.0
 appVersion: "0.0.0"
 
 dependencies:
-- name: flannel
-  version: ">=0.26.1"
-  repository: https://flannel-io.github.io/flannel
+- name: cilium
+  version: ">=1.16.4"
+  repository: https://helm.cilium.io

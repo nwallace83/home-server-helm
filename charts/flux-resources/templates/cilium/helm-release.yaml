@@ -1,0 +1,17 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: ./charts/cilium
+      sourceRef:
+        kind: GitRepository
+        name: home-server
+        namespace: home-server
+      reconcileStrategy: Revision
+  driftDetection:
+    mode: enabled

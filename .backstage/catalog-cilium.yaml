@@ -1,9 +1,9 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: flannel
+  name: cilium
   annotations:
-    'backstage.io/kubernetes-id': flannel
+    'backstage.io/kubernetes-id': cilium
     'backstage.io/kubernetes-cluster': home-server
 spec:
   owner: user:nate
