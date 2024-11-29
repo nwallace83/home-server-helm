@@ -58,9 +58,6 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           securityContext:
-            sysctls:
-              - name: net.ipv4.conf.all.src_valid_mark
-                value: '1'
             privileged: true
       volumes:
       {{- if .Values.volumes }}
