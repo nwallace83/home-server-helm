@@ -1,7 +1,3 @@
-global:
-  nodeSelector:
-    storage: 'true'
-
 commonLabels:
   backstage.io/kubernetes-id: longhorn
 
@@ -27,6 +23,7 @@ longhorn:
     defaultReplicaCount: 1
     storageReservedPercentageForDefaultDisk: 10
     defaultDataLocality: best-effort
+    createDefaultDiskLabeledNodes: true
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
