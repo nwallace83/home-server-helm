@@ -1,3 +1,7 @@
+global:
+  nodeSelector:
+    storage: 'true'
+
 commonLabels:
   backstage.io/kubernetes-id: longhorn
 
