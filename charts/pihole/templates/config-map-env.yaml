@@ -8,6 +8,7 @@ data:
   DNSMASQ_LISTENING: {{ .Values.dnsMasqListening | default "all" | quote }}
   FTLCONF_LOCAL_IPV4: {{ .Values.loadBalancerIP }}
   FTLCONF_MAXDBDAYS: {{ .Values.ftlConfMaxDBDays | default "7" | quote }}
+  FTLCONF_RATE_LIMIT: "0/0"
   IPv6: {{ .Values.ipv6 | default "false" | quote }}
   PIHOLE_DNS_: {{ .Values.dnsOrigins | default "1.1.1.1;8.8.8.8;8.8.4.4" | quote }}
   PIHOLE_GID: {{ .Values.localGID | quote }}
