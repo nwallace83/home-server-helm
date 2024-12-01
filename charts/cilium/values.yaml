@@ -8,5 +8,8 @@ cilium:
   k8sServicePort: 6443
   bgp:
     enabled: true
+    announce:
+      podCIDR: true
+      loadbalancerIP: true
   bgpControlPlane:
     enabled: true
