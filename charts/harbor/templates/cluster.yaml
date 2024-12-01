@@ -21,6 +21,8 @@ spec:
       {{- include "commonLabels" . | nindent 6 }}
   affinity:
     podAntiAffinityType: required
+    nodeSelector:
+      storage: true
   imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:
