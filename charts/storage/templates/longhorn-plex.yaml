@@ -1,7 +1,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: longhorn-db
+  name: plex
   labels:
     {{- include "commonLabels" . | nindent 4 }}
 parameters:
@@ -9,10 +9,11 @@ parameters:
   diskSelector: fast
   fromBackup: ""
   fsType: ext4
-  numberOfReplicas: "1"
+  numberOfReplicas: "2"
   staleReplicaTimeout: "30"
-  nodeSelector: "storage"
+  nodeSelector: "plex"
+  recurringJobSelector: '[{"name":"backup", "isGroup":true},{"name":"default", "isGroup":true}]'
 provisioner: driver.longhorn.io
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: Immediate
 allowVolumeExpansion: true
