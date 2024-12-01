@@ -5,6 +5,7 @@ adresses:
 - 192.168.0.12/32
 - 192.168.0.13/32
 - 192.168.0.14/32
+- 192.168.0.15/32
 
 commonLabels:
   backstage.io/kubernetes-id: metallb

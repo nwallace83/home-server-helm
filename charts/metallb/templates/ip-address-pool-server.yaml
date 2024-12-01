@@ -7,6 +7,5 @@ metadata:
 spec:
   addresses:
   - 192.168.0.5/32
-  - 192.168.0.15/32
   autoAssign: false
   avoidBuggyIPs: false
