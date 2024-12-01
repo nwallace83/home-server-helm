@@ -21,9 +21,8 @@ ingress:
   ingressClassName: nginx-ext
 
 pvc:
-  size: 10Gi
-  path: /kubernetes/plex/config
-  storageClassName: hostpath
+  size: 100Gi
+  storageClassName: plex
 
 volumes:
   - name: media
