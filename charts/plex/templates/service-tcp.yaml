@@ -7,7 +7,6 @@ metadata:
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.loadBalancerIP }}
-  externalTrafficPolicy: Local
   ports:
   - name: {{ printf "%s-tcp" .Release.Name }}
     protocol: TCP
