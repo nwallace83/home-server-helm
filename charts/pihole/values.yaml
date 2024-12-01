@@ -48,6 +48,7 @@ customList: |
   192.168.0.5 server.nwallace.io
   192.168.0.6 node1.nwallace.io
   192.168.0.7 node2.nwallace.io
+  192.168.0.8 node3.nwallace.io
   192.168.0.10 argocd.nwallace.io
   192.168.0.11 bazarr.nwallace.io
   192.168.0.11 backstage.nwallace.io
