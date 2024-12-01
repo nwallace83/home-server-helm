@@ -25,6 +25,8 @@ spec:
       max_connections: '200'
   affinity:
     podAntiAffinityType: required
+    nodeSelector:
+      storage: true
   # minSyncReplicas: 1
   # maxSyncReplicas: 2
   imageName: {{ .Values.dbImage }}
