@@ -1,3 +1,7 @@
+global:
+  cattle:
+    systemDefaultRegistry: harbor.nwallace.io/docker-hub
+
 commonLabels:
   backstage.io/kubernetes-id: longhorn
 
@@ -32,6 +36,3 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
-  global:
-    cattle:
-      systemDefaultRegistry: harbor.nwallace.io/docker-hub
