@@ -22,7 +22,7 @@ spec:
   affinity:
     podAntiAffinityType: required
     nodeSelector:
-      storage: true
+      storage: 'true'
   imageName: {{ .Values.dbImage }}
   bootstrap:
     # initdb:
