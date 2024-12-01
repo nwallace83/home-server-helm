@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "commonLabels" . | nindent 4 }}
 parameters:
-  dataLocality: strict-local
+  dataLocality: best-effort
   diskSelector: fast
   fromBackup: ""
   fsType: ext4
