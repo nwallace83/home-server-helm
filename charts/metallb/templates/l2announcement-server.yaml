@@ -8,7 +8,7 @@ spec:
   ipAddressPools:
   - server-address
   interfaces:
-  - enp0s31f6
+  - enp4s0
   nodeSelectors:
   - matchLabels:
       kubernetes.io/hostname: server
