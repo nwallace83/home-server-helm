@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ printf "%s-dns" .Release.Name }}
   annotations:
-    metallb.universe.tf/allow-shared-ip: shared-ip
+    lbipam.cilium.io/sharing-key: '1234'
   labels:
     {{- include "commonLabels" . | nindent 4 }}
 spec:

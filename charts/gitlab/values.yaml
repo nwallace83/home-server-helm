@@ -2,7 +2,7 @@ dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:15
 global:
   hosts:
     domain: nwallace.io
-    externalIP: 192.168.0.12
+    externalIP: 192.168.2.12
   monitoring:
     enabled: true
   certificates:
