@@ -12,14 +12,6 @@ spec:
     path: charts/ingress-nginx
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
-    helm:
-      values: |
-        ingress-nginx:
-          tcp:
-            '53': 'home-server/pihole-dns:22::'
-          udp:
-            '53': 'home-server/pihole-dns:22'
-            '51820': 'home-server/wireguard:51820'
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
