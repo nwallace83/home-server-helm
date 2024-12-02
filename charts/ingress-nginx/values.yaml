@@ -27,7 +27,3 @@ ingress-nginx:
       registry: harbor.nwallace.io/k8s
   commonLabels:
     backstage.io/kubernetes-id: ingress-nginx
-  tcp:
-    '53': 'home-server/pihole-dns:22::'
-  udp:
-    '53': 'home-server/pihole-dns:22'
