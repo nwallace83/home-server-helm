@@ -10,10 +10,12 @@ spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.loadBalancerIP }}
   ports:
-    - protocol: TCP
+    - name: '137'
+      protocol: TCP
       port: 139
       targetPort: 139
-    - protocol: TCP
+    - name: '445'
+      protocol: TCP
       port: 445
       targetPort: 445
   selector:
