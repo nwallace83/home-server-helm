@@ -2,13 +2,19 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}
+  annotations:
+    lbipam.cilium.io/sharing-key: '1234'
   labels:
     {{- include "commonLabels" . | nindent 4 }}
 spec:
+  type: LoadBalancer
+  loadBalancerIP: {{ .Values.loadBalancerIP }}
   ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: 7878
+    - protocol: TCP
+      port: 139
+      targetPort: 139
+    - protocol: TCP
+      port: 445
+      targetPort: 445
   selector:
     app: {{ .Release.Name }}

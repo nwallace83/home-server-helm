@@ -82,6 +82,7 @@ customList: |
   192.168.2.11 radarr.nwallace.io
   192.168.2.11 readarr.nwallace.io
   192.168.2.11 sonarr.nwallace.io
+  192.168.2.12 samba
   192.168.2.10 vault.nwallace.io
   192.168.2.10 vaultwarden.nwallace.io
   192.168.2.11 mad-sonarr.nwallace.io
