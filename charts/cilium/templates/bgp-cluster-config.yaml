@@ -1,9 +1,9 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPClusterConfig
 metadata:
+  name: cilium-bgp
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-  name: cilium-bgp
 spec:
   bgpInstances:
     - localASN: 65001

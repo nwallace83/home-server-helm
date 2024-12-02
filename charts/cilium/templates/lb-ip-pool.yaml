@@ -1,9 +1,9 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
+  name: ip-pool
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-  name: ip-pool
 spec:
   blocks:
     - cidr: 192.168.2.10/25

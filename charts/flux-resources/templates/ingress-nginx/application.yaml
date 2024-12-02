@@ -18,8 +18,8 @@ spec:
           tcp:
             '53': 'home-server/pihole-dns:22::'
           udp:
-            '53': 'home-server/pihole-dns:22::'
-            '51820': 'home-server/wireguard:51820::'
+            '53': 'home-server/pihole-dns:22'
+            '51820': 'home-server/wireguard:51820'
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true

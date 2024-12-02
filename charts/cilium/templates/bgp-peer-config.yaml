@@ -1,6 +1,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeerConfig
 metadata:
+  name: cilium-peer
   labels:
     {{- include "commonLabels" . | nindent 4 }}
 spec:
