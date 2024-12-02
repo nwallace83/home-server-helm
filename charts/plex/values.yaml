@@ -2,7 +2,7 @@ timezone: America/Denver
 image: harbor.nwallace.io/docker-hub/linuxserver/plex:1.41.2 # {"$imagepolicy": "home-server:plex"}
 localUID: "1000"
 localGID: "1000"
-loadBalancerIP: 192.168.0.15
+loadBalancerIP: 192.168.2.15
 
 commonLabels:
   backstage.io/kubernetes-id: plex
