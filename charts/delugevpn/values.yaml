@@ -2,7 +2,6 @@ timezone: America/Denver
 image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn:2.1.1-6-05 # {"$imagepolicy": "home-server:delugevpn"}
 localUID: "1000"
 localGID: "1000"
-loadBalancerIP: 192.168.2.13
 
 commonLabels:
   backstage.io/kubernetes-id: delugevpn
