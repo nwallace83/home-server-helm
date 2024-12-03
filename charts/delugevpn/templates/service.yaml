@@ -4,8 +4,6 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
-  annotations:
-    lbipam.cilium.io/sharing-key: '1234'
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ .Values.loadBalancerIP }}
