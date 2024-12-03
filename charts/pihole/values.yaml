@@ -44,19 +44,19 @@ readinessProbe:
   failureThreshold: 12
 
 customList: |
-  192.168.2.1 router.local
-  192.168.2.5 server
-  192.168.2.5 server.local
-  192.168.2.5 server.nwallace.io
-  192.168.2.6 node1
-  192.168.2.6 node1.local
-  192.168.2.6 node1.nwallace.io
-  192.168.2.7 node2
-  192.168.2.7 node2.local
-  192.168.2.7 node2.nwallace.io
-  192.168.2.8 node3
-  192.168.2.8 node3.local
-  192.168.2.8 node3.nwallace.io
+  192.168.0.1 router.local
+  192.168.0.5 server
+  192.168.0.5 server.local
+  192.168.0.5 server.nwallace.io
+  192.168.0.6 node1
+  192.168.0.6 node1.local
+  192.168.0.6 node1.nwallace.io
+  192.168.0.7 node2
+  192.168.0.7 node2.local
+  192.168.0.7 node2.nwallace.io
+  192.168.0.8 node3
+  192.168.0.8 node3.local
+  192.168.0.8 node3.nwallace.io
   192.168.2.10 argocd.nwallace.io
   192.168.2.11 bazarr.nwallace.io
   192.168.2.11 backstage.nwallace.io
