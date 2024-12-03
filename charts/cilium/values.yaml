@@ -4,6 +4,7 @@ commonLabels:
 vaultSecretPath: cilium
 
 cilium:
+  autoDirectNodeRoutes: true
   ipam:
     operator:
       clusterPoolIPv4PodCIDRList:
