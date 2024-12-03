@@ -18,8 +18,6 @@ spec:
         app: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 10
-      nodeSelector:
-        kubernetes.io/hostname: server
       containers:
         - name: samba
           image: {{ .Values.image }}
