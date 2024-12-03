@@ -47,6 +47,9 @@ customList: |
   192.168.0.1 router
   192.168.0.1 router.local
   192.168.0.1 router.nwallace.io
+  192.168.0.1 k8s
+  192.168.0.1 k8s.local
+  192.168.0.1 k8s.nwallace.io
   192.168.0.5 server
   192.168.0.5 server.local
   192.168.0.5 server.nwallace.io
