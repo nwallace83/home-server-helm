@@ -1,6 +1,6 @@
 timezone: America/Denver
 busyboxImage: harbor.nwallace.io/docker-hub/library/busybox:1.37.0 # {"$imagepolicy": "home-server:busybox"}
-awsImage: harbor.nwallace.io/docker-hub/amazon/aws-cli:2.22.10 # {"$imagepolicy": "home-server:aws-cli"}
+awsImage: harbor.nwallace.io/docker-hub/amazon/aws-cli:2.22.11 # {"$imagepolicy": "home-server:aws-cli"}
 gitImage: harbor.nwallace.io/docker-hub/bitnami/git:2.47.1 # {"$imagepolicy": "home-server:git"}
 helmImage: harbor.nwallace.io/docker-hub/alpine/helm:3.16.3 # {"$imagepolicy": "home-server:helm"}
 imagePullPolicy: IfNotPresent
