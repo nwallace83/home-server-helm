@@ -25,8 +25,3 @@ cilium:
       enableOpenMetrics: true
       enabled:
         - dns
-        - drop
-        - tcp
-        - flow
-        - port-distribution
-        - icmp
