@@ -18,13 +18,24 @@ cilium:
     enabled: true
   prometheus:
     enabled: true
+    serviceMonitor:
+      enabled: true
+  envoy:
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
   operator:
     prometheus:
       enabled: true
+      serviceMonitor:
+        enabled: true
   hubble:
     enabled: true
     metrics:
       enableOpenMetrics: true
+      serviceMonitor:
+        enabled: true
       dashboards:
         enabled: true
         namespace: monitoring
