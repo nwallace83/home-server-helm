@@ -40,7 +40,6 @@ spec:
     - .backstage/catalog-mad-bazarr.yaml
     - .backstage/catalog-mad-radarr.yaml
     - .backstage/catalog-mad-sonarr.yaml
-    - .backstage/catalog-metallb.yaml
     - .backstage/catalog-metrics-server.yaml
     - .backstage/catalog-minio.yaml
     - .backstage/catalog-node-feature-discovery.yaml
