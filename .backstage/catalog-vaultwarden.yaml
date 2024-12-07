@@ -1,9 +1,9 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: wireguard
+  name: vaultwarden
   annotations:
-    'backstage.io/kubernetes-id': wireguard
+    'backstage.io/kubernetes-id': vaultwarden
     'backstage.io/kubernetes-cluster': home-server
 spec:
   owner: user:nate
