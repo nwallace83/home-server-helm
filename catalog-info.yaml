@@ -55,4 +55,3 @@ spec:
     - .backstage/catalog-storage.yaml
     - .backstage/catalog-vault.yaml
     - .backstage/catalog-vaultwarden.yaml
-    - .backstage/catalog-wireguard.yaml
