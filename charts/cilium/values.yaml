@@ -16,12 +16,3 @@ cilium:
     enabled: true
   prometheus:
     enabled: true
-  operator:
-    prometheus:
-      enabled: true
-  hubble:
-    enabled: true
-    metrics:
-      enableOpenMetrics: true
-      enabled:
-        - dns
