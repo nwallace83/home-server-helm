@@ -20,6 +20,11 @@ cilium:
     enabled: true
     serviceMonitor:
       enabled: true
+  dashboards:
+    enabled: true
+    namespace: monitoring
+    annotations:
+      grafana_folder: "Hubble"
   envoy:
     prometheus:
       enabled: true
@@ -30,6 +35,11 @@ cilium:
       enabled: true
       serviceMonitor:
         enabled: true
+      dashboards:
+        enabled: true
+        namespace: monitoring
+        annotations:
+          grafana_folder: "Hubble"
   hubble:
     enabled: true
     metrics:
