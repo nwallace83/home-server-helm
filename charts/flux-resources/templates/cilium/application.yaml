@@ -33,3 +33,8 @@ spec:
       jsonPointers:
         - /data/ca.crt
         - /data/ca.key
+    - group: monitoring.coreos.com
+      kind: ServiceMonitor
+      name: '*'
+      jsonPointers:
+        - /spec/endpoints/relabelings
