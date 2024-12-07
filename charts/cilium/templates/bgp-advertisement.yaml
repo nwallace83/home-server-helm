@@ -25,3 +25,10 @@ spec:
           - ClusterIP
           - ExternalIP
           - LoadBalancerIP
+    - advertisementType: "CiliumPodIPPool"
+      selector:
+        matchExpressions:
+          - key: somekey
+            operator: NotIn
+            values:
+              - never-used-value
