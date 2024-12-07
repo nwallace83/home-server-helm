@@ -25,6 +25,11 @@ cilium:
     enabled: true
     metrics:
       enableOpenMetrics: true
+      dashboards:
+        enabled: true
+        namespace: monitoring
+        annotations:
+          grafana_folder: "Hubble"
       enabled:
         - dns
         - drop
