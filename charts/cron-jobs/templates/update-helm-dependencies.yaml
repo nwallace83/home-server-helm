@@ -11,9 +11,9 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
-      concurrencyPolicy: Replace
       template:
         spec:
+          concurrencyPolicy: Replace
           volumes:
             - name: git-repo
               emptyDir: {}
