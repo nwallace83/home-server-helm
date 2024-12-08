@@ -11,7 +11,7 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
-      concurrencyPolicy: Replac
+      concurrencyPolicy: Replace
       template:
         spec:
           volumes:
