@@ -10,5 +10,3 @@ azure-devops-agent:
     backstage.io/kubernetes-id: azure-devops-agent
   image:
     registry: harbor.nwallace.io/docker-hub
-  podSecurityContext:
-    runAsUser: 10000
