@@ -10,18 +10,18 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "5"
+    nginx.ingress.kubernetes.io/limit-rps: "50"
   ingressClassName: nginx-ext
 pvc:
   size: 1.5Gi
   storageClassName: longhorn
 volumes:
-  - name: media
-    persistentVolumeClaim:
-      claimName: media
+- name: media
+  persistentVolumeClaim:
+    claimName: media
 volumeMounts:
-  - name: media
-    mountPath: /media
+- name: media
+  mountPath: /media
 imagePullPolicy: IfNotPresent
 livenessProbe:
   httpGet:

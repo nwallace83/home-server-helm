@@ -6,7 +6,7 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "5"
+    nginx.ingress.kubernetes.io/limit-rps: "50"
     nginx.ingress.kubernetes.io/server-snippet: |
       return 301 https://github.com/nwallace83;
   ingressClassName: nginx-ext
