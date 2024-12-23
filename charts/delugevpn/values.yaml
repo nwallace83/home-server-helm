@@ -1,17 +1,13 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn:2.1.1-6-05 # {"$imagepolicy": "home-server:delugevpn"}
+image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn:2.1.1-8-03 # {"$imagepolicy": "home-server:delugevpn"}
 localUID: "1000"
 localGID: "1000"
-
 commonLabels:
   backstage.io/kubernetes-id: delugevpn
-
 resources:
   limits:
     memory: 4096Mi
-
 vaultSecretPath: delugevpn
-
 ingress:
   host: delugevpn.nwallace.io
   annotations:
@@ -19,11 +15,9 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "50"
   ingressClassName: nginx-ext
-
 pvc:
   size: 100Mi
   storageClassName: longhorn
-
 volumes:
 - name: media
   persistentVolumeClaim:
@@ -31,15 +25,12 @@ volumes:
 - name: shared
   persistentVolumeClaim:
     claimName: shared
-
 volumeMounts:
 - name: media
   mountPath: /media
 - name: shared
   mountPath: /shared
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
