@@ -1,15 +1,12 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.4.5 # {"$imagepolicy": "home-server:bazarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.5.0 # {"$imagepolicy": "home-server:bazarr"}
 localUID: "1000"
 localGID: "1000"
-
 commonLabels:
   backstage.io/kubernetes-id: bazarr
-
 resources:
   limits:
     memory: 2048M
-
 ingress:
   host: bazarr.nwallace.io
   annotations:
@@ -17,22 +14,17 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "50"
   ingressClassName: nginx-ext
-
 pvc:
   size: 200Mi
   storageClassName: longhorn
-
 volumes:
 - name: media
   persistentVolumeClaim:
     claimName: media
-
 volumeMounts:
 - name: media
   mountPath: /media
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
