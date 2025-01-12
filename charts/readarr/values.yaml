@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/readarr:0.4.7-develop # {"$imagepolicy": "home-server:readarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/readarr:0.4.8-develop # {"$imagepolicy": "home-server:readarr"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
