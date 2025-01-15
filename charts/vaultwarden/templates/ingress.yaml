@@ -13,4 +13,13 @@ spec:
       - {{ .Values.ingress.host }}
       secretName: {{ printf "%s-tls-secret" .Values.ingress.host }}
   rules:
-    - {}
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  number: 80

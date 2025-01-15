@@ -15,24 +15,5 @@ spec:
     - hosts:
       - {{ print "www."  .Values.ingress.host }}
       secretName: {{ printf "www.%s-tls-secret"  .Values.ingress.host }}
-  rules:
-    - host: {{  .Values.ingress.host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}
-                port:
-                  number: 80
-    - host: {{ printf "www.%s"  .Values.ingress.host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}
-                port:
-                  number: 80       
+   rules:
+    - {}
