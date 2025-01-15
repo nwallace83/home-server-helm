@@ -3,6 +3,10 @@ fullnameOverride: minio
 commonLabels:
   backstage.io/kubernetes-id: minio
 
+global:
+  security:
+    allowInsecureImages: true
+
 minio:
   fullnameOverride: minio
   nodeSelector:
