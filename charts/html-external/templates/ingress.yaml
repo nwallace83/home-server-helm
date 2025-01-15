@@ -15,5 +15,5 @@ spec:
     - hosts:
       - {{ print "www."  .Values.ingress.host }}
       secretName: {{ printf "www.%s-tls-secret"  .Values.ingress.host }}
-   rules:
+  rules:
     - {}
