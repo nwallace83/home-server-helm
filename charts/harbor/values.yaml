@@ -70,3 +70,5 @@ harbor:
     type: external
   trivy:
     gitHubToken: ''
+    nodeSelector:
+      kubernetes.io/arch: amd64
