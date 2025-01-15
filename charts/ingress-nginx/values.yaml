@@ -23,6 +23,8 @@ ingress-nginx:
     opentelemetry:
       image:
         registry: harbor.nwallace.io/k8s
+    config:
+      annotations-risk-level: Critical
   defaultBackend:
     image:
       registry: harbor.nwallace.io/k8s
