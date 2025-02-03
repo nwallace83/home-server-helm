@@ -17,7 +17,7 @@ global:
   minio:
     enabled: false
   psql:
-    host: gitlab-db
+    host: gitlab-rw
     username: gitlab
     password:
       secret: gitlab-postgresql-password
