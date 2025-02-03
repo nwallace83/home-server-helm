@@ -65,7 +65,7 @@ harbor:
   database:
     external:
       existingSecret: harbor-postgresql-password
-      host: harbor-db
+      host: harbor-rw
       username: harbor
     type: external
   trivy:
