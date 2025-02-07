@@ -1,6 +1,6 @@
 dependencies:
 - name: headlamp
   repository: https://headlamp-k8s.github.io/headlamp
-  version: 0.28.0
-digest: sha256:0d192ae8b9657de01808ad4d6226572f17de67a1206397c5ab597af3d1e86949
-generated: "2025-01-23T23:20:25.280002487Z"
+  version: 0.28.1
+digest: sha256:82867f96ec7647b722e1d886afb64cbf8492a99b6ce6484480358eb7396a97bc
+generated: "2025-02-07T15:20:25.633419814Z"
