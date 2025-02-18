@@ -1,14 +1,12 @@
-image: docker.io/pihole/pihole:2024.07.0 # {"$imagepolicy": "home-server:pihole"}
+image: docker.io/pihole/pihole:2025.02.0 # {"$imagepolicy": "home-server:pihole"}
 loadBalancerIP: 192.168.2.12
 replicas: 3
 timezone: America/Denver
 localUID: "1000"
 localGID: "1000"
 resources: {}
-
 commonLabels:
   backstage.io/kubernetes-id: pihole
-
 ingress:
   host: pihole.nwallace.io
   annotations:
@@ -21,7 +19,6 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/use-regex: 'true'
   ingressClassName: nginx
-
 livenessProbe:
   httpGet:
     path: /admin
@@ -42,8 +39,7 @@ readinessProbe:
   periodSeconds: 10
   successThreshold: 1
   failureThreshold: 12
-
-customList: |
+customList: |-
   192.168.0.1 router
   192.168.0.1 router.local
   192.168.0.1 router.nwallace.io
