@@ -8,6 +8,8 @@ data:
   poststart.sh: |
     #!/bin/bash
 
+    echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+    
     COUNT=1
     GRAVITY_FILE="/etc/pihole/gravity.db"
     while [ ! -f $GRAVITY_FILE ]
@@ -19,23 +21,23 @@ data:
 
     echo "Found /etc/pihole/gravity.db, waiting a while before inserting adlists"
 
-    sleep 60
+    sleep 20
 
-    sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',1,'');"
+    pihole-FTL sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt',1,'');"
     echo "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt done"
 
-    sleep 5
+    sleep 1
 
-    sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://big.oisd.nl',1,'');"
+    pihole-FTL sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://big.oisd.nl',1,'');"
     echo "https://big.oisd.nl done"
 
-    sleep 5
+    sleep 1
 
-    sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt',1,'');"
+    pihole-FTL sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt',1,'');"
     echo "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt done"
 
-    sleep 10
+    sleep 5
     echo "Updating gravity"
-    pihole updateGravity
+    pihole -g
 
     echo "poststart script complete"
