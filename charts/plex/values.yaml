@@ -17,7 +17,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
   ingressClassName: nginx-ext
 pvc:
-  size: 100Gi
+  size: 120Gi
   storageClassName: plex
 volumes:
   - name: media
