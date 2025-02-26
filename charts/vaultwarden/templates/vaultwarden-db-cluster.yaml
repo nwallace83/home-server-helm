@@ -24,6 +24,7 @@ spec:
     nodeSelector:
       storage: 'true'
   imageName: {{ .Values.dbImage }}
+  imagePullPolicy: Always
   bootstrap:
     # initdb:
     #   database: vaultwarden
