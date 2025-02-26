@@ -30,6 +30,7 @@ spec:
   # minSyncReplicas: 1
   # maxSyncReplicas: 2
   imageName: {{ .Values.dbImage }}
+  imagePullPolicy: Always
   bootstrap:
     # initdb:
     #   database: gitlabhq_production
