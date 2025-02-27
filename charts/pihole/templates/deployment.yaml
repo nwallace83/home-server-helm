@@ -35,6 +35,9 @@ spec:
           env:
           - name: FTLCONF_dns_hosts
             value: {{ .Values.dnsHosts }}
+          - name: FTLCONF_dhcp_active
+            value: 'false'
+            value: {{ .Values.dnsHosts }}
           - name: FTLCONF_webserver_api_password
             valueFrom:
               secretKeyRef: 
