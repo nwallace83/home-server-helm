@@ -14,8 +14,6 @@ spec:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}
-      annotations:
-        checksum/config: {{ .Values.customList | sha256sum }}
     spec:
       volumes:
         - name: {{ printf "%s-poststart-script" .Release.Name }}
@@ -35,6 +33,8 @@ spec:
             - containerPort: 53
               protocol: UDP
           env:
+          - name: FTLCONF_dns_hosts
+            value: {{ .Values.dnsHosts }}
           - name: FTLCONF_webserver_api_password
             valueFrom:
               secretKeyRef: 
