@@ -28,6 +28,9 @@ spec:
       containers:
         - name: {{ .Release.Name }}
           image: {{ .Values.image }}
+          resources:
+            requests:
+              cpu: 100m
           ports:
             - containerPort: 80
               protocol: TCP
