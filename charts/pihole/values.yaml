@@ -4,7 +4,9 @@ replicas: 3
 timezone: America/Denver
 localUID: "1000"
 localGID: "1000"
-resources: {}
+resources:
+  requests:
+    cpu: 100m
 commonLabels:
   backstage.io/kubernetes-id: pihole
 ingress:
