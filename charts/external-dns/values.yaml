@@ -1,0 +1,21 @@
+global:
+  imageRegistry: harbor.nwallace.io/docker-hub
+  security:
+    allowInsecureImages: true
+
+external-dns:
+  fullnameOverride: external-dns
+  dryRun: true
+  commonLabels:
+    backstage.io/kubernetes-id: external-dns
+  txtOwnerId: Z06135012KVE9P1H4UWDK
+  domainFilters:
+  - nwallace.io
+  aws:
+    credentials:
+      accessKeyIDSecretRef:
+        name: external-dns-route53
+        key: aws_access_key_id
+      secretAccessKeySecretRef:
+        name: external-dns-route53
+        key: aws_secret_access_key
