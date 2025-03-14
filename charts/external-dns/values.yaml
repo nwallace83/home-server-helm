@@ -12,6 +12,7 @@ external-dns:
   domainFilters:
   - nwallace.io
   aws:
+    zoneType: public
     credentials:
       accessKeyIDSecretRef:
         name: external-dns-route53
