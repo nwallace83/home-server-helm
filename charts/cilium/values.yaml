@@ -42,6 +42,8 @@ cilium:
           grafana_folder: "Hubble"
   hubble:
     enabled: true
+    ui:
+      enabled: true
     metrics:
       enableOpenMetrics: true
       serviceMonitor:
