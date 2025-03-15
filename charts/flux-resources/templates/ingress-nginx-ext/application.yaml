@@ -26,6 +26,8 @@ spec:
                 external-dns.alpha.kubernetes.io/hostname: nwallace.io
             publishService:
               enabled: false
+            extraArgs:
+              publish-status-address: nwallace.io
             ingressClass: nginx-ext
           commonLabels:
             backstage.io/kubernetes-id: ingress-nginx-ext
