@@ -16,4 +16,23 @@ spec:
       - {{ print "www."  .Values.ingress.host }}
       secretName: {{ printf "www.%s-tls-secret"  .Values.ingress.host }}
   rules:
-    - {}
+    - host: nwallace.io
+      http:
+        paths:
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: homeassistant
+                port:
+                  number: 80
+    - host: www.nwallace.io
+      http:
+        paths:
+          - path: /(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: homeassistant
+                port:
+                  number: 80
