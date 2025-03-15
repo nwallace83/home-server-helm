@@ -23,7 +23,7 @@ spec:
             service:
               loadBalancerIP: 192.168.2.11
               annotations:
-                external-dns.alpha.kubernetes.io/target: nwallace.io
+                external-dns.alpha.kubernetes.io/hostname: nwallace.io
             ingressClass: nginx-ext
           commonLabels:
             backstage.io/kubernetes-id: ingress-nginx-ext
