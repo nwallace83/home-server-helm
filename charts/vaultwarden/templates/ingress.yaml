@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: ""
+    external-dns.alpha.kubernetes.io/controller: hacktonotmanagethesehostswithexternaldns
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
   labels:
     {{- include "commonLabels" . | nindent 4 }}
