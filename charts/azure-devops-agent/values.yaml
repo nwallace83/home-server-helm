@@ -2,6 +2,7 @@ commonLabels:
   backstage.io/kubernetes-id: azure-devops-agent
 
 azure-devops-agent:
+  replicaCount: 0
   agent:
     organizationUrl: https://dev.azure.com/nathanwallace114
     patSecret: azure-devops-agent-pat
