@@ -46,6 +46,11 @@ cilium:
           grafana_folder: "Hubble"
   hubble:
     enabled: true
+    tls:
+      auto:
+        enabled: true
+        method: helm
+        certValidityDuration: 4000
     ui:
       enabled: true
     relay:
