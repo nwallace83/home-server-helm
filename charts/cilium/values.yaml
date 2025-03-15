@@ -47,6 +47,8 @@ cilium:
     enabled: true
     ui:
       enabled: true
+    relay:
+      enabled: true
     metrics:
       enableOpenMetrics: true
       serviceMonitor:
