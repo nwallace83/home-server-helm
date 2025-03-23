@@ -1,6 +1,10 @@
 commonLabels:
   backstage.io/kubernetes-id: longhorn
 
+global:
+  nodeSelector:
+    node.longhorn.io/enabled: 'true'
+
 longhorn:
   ingress:
     annotations:
@@ -25,8 +29,6 @@ longhorn:
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
     nodeDrainPolicy: block-for-eviction
-    systemManagedComponentsNodeSelector:
-      node.longhorn.io/enabled: 'true'
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
@@ -35,9 +37,3 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
-  longhornManager:
-    nodeSelector:
-      node.longhorn.io/enabled: 'true'
-  longhornDriver:
-    nodeSelector:
-      node.longhorn.io/enabled: 'true'
