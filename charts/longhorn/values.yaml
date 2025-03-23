@@ -36,3 +36,6 @@ longhorn:
   longhornManager:
     nodeSelector:
       node.longhorn.io/enabled: 'true'
+  longhornDriver:
+    nodeSelector:
+      node.longhorn.io/enabled: 'true'
