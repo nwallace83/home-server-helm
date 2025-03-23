@@ -29,6 +29,8 @@ longhorn:
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
     nodeDrainPolicy: block-for-eviction
+    systemManagedComponentsNodeSelector:
+      node.longhorn.io/enabled: 'true'
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
