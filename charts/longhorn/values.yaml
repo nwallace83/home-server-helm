@@ -24,6 +24,7 @@ longhorn:
     storageReservedPercentageForDefaultDisk: 10
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
+    nodeDrainPolicy: block-for-eviction
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
