@@ -1,4 +1,4 @@
-dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
+dbImage: ghcr.io/cloudnative-pg/postgresql:16
 commonLabels:
   backstage.io/kubernetes-id: harbor
 harbor:
