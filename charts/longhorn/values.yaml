@@ -33,3 +33,6 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
+  longhornManager:
+    nodeSelector:
+      node.longhorn.io/enabled: 'true'
