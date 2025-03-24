@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/radarr:5.20.2 # {"$imagepolicy": "home-server:radarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/radarr:5.21.1 # {"$imagepolicy": "home-server:radarr"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
