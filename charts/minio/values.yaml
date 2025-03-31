@@ -42,6 +42,7 @@ minio:
     existingSecret: minio-root-credentials
     rootPasswordSecretKey: password
     rootUserSecretKey: username
+    usePasswordFiles: false
   metrics:
     serviceMonitor:
       enabled: true
