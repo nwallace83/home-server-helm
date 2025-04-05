@@ -1,10 +1,6 @@
 commonLabels:
   backstage.io/kubernetes-id: longhorn
 
-global:
-  nodeSelector:
-    node.longhorn.io/enabled: 'true'
-
 longhorn:
   ingress:
     annotations:
