@@ -41,4 +41,4 @@ readinessProbe:
   periodSeconds: 10
   successThreshold: 1
   failureThreshold: 12
-dnsHosts: "192.168.0.5 server;192.168.0.6 node1;192.168.0.7 node2;192.168.0.8 node3;192.168.2.10 vaultwarden.nwallace.io;192.168.2.13 samba;192.168.0.1 k8s.nwallace.io;192.168.2.11 plex.nwallace.io"
+dnsHosts: "192.168.0.5 server;192.168.0.6 node1;192.168.0.7 node2;192.168.0.8 node3;192.168.2.10 vaultwarden.nwallace.io;192.168.2.13 samba;192.168.0.1 k8s.nwallace.io;192.168.2.15 plex.nwallace.io"
