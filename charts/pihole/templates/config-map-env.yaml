@@ -9,7 +9,7 @@ data:
   FTLCONF_database_maxDBdays: {{ .Values.ftlConfMaxDBDays | default "7" | quote }}
   FTLCONF_dns_rateLimit_count: "0"
   FTLCONF_dns_rateLimit_interval: "0"
-  FTLCONF_dns_upstreams: {{ .Values.dnsOrigins | default "1.1.1.1;8.8.8.8;8.8.4.4" | quote }}
+  FTLCONF_dns_upstreams: {{ .Values.dnsOrigins | default "1.1.1.1;1.0.0.1;8.8.4.4" | quote }}
   PIHOLE_GID: {{ .Values.localGID | quote }}
   PIHOLE_UID: {{ .Values.localUID | quote }}
   TZ: {{ .Values.timezone | quote }}
