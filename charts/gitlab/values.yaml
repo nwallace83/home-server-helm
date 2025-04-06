@@ -23,7 +23,7 @@ global:
       secret: gitlab-postgresql-password
       key: password
   ingress:
-    class: nginx-ext
+    class: nginx
     configureCertmanager: false
     annotations:
       "cert-manager.io/cluster-issuer": letsencrypt-prod
