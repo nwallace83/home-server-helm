@@ -26,8 +26,8 @@ longhorn:
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
     nodeDrainPolicy: block-for-eviction
-    v2DataEngine:
-      v2DataEngineGuaranteedInstanceManagerCPU: 200
+    v2DataEngine: true
+    v2DataEngineGuaranteedInstanceManagerCPU: 0
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
