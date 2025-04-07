@@ -19,12 +19,15 @@ longhorn:
     defaultClassReplicaCount: 2
     reclaimPolicy: Retain
     defaultDataLocality: best-effort
+    dataEngine: v2
   defaultSettings:
     defaultReplicaCount: 1
     storageReservedPercentageForDefaultDisk: 10
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
     nodeDrainPolicy: block-for-eviction
+    v2DataEngine:
+      v2DataEngineGuaranteedInstanceManagerCPU: 200
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
