@@ -21,7 +21,7 @@ longhorn:
     defaultDataLocality: best-effort
     dataEngine: v2
   defaultSettings:
-    defaultReplicaCount: 1
+    defaultReplicaCount: 2
     storageReservedPercentageForDefaultDisk: 10
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
