@@ -6,6 +6,7 @@ metadata:
     {{- include "commonLabels" . | nindent 4 }}
 parameters:
   dataLocality: best-effort
+  dataEngine: v2
   fromBackup: ""
   fsType: ext4
   numberOfReplicas: "1"

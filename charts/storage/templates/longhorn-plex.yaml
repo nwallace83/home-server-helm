@@ -7,6 +7,7 @@ metadata:
 parameters:
   dataLocality: best-effort
   diskSelector: fast
+  dataEngine: v2
   fromBackup: ""
   fsType: ext4
   numberOfReplicas: "2"

@@ -6,12 +6,12 @@ metadata:
     {{- include "commonLabels" . | nindent 4 }}
 parameters:
   dataLocality: strict-local
+  dataEngine: v2
   diskSelector: fast
   fromBackup: ""
   fsType: ext4
   numberOfReplicas: "1"
   staleReplicaTimeout: "30"
-  nodeSelector: "storage"
 provisioner: driver.longhorn.io
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
