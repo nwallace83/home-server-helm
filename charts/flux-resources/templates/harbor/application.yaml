@@ -22,7 +22,7 @@ spec:
   ignoreDifferences:
     - group: ''
       kind: Secret
-      name: harbor-core
+      name: '*'
       jsonPointers:
         - /data/CSRF_KEY
         - /data/secret
@@ -49,12 +49,14 @@ spec:
       jsonPointers:
         - /spec/template/metadata/annotations/checksum~1secret
         - /spec/template/metadata/annotations/checksum~1secret-jobservice
+        - /spec/template/metadata/annotations/checksum~1tls
     - group: apps
       kind: Deployment
       name: harbor-jobservice
       jsonPointers:
         - /spec/template/metadata/annotations/checksum~1secret
         - /spec/template/metadata/annotations/checksum~1secret-core
+        - /spec/template/metadata/annotations/checksum~1~1tls
     - group: apps
       kind: Deployment
       name: harbor-registry
@@ -62,6 +64,12 @@ spec:
         - /spec/template/metadata/annotations/checksum~1secret
         - /spec/template/metadata/annotations/checksum~1secret-jobservice
         - /spec/template/metadata/annotations/checksum~1secret-core
+        - /spec/template/metadata/annotations/checksum~1~1tls
+    - group: apps
+      kind: Deployment
+      name: harbor-portal
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1~1tls
     - group: apps
       kind: StatefulSet
       name: harbor-redis
@@ -74,3 +82,4 @@ spec:
       jsonPointers:
         - /spec/volumeClaimTemplates/0/apiVersion
         - /spec/volumeClaimTemplates/0/kind
+        - /spec/template/metadata/annotations/checksum~1~1tls
