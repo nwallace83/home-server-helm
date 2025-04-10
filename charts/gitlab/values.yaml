@@ -75,7 +75,7 @@ gitlab:
     sidekiq:
       resources:
         requests:
-          cpu: 500m
+          cpu: 50m
       minReplicas: 1
       maxReplicas: 1
       image:
