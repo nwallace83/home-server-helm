@@ -9,7 +9,7 @@ resources:
   limits:
     gpu.intel.com/i915: "1"
   requests:
-    cpu: 250m
+    cpu: 1
     gpu.intel.com/i915: "1"
 ingress:
   host: plex.nwallace.io
