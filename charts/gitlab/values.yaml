@@ -100,6 +100,11 @@ gitlab:
       ingress:
         tls:
           secretName: gitlab.nwallace.io-tls-secret
+      resources:
+        requests:
+          cpu: 50m
+        limits:
+          memory: 3Gi
       minReplicas: 1
       maxReplicas: 1
       image:
