@@ -25,6 +25,8 @@ global:
   ingress:
     class: nginx-ext
     configureCertmanager: false
+    tls:
+      enabled: true
     annotations:
       "cert-manager.io/cluster-issuer": letsencrypt-prod
   nodeSelector:
