@@ -89,6 +89,9 @@ gitlab:
     kas:
       minReplicas: 1
       maxReplicas: 1
+      ingress:
+        tls:
+          secretName: kas.nwallace.io-tls-secret
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas
     gitlab-shell:
