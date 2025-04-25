@@ -25,5 +25,5 @@ appVersion: "0.0.0"
 
 dependencies:
 - name: minio
-  version: ">=14.8.5"
-  repository: https://charts.bitnami.com/bitnami
+  version: ">=16.0.8"
+  repository: oci://registry-1.docker.io/bitnamicharts/minio
