@@ -43,7 +43,7 @@ spec:
     #     - CREATE EXTENSION IF NOT EXISTS plpgsql
     recovery:
       source: gitlab
-      database: gitlabhq_production
+      database: gitlab-old
       owner: gitlab
       secret:
         name: gitlab-postgresql-password
@@ -77,7 +77,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: s3://gitlab-database/2024-07-20
+      destinationPath: s3://gitlab-database/
       endpointURL: https://minio.nwallace.io
       data:
         compression: gzip
@@ -93,7 +93,7 @@ spec:
   externalClusters:
     - name: gitlab
       barmanObjectStore:
-        destinationPath: s3://gitlab-database/2024-07-18
+        destinationPath: s3://gitlab-database/
         endpointURL: https://minio.nwallace.io
         wal:
           maxParallel: 8
