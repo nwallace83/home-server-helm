@@ -32,8 +32,8 @@ spec:
     #   secret:
     #     name: vaultwarden-postgresql-password
     recovery:
-      source: vaultwarden-old
-      database: vaultwarden
+      source: vaultwarden
+      database: vaultwarden-old
       owner: vaultwarden
       secret:
         name: vaultwarden-postgresql-password
@@ -81,7 +81,7 @@ spec:
           name: vaultwarden-postgresql-minio
           key: SecretKey
   externalClusters:
-    - name: vaultwarden-old
+    - name: vaultwarden
       barmanObjectStore:
         destinationPath: s3://vaultwarden-database
         endpointURL: https://minio.nwallace.io
