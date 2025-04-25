@@ -27,6 +27,7 @@ longhorn:
     createDefaultDiskLabeledNodes: true
     guaranteedInstanceManagerCPU: 3
     nodeDrainPolicy: block-for-eviction
+    orphanAutoDeletion: true
     v1DataEngine: true
     v2DataEngine: true
     v2DataEngineGuaranteedInstanceManagerCPU: 1000
