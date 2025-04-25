@@ -14,8 +14,6 @@ argo-cd:
   server:
     extraArgs:
       - '--disable-auth'
-    nodeSelector: 
-      kubernetes.io/hostname: server
     metrics:
       enabled: true
       serviceMonitor:
