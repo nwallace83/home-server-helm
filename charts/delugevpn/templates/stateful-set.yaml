@@ -17,8 +17,6 @@ spec:
         {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: server
       terminationGracePeriodSeconds: 10
       containers:
         - name: delugevpn
