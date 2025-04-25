@@ -28,8 +28,7 @@ longhorn:
     nodeDrainPolicy: block-for-eviction
     orphanAutoDeletion: true
     v1DataEngine: true
-    v2DataEngine: true
-    v2DataEngineGuaranteedInstanceManagerCPU: 1000
+    v2DataEngine: false
   csi:
     attacherReplicaCount: 1
     provisionerReplicaCount: 1
