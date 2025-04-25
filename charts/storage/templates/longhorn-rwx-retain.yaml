@@ -15,4 +15,4 @@ parameters:
   fsType: "ext4"
   nfsOptions: "vers=4.2,noresvport,softerr,timeo=600,retrans=5"
   recurringJobSelector: '[{"name":"backup", "isGroup":true},{"name":"default", "isGroup":true}]'
-  dataEngine: v2
+  dataEngine: v1

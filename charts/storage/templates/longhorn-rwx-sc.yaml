@@ -14,4 +14,4 @@ parameters:
   fromBackup: ""
   fsType: "ext4"
   nfsOptions: "vers=4.2,noresvport,softerr,timeo=600,retrans=5"
-  dataEngine: v2
+  dataEngine: v1
