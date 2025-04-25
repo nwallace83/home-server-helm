@@ -67,7 +67,7 @@ spec:
   backup:
     retentionPolicy: "7d"
     barmanObjectStore:
-      destinationPath: s3://vaultwarden-database
+      destinationPath: s3://vaultwarden-database/new
       endpointURL: https://minio.nwallace.io
       data:
         compression: gzip
