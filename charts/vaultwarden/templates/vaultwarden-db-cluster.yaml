@@ -33,7 +33,7 @@ spec:
     #     name: vaultwarden-postgresql-password
     recovery:
       source: vaultwarden
-      database: vaultwarden-old
+      database: vaultwarden
       owner: vaultwarden
       secret:
         name: vaultwarden-postgresql-password
