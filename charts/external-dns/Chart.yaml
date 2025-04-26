@@ -25,5 +25,5 @@ appVersion: "0.0.0"
 
 dependencies:
 - name: external-dns
-  version: ">=8.7.7"
-  repository: https://charts.bitnami.com/bitnami
+  version: ">=8.8.0"
+  repository: oci://harbor.nwallace.io/docker-hub/bitnamicharts

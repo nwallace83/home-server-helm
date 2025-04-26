@@ -1,6 +1,6 @@
 dependencies:
 - name: external-dns
-  repository: https://charts.bitnami.com/bitnami
+  repository: oci://harbor.nwallace.io/docker-hub/bitnamicharts
   version: 8.8.0
-digest: sha256:011250eda4c836f1a98be9c6842ffe2bd8ea34622b647f5fcdb54e4f06ecc180
-generated: "2025-04-24T10:20:12.119367682Z"
+digest: sha256:04a62a2f30254332f48291573003e525fe5238ab97c7a6143a1b2790dadc7e58
+generated: "2025-04-25T17:58:22.197407-06:00"
