@@ -54,10 +54,9 @@ minio:
     registry: harbor.nwallace.io/docker-hub
   commonLabels:
     backstage.io/kubernetes-id: minio
-  provisioning:
-    resources:
-      limits:
-        ephemeral-storage: 2Gi
-        memory: 2Gi
-      requests:
-        cpu: 250m
+  resources:
+    limits:
+      ephemeral-storage: 2Gi
+      memory: 2Gi
+    requests:
+      cpu: 250m
