@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/prowlarr:1.35.1 # {"$imagepolicy": "home-server:prowlarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/prowlarr:1.36.3 # {"$imagepolicy": "home-server:prowlarr"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
