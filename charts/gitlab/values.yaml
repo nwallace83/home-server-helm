@@ -85,7 +85,7 @@ gitlab:
     gitaly:
       persistence:
         storageClass: longhorn
-        size: 500Mi
+        size: 5Gi
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitaly
     kas:
