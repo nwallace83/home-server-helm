@@ -1,17 +1,12 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/flaresolverr/flaresolverr:v3.3.21 # {"$imagepolicy": "home-server:flaresolverr"}
+image: harbor.nwallace.io/docker-hub/flaresolverr/flaresolverr:v3.3.22 # {"$imagepolicy": "home-server:flaresolverr"}
 localUID: "1000"
 localGID: "1000"
-
 commonLabels:
   backstage.io/kubernetes-id: flaresolverr
-
 resources: {}
-
 replicas: 1
-
 imagePullPolicy: IfNotPresent
-
 livenessProbe:
   httpGet:
     path: /
