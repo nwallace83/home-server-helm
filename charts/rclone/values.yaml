@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/bitnami/rclone:1.69.3 # {"$imagepolicy": "home-server:rclone"}
+image: harbor.nwallace.io/docker-hub/bitnami/rclone:1.70.2 # {"$imagepolicy": "home-server:rclone"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
