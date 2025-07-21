@@ -1,6 +1,6 @@
 dependencies:
 - name: azure-devops-agent
   repository: https://btungut.github.io
-  version: 2.3.0
-digest: sha256:83673139e04d0e85ff92710d6b9c0d61beb2fb393de14bea32e1567edcc889b6
-generated: "2025-06-10T22:20:19.8104591Z"
+  version: 2.4.0
+digest: sha256:5e01c7a4470e5e2ceaba46df6d4a1b21213ec1204edfde836333bc7a5c06de05
+generated: "2025-07-21T22:20:22.386664459Z"
