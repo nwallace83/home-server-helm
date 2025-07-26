@@ -9,3 +9,4 @@ kured:
     period: 5m0s
     drainTimeout: 15m0s
     forceReboot: true
+    drainGracePeriod: 300
