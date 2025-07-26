@@ -6,11 +6,11 @@ kured:
   metrics:
     create: true
   configuration:
-    period: 1m0s
-    drainTimeout: 15m0s
+    period: 5m0s
+    drainTimeout: 30m0s
     forceReboot: true
-    drainGracePeriod: 60
-    skipWaitForDeleteTimeout: 60
+    drainGracePeriod: 300
+    skipWaitForDeleteTimeout: 300
     timeZone: America/Denver
     startTime: 01:00:00
-    endTime: '23:59:59'
+    endTime: '06:00:00'
