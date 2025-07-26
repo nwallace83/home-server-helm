@@ -48,8 +48,8 @@ harbor:
         storageClass: longhorn
       registry:
         existingClaim: harbor-registry
-        size: 1Gi
-        storageClass: nfs
+        size: 20Gi
+        storageClass: longhorn
       trivy:
         size: 9Gi
         storageClass: longhorn
