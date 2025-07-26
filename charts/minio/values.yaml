@@ -11,17 +11,16 @@ minio:
   fullnameOverride: minio
   nodeSelector:
     kubernetes.io/hostname: server
-  console:
-    ingress:
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-        nginx.ingress.kubernetes.io/use-regex: 'true'
-      enabled: true
-      hostname: minio-web.nwallace.io
-      tls: true
-      ingressClassName: nginx-ext
   ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+    enabled: true
+    hostname: minio-web.nwallace.io
+    tls: true
+    ingressClassName: nginx-ext
+  apiIngress:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/ssl-redirect: 'true'
