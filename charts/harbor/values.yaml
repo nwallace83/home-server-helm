@@ -47,7 +47,6 @@ harbor:
         size: 100Mi
         storageClass: longhorn
       registry:
-        existingClaim: harbor-registry
         size: 20Gi
         storageClass: longhorn
       trivy:
