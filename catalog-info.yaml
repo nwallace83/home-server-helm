@@ -36,6 +36,7 @@ spec:
     - .backstage/catalog-intel-device-plugins-gpu.yaml
     - .backstage/catalog-intel-device-plugins-operator.yaml
     - .backstage/catalog-kube-prometheus-stack.yaml
+    - .backstage/catalog-kured.yaml
     - .backstage/catalog-longhorn.yaml
     - .backstage/catalog-mad-bazarr.yaml
     - .backstage/catalog-mad-radarr.yaml
