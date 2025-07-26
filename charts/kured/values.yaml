@@ -1,0 +1,9 @@
+kured:
+  image:
+    repository: harbor.nwallace.io/github/kubereboot/kured
+  podLabels:
+    backstage.io/kubernetes-id: kured
+  metrics:
+    create: true
+  configuration:
+    period: 5m0s
