@@ -4,26 +4,44 @@ flux2:
     image: harbor.nwallace.io/github/fluxcd/helm-controller
     labels: 
       backstage.io/kubernetes-id: flux
+    resources:
+      requests:
+        cpu: 25m
   imageAutomationController:
     image: harbor.nwallace.io/github/fluxcd/image-automation-controller
     labels: 
       backstage.io/kubernetes-id: flux
+    resources:
+      requests:
+        cpu: 25m
   imageReflectionController:
     image: harbor.nwallace.io/github/fluxcd/image-reflector-controller
     labels: 
       backstage.io/kubernetes-id: flux
+    resources:
+      requests:
+        cpu: 25m
   kustomizeController:
     image: harbor.nwallace.io/github/fluxcd/kustomize-controller
     labels: 
       backstage.io/kubernetes-id: flux
+    resources:
+      requests:
+        cpu: 25m
   notificationController:
     image: harbor.nwallace.io/github/fluxcd/notification-controller
     labels: 
       backstage.io/kubernetes-id: flux
+    resources:
+      requests:
+        cpu: 25m
   sourceController:
     image: harbor.nwallace.io/github/fluxcd/source-controller
     labels: 
       backstage.io/kubernetes-id: flux
+    resources:
+      requests:
+        cpu: 25m
   cli:
     image:  harbor.nwallace.io/github/fluxcd/flux-cli
     labels: 
