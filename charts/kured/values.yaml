@@ -7,3 +7,5 @@ kured:
     create: true
   configuration:
     period: 5m0s
+    drainTimeout: 10m
+    forceReboot: true
