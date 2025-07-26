@@ -25,7 +25,7 @@ longhorn:
     storageReservedPercentageForDefaultDisk: 10
     defaultDataLocality: best-effort
     createDefaultDiskLabeledNodes: true
-    nodeDrainPolicy: block-for-eviction
+    nodeDrainPolicy: allow-node-drain
     orphanAutoDeletion: true
     v1DataEngine: true
     v2DataEngine: false
