@@ -71,3 +71,10 @@ harbor:
     gitHubToken: ''
     nodeSelector:
       kubernetes.io/arch: amd64
+    resources:
+      limits:
+        cpu: '1'
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 128Mi
