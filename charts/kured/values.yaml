@@ -6,7 +6,8 @@ kured:
   metrics:
     create: true
   configuration:
-    period: 5m0s
+    period: 1m0s
     drainTimeout: 15m0s
     forceReboot: true
     drainGracePeriod: 300
+    skipWaitForDeleteTimeout: 300
