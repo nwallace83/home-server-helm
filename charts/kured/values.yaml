@@ -13,4 +13,4 @@ kured:
     skipWaitForDeleteTimeout: 60
     timeZone: America/Denver
     startTime: 01:00:00
-    endTime: 06:00:00
+    endTime: '23:59:59'
