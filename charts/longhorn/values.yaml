@@ -30,7 +30,7 @@ longhorn:
     v1DataEngine: true
     v2DataEngine: false
   csi:
-    attacherReplicaCount: 1
+    attacherReplicaCount: 2
     provisionerReplicaCount: 1
     resizerReplicaCount: 1
     snapshotterReplicaCount: 1
