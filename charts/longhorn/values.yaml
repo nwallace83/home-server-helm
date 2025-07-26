@@ -31,7 +31,7 @@ longhorn:
     v2DataEngine: false
   csi:
     attacherReplicaCount: 2
-    provisionerReplicaCount: 1
+    provisionerReplicaCount: 2
     resizerReplicaCount: 1
     snapshotterReplicaCount: 1
   metrics:
