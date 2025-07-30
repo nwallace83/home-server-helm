@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/vaultwarden/server:1.34.2 # {"$imagepolicy": "home-server:vaultwarden"}
+image: harbor.nwallace.io/docker-hub/vaultwarden/server:1.34.3 # {"$imagepolicy": "home-server:vaultwarden"}
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
 localUID: "1000"
 localGID: "1000"
