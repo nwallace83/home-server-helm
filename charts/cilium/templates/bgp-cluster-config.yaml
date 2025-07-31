@@ -13,6 +13,5 @@ spec:
           peerASN: 65000
           peerAddress: 192.168.0.1
           peerConfigRef:
-            group: cilium.io
             kind: CiliumBGPPeerConfig
             name: cilium-peer
