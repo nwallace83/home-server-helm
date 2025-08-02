@@ -26,6 +26,8 @@ spec:
                 operator: In
                 values:
                 - "true"
+      nodeSelector:
+        kubernetes.io/hostname: server
       terminationGracePeriodSeconds: 10
       containers:
         - name: plex
