@@ -65,9 +65,19 @@ spec:
                   - sh
                   - -c
                   - 'nohup sh /poststart.sh &>/proc/1/fd/1 &'
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - {{ .Chart.Name }}
+              topologyKey: "kubernetes.io/hostname"
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 50%
-      maxSurge: 100%
+      maxSurge: 50%
   revisionHistoryLimit: 0
