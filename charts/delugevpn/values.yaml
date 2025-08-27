@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn:2.2.0-1-03 # {"$imagepolicy": "home-server:delugevpn"}
+image: harbor.nwallace.io/docker-hub/binhex/arch-delugevpn:2.2.0-1-04 # {"$imagepolicy": "home-server:delugevpn"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
