@@ -74,8 +74,10 @@ kube-prometheus-stack:
       existingSecret: grafana-credentials
     persistence:
       enabled: true
-      storageClassName: longhorn
+      storageClassName: longhorn-rwx
       size: 1Gi
+      accessModes:
+        - ReadWriteMany
     ingress:
       enabled: true
       annotations:
