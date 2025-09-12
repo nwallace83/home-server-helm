@@ -1,6 +1,6 @@
 dependencies:
 - name: intel-device-plugins-gpu
   repository: https://intel.github.io/helm-charts/
-  version: 0.32.1
-digest: sha256:179ff38acc6dddcf61a9f7cb0dde3eec9b96f15ca5d4efd7c24a57a7b4741257
-generated: "2025-05-14T06:20:11.810033792Z"
+  version: 0.34.0
+digest: sha256:26e88fe437acf54d409897659cc55a13e18ab596fed2c6a2bab834749c6e0ae6
+generated: "2025-09-12T18:20:19.192613693Z"
