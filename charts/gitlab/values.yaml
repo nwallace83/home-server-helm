@@ -47,6 +47,7 @@ global:
   registry:
     enabled: false
 gitlab:
+  installCertmanager: false
   gitlab-runner:
     runners:
       config: |
@@ -157,8 +158,6 @@ gitlab:
     minReplicas: 1
     maxReplicas: 1
   prometheus:
-    install: false
-  certmanager:
     install: false
   upgradeCheck:
     enabled: false
