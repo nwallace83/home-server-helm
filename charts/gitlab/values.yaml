@@ -158,7 +158,7 @@ gitlab:
     maxReplicas: 1
   prometheus:
     install: false
-  cert-manager:
+  certmanager:
     install: false
   upgradeCheck:
     enabled: false
