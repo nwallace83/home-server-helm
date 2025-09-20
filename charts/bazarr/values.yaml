@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.5.2 # {"$imagepolicy": "home-server:bazarr"}
+image: harbor.nwallace.io/docker-hub/linuxserver/bazarr:1.5.3 # {"$imagepolicy": "home-server:bazarr"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
