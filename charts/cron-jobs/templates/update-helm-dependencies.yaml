@@ -22,7 +22,7 @@ spec:
               command: ["/bin/sh","-c","git clone https://gitlab.nwallace.io/home-server/home-server-helm.git"]
               volumeMounts:
                 - name: git-repo
-                  mountPath: /home-server-helm
+                  mountPath: /git/home-server-helm
               imagePullPolicy: {{ .Values.imagePullPolicy}}
             - name: helm-dependency-update
               image: {{ .Values.helmImage }}
@@ -56,7 +56,7 @@ spec:
                       key: password
               volumeMounts:
                 - name: git-repo
-                  mountPath: /home-server-helm
+                  mountPath: /git/home-server-helm
               imagePullPolicy: {{ .Values.imagePullPolicy }}
           restartPolicy: Never
   successfulJobsHistoryLimit: 1
