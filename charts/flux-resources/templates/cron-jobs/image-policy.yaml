@@ -32,7 +32,7 @@ spec:
     name: git
   policy:
     semver:
-      range: ">=2.47.0"
+      range: ">=2.49.1"
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
