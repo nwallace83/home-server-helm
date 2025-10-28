@@ -4,6 +4,8 @@ global:
     allowInsecureImages: true
 
 external-dns:
+  image:
+    repository: harbor.nwallace.io/k8s/external-dns/external-dns
   fullnameOverride: external-dns
   txtPrefix: txt-
   policy: sync
@@ -12,12 +14,17 @@ external-dns:
   txtOwnerId: Z06135012KVE9P1H4UWDK
   domainFilters:
   - nwallace.io
-  aws:
-    zoneType: public
-    credentials:
-      accessKeyIDSecretRef:
-        name: external-dns-route53
-        key: aws_access_key_id
-      secretAccessKeySecretRef:
-        name: external-dns-route53
-        key: aws_secret_access_key
+  provider: aws
+  env:
+    - name: AWS_DEFAULT_REGION
+      value: us-east-1
+    - name: AWS_SHARED_CREDENTIALS_FILE
+      value: /etc/aws/credentials/aws_credentials
+  extraVolumes:
+    - name: aws-credentials
+      secret:
+        secretName: external-dns-route53
+  extraVolumeMounts:
+    - name: aws-credentials
+      mountPath: /etc/aws/credentials
+      readOnly: true

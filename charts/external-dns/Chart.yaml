@@ -25,5 +25,5 @@ appVersion: "0.0.0"
 
 dependencies:
 - name: external-dns
-  version: ">=8.8.0"
-  repository: oci://harbor.nwallace.io/docker-hub/bitnamicharts
+  version: ">=1.19.0"
+  repository: https://kubernetes-sigs.github.io/external-dns
