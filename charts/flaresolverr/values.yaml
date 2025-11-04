@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/flaresolverr/flaresolverr:v3.4.3 # {"$imagepolicy": "home-server:flaresolverr"}
+image: harbor.nwallace.io/docker-hub/flaresolverr/flaresolverr:v3.4.4 # {"$imagepolicy": "home-server:flaresolverr"}
 localUID: "1000"
 localGID: "1000"
 commonLabels:
