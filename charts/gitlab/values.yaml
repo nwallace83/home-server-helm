@@ -1,4 +1,4 @@
-dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:15
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
 global:
   hosts:
     domain: nwallace.io
