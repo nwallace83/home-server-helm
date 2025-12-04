@@ -1,4 +1,4 @@
-image: docker.io/pihole/pihole:2025.11.0 # {"$imagepolicy": "home-server:pihole"}
+image: docker.io/pihole/pihole:2025.11.1 # {"$imagepolicy": "home-server:pihole"}
 loadBalancerIP: 192.168.2.12
 replicas: 3
 timezone: America/Denver
