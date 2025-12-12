@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/homeassistant/home-assistant:2025.12.2 # {"$imagepolicy": "home-server:homeassistant"}
+image: harbor.nwallace.io/docker-hub/homeassistant/home-assistant:2025.12.3 # {"$imagepolicy": "home-server:homeassistant"}
 commonLabels:
   backstage.io/kubernetes-id: homeassistant
 resources: {}
