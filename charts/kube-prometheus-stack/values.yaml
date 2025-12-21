@@ -45,7 +45,7 @@ kube-prometheus-stack:
           registry: harbor.nwallace.io/quay
       patch:
         image:
-          registry: harbor.nwallace.io/k8s
+          registry: harbor.nwallace.io/github
     prometheusConfigReloader:
       image:
         registry: harbor.nwallace.io/quay
