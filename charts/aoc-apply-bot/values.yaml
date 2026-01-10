@@ -1,0 +1,4 @@
+image: harbor.nwallace.io/home-server/aoc-apply-bot:latest
+replicas: 3
+commonLabels:
+  backstage.io/kubernetes-id: pihole
