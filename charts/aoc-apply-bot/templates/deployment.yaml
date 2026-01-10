@@ -14,9 +14,6 @@ spec:
       labels:
         {{- include "commonLabels" . | nindent 8 }}
         app: {{ .Release.Name }}
-      annotations:
-        checksum/postStart: {{ include (print $.Template.BasePath "/config-map-poststart-script.yaml") . | sha256sum }}
-        checksum/env: {{ include (print $.Template.BasePath "/config-map-env.yaml") . | sha256sum }}
     spec:
       containers:
         - name: {{ .Release.Name }}
