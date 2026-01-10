@@ -18,13 +18,6 @@ spec:
         checksum/postStart: {{ include (print $.Template.BasePath "/config-map-poststart-script.yaml") . | sha256sum }}
         checksum/env: {{ include (print $.Template.BasePath "/config-map-env.yaml") . | sha256sum }}
     spec:
-      volumes:
-        - name: {{ printf "%s-poststart-script" .Release.Name }}
-          configMap:
-            name: {{ printf "%s-poststart-script" .Release.Name }}
-            items:
-              - key: poststart.sh
-                path: poststart.sh
       containers:
         - name: {{ .Release.Name }}
           image: {{ .Values.image }}
