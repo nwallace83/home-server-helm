@@ -23,6 +23,8 @@ argo-cd:
     replicas: 1
     httproute:
       enabled: true
+      hostnames:
+        - argocd.nwallace.io
       parentRefs:
       - group: gateway.networking.k8s.io
         kind: Gateway
