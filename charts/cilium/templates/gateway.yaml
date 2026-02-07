@@ -1,0 +1,133 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gateway-internal
+  namespace: kube-system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  addresses:
+  - type: IPAddress
+    value: 192.168.2.16
+  gatewayClassName: cilium
+  listeners:
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: headlamp
+    hostname: headlamp.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: headlamp.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: vaultwarden
+    hostname: vaultwarden.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: vaultwarden.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: vault
+    hostname: vault.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: vault.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: prowlarr
+    hostname: prowlarr.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: prowlarr.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: pihole
+    hostname: pihole.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: pihole.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: longhorn
+    hostname: longhorn.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: longhorn.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: prometheus
+    hostname: prometheus.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: prometheus.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: grafana
+    hostname: grafana.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: grafana.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: harbor
+    hostname: harbor.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: harbor.nwallace.io-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: argocd
+    hostname: argocd.nwallace.io
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: argocd.nwallace.io-tls-secret
