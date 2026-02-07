@@ -11,16 +11,6 @@ kube-prometheus-stack:
           namespace: kube-system
         hostnames:
           - prometheus.nwallace.io
-    ingress:
-      enabled: true
-      annotations:
-        "cert-manager.io/cluster-issuer": letsencrypt-prod
-      hosts:
-      - prometheus.nwallace.io
-      tls:
-        - hosts:
-          - prometheus.nwallace.io
-          secretName: prometheus-nwallace.io-tls-secret
     prometheusSpec:
       image:
         regitry: harbor.nwallace.io/quay
@@ -94,15 +84,5 @@ kube-prometheus-stack:
           namespace: kube-system
         hostnames:
           - grafana.nwallace.io
-    ingress:
-      enabled: true
-      annotations:
-        "cert-manager.io/cluster-issuer": letsencrypt-prod
-      hosts:
-      - grafana.nwallace.io
-      tls:
-        - hosts:
-          - grafana.nwallace.io
-          secretName: grafana-nwallace.io-tls-secret
   commonLabels:
     backstage.io/kubernetes-id: kube-prometheus-stack
