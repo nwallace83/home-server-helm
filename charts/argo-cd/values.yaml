@@ -1,4 +1,5 @@
 global:
+  domain: argocd.nwallace.io
   image:
     repository: harbor.nwallace.io/quay/argoproj/argocd
   additionalLabels:
