@@ -2,7 +2,7 @@ commonLabels:
   backstage.io/kubernetes-id: longhorn
 
 longhorn:
-  httpRoute:
+  httproute:
     enabled: true
     hostnames:
     - longhorn.nwallace.io
