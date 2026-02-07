@@ -3,6 +3,7 @@ commonLabels:
   backstage.io/kubernetes-id: harbor
 harbor:
   expose:
+    type: route
     route:
       parentRefs:
       - group: gateway.networking.k8s.io	
