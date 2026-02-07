@@ -40,6 +40,8 @@ cilium:
         keepCapNetBindService: true
         envoy:
         - NET_BIND_SERVICE
+        - CAP_NET_ADMIN
+        - CAP_SYS_ADMIN
     prometheus:
       enabled: true
       serviceMonitor:
