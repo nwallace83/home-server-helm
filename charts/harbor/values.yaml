@@ -58,8 +58,6 @@ harbor:
     replicas: 1
   nginx:
     replicas: 0
-  internalTLS:
-    enabled: false
   database:
     external:
       existingSecret: harbor-postgresql-password
