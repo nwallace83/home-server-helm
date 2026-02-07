@@ -115,8 +115,6 @@ vault:
     updateStrategyType: RollingUpdate
   injector:
     enabled: false
-  global:
-    tlsDisable: false
   csi:
     daemonSet:
       extraLabels:
