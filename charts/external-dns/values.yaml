@@ -31,4 +31,4 @@ external-dns:
   sources:
     - service
     - ingress
-    - gateway
+    - gateway-httproute
