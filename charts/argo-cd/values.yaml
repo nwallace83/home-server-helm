@@ -13,7 +13,7 @@ argo-cd:
       "server.insecure": true
   server:
     extraArgs:
-      - '--disable-auth'
+    - '--disable-auth'
     metrics:
       enabled: true
       serviceMonitor:
@@ -21,16 +21,13 @@ argo-cd:
           release: kube-prometheus-stack
         enabled: true
     replicas: 1
-    ingress:
-      ingressClassName: nginx
+    httproute:
       enabled: true
-      hostname: argocd.nwallace.io
-      annotations:
-        "cert-manager.io/cluster-issuer": letsencrypt-prod
-      extraTls:
-        - hosts:
-          - argocd.nwallace.io
-          secretName: argocd.nwallace.io-tls-secret
+      parentRefs:
+      - group: gateway.networking.k8s.io
+        kind: Gateway
+        name: gateway-internal
+        namespace: kube-system
     extensions:
       image:
         repository: harbor.nwallace.io/quay/argoprojlabs/argocd-extension-installer
