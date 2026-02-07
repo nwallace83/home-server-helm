@@ -88,6 +88,16 @@ kube-prometheus-stack:
       size: 1Gi
       accessModes:
         - ReadWriteMany
+    route:
+      main:
+        enabled: true
+        parentRefs:
+        - group: gateway.networking.k8s.io	
+          kind: Gateway
+          name: gateway-internal
+          namespace: kube-system
+        hostnames:
+          - grafana.nwallace.io
     ingress:
       enabled: true
       annotations:
