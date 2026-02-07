@@ -19,13 +19,13 @@ spec:
             type: PathPrefix
             value: /admin
     - matches:
-        - path:
-            type: PathPrefix
-            value: "/"
+      - path:
+          type: Exact
+          value: "/"
       filters:
         - type: RequestRedirect
           requestRedirect:
             statusCode: 302
             path:
-              type: Absolute
-              value: "/admin"
+              type: ReplaceFullPath
+              replaceFullPath: "/admin"
