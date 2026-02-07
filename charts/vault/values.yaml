@@ -68,7 +68,7 @@ vault:
           ui = true
           cluster_name = "vault-integrated-storage"
           listener "tcp" {
-            tls_disable = 0
+            tls_disable = 1
             address = "[::]:8200"
             cluster_address = "[::]:8201"
             tls_cert_file = "/vault/userconfig/vault-tls-secret/tls.crt"
