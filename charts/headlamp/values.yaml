@@ -1,19 +1,11 @@
 headlamp:
-  ingress:
+  httpRoute:
     enabled: true
-    ingressClassName: nginx
-    hosts: 
-      - host: headlamp.nwallace.io
-        paths:
-          - path: /
-            type: Prefix
-    tls:
-      - hosts:
-          - headlamp.nwallace.io
-        secretName: headlamp.nwallace.io-tls-secret
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    parentRefs:
+      - name: gateway-internal
+        namespace: kube-system
+    hostnames:
+      - headlamp.nwallace.io
   volumes:
     - name: headlamp-plugins
       emptyDir: {}
