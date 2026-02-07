@@ -6,6 +6,15 @@ vaultImage: harbor.nwallace.io/docker-hub/hashicorp/vault:1.18 # {"$imagepolicy"
 commonLabels:
   backstage.io/kubernetes-id: vault
 
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io	
+    kind: Gateway
+    name: gateway-internal
+    namespace: kube-system
+  hostnames:
+  - vault.nwallace.io
+
 vault:
   server:
     extraLabels:
@@ -40,15 +49,6 @@ vault:
     serviceAccount:
       extraLabels:
         backstage.io/kubernetes-id: vault
-    ingress:
-      enabled: true
-      hosts:
-        - host: vault.nwallace.io
-      ingressClassName: nginx
-      tls:
-        - hosts:
-            - vault.nwallace.io
-          secretName: vault.nwallace.io-tls-secret
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         nginx.ingress.kubernetes.io/ssl-redirect: 'true'
