@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: hacktonotmanagethesehostswithexternaldns
+spec:
+  hostnames:
+    {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
+  parentRefs:
+    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
+  rules:
+    - backendRefs:
+        - name: {{ .Release.Name }}
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /

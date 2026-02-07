@@ -17,6 +17,12 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/limit-rps: "50"
   ingressClassName: nginx
+httpRoute:
+  parentRefs:
+  - name: gateway-internal
+    namespace: kube-system
+  hostnames:
+  - vaultwarden.nwallace.io
 ingressExternal:
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: if ($uri = /admin) {return 302 /;}
