@@ -2,16 +2,15 @@ commonLabels:
   backstage.io/kubernetes-id: longhorn
 
 longhorn:
-  ingress:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-      nginx.ingress.kubernetes.io/use-regex: 'true'
+  httpRoute:
     enabled: true
-    host: longhorn.nwallace.io
-    tls: true
-    ingressClassName: nginx
-    tlsSecret: longhorn.nwallace.io-tls-secret
+    hostnames:
+    - longhorn.nwallace.io
+    parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway-internal
+      namespace: kube-system
   persistence:
     recurringJobSelector:
       jobList: '[{"name":"backup", "isGroup":true},{"name":"default", "isGroup":true}]'
