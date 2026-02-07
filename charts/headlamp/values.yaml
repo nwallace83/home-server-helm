@@ -2,26 +2,28 @@ headlamp:
   httpRoute:
     enabled: true
     parentRefs:
-      - name: gateway-internal
-        namespace: kube-system
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway-internal
+      namespace: kube-system
     hostnames:
-      - headlamp.nwallace.io
+    - headlamp.nwallace.io
   volumes:
-    - name: headlamp-plugins
-      emptyDir: {}
+  - name: headlamp-plugins
+    emptyDir: {}
   volumeMounts:
-    - name: headlamp-plugins
-      mountPath: /headlamp/plugins
+  - name: headlamp-plugins
+    mountPath: /headlamp/plugins
   image:
     registry: harbor.nwallace.io/github
   initContainers:
-    - command:
-        - /bin/sh
-        - -c
-        - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
-      image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:latest
-      imagePullPolicy: Always
+  - command:
+    - /bin/sh
+    - -c
+    - mkdir -p /build/plugins && cp -r /plugins/* /build/plugins/
+    image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:latest
+    imagePullPolicy: Always
+    name: headlamp-plugins
+    volumeMounts:
+    - mountPath: /build/plugins
       name: headlamp-plugins
-      volumeMounts:
-        - mountPath: /build/plugins
-          name: headlamp-plugins
