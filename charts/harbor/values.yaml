@@ -4,6 +4,8 @@ commonLabels:
 harbor:
   expose:
     type: route
+    tls:
+      enabled: false
     route:
       parentRefs:
       - group: gateway.networking.k8s.io	
