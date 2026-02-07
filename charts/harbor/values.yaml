@@ -3,16 +3,14 @@ commonLabels:
   backstage.io/kubernetes-id: harbor
 harbor:
   expose:
-    ingress:
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
+    route:
+      parentRefs:
+      - group: gateway.networking.k8s.io	
+        kind: Gateway
+        name: gateway-internal
+        namespace: kube-system
       hosts:
-        core: harbor.nwallace.io
-      className: nginx
-    tls:
-      certSource: secret
-      secret:
-        secretName: harbor.nwallace.io-tls-secret
+      - harbor.nwallace.io
   core:
     nodeSelector:
       kubernetes.io/arch: amd64
