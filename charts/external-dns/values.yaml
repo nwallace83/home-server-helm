@@ -28,3 +28,4 @@ external-dns:
     - name: aws-credentials
       mountPath: /etc/aws/credentials
       readOnly: true
+  gatewayNamespace: kube-system
