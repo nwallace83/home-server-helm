@@ -1,17 +1,17 @@
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: ingress-nginx
-  namespace: ingress-nginx
-spec:
-  interval: 60m
-  chart:
-    spec:
-      chart: ./charts/ingress-nginx
-      sourceRef:
-        kind: GitRepository
-        name: home-server
-        namespace: home-server
-      reconcileStrategy: Revision
-  driftDetection:
-    mode: enabled
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: ingress-nginx
+#   namespace: ingress-nginx
+# spec:
+#   interval: 60m
+#   chart:
+#     spec:
+#       chart: ./charts/ingress-nginx
+#       sourceRef:
+#         kind: GitRepository
+#         name: home-server
+#         namespace: home-server
+#       reconcileStrategy: Revision
+#   driftDetection:
+#     mode: enabled

@@ -1,18 +1,18 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: ingress-nginx
-  namespace: argo-cd
-spec:
-  destination:
-    namespace: ingress-nginx
-    server: https://kubernetes.default.svc
-  project: home-server
-  source:
-    path: charts/ingress-nginx
-    repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
-    targetRevision: HEAD
-  syncPolicy:
-    syncOptions:
-      - RespectIgnoreDifferences=true
-      - ServerSideApply=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: ingress-nginx
+#   namespace: argo-cd
+# spec:
+#   destination:
+#     namespace: ingress-nginx
+#     server: https://kubernetes.default.svc
+#   project: home-server
+#   source:
+#     path: charts/ingress-nginx
+#     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
+#     targetRevision: HEAD
+#   syncPolicy:
+#     syncOptions:
+#       - RespectIgnoreDifferences=true
+#       - ServerSideApply=true
