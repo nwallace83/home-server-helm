@@ -23,7 +23,6 @@ spec:
       certificateRefs:
       - kind: Secret
         name: nwallace.io-internal-tls-secret
-  listeners:
   - allowedRoutes:
       namespaces:
         from: All
