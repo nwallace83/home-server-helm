@@ -7,29 +7,28 @@ global:
   security:
     allowInsecureImages: true
 
+
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io	
+    kind: Gateway
+    name: gateway-external
+    namespace: kube-system
+  web:
+    hostnames:
+    - minio-web.nwallace.io
+  api:
+    hostnames:
+    - minio.nwallace.io
+
 minio:
   fullnameOverride: minio
   nodeSelector:
     kubernetes.io/hostname: server
   ingress:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-      nginx.ingress.kubernetes.io/use-regex: 'true'
-    enabled: true
-    hostname: minio-web.nwallace.io
-    tls: true
-    ingressClassName: nginx-ext
+    enabled: false
   apiIngress:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-      nginx.ingress.kubernetes.io/use-regex: 'true'
-      nginx.ingress.kubernetes.io/proxy-body-size: '0'
-    enabled: true
-    hostname: minio.nwallace.io
-    ingressClassName: nginx-ext
-    tls: true
+    enabled: false
   containerSecurityContext:
     runAsGroup: 1000
     runAsUser: 1000
