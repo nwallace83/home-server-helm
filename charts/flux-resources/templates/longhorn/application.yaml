@@ -21,3 +21,10 @@ spec:
       kind: CustomResourceDefinition
       jsonPointers:
         - /spec/preserveUnknownFields
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: longhorn-httproute
+      jsonPointers:
+        - /spec/rules/0/backendRefs/0/group
+        - /spec/rules/0/backendRefs/0/kind
+        - /spec/rules/0/backendRefs/0/weight
