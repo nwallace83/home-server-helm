@@ -16,3 +16,7 @@ spec:
             type: ReplacePrefixMatch
             replacePrefixMatch: "/nwallace83"
           statusCode: 301
+      matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
