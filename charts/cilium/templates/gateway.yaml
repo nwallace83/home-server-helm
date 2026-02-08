@@ -26,18 +26,6 @@ spec:
   - allowedRoutes:
       namespaces:
         from: All
-    name: headlamp
-    hostname: headlamp.nwallace.io
-    port: 443
-    protocol: HTTPS
-    tls:
-      mode: Terminate
-      certificateRefs:
-      - kind: Secret
-        name: headlamp.nwallace.io-tls-secret
-  - allowedRoutes:
-      namespaces:
-        from: All
     name: vaultwarden
     hostname: vaultwarden.nwallace.io
     port: 443
