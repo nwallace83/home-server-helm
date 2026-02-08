@@ -28,7 +28,7 @@ spec:
   - allowedRoutes:
       namespaces:
         from: All
-    name: https
+    name: https-root-redirect
     hostname: "nwallace.io"
     port: 443
     protocol: HTTPS
