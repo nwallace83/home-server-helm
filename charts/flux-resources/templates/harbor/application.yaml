@@ -118,3 +118,17 @@ spec:
         - /spec/volumeClaimTemplates/0/apiVersion
         - /spec/volumeClaimTemplates/0/kind
         - /spec/template/metadata/annotations/checksum~1tls
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: harbor-route
+      jsonPointers:
+        - /spec/rules/0/backendRefs/0/group
+        - /spec/rules/0/backendRefs/0/kind
+        - /spec/rules/0/backendRefs/0/weight
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: harbor-route
+      jsonPointers:
+        - /spec/rules/1/backendRefs/0/group
+        - /spec/rules/1/backendRefs/0/kind
+        - /spec/rules/1/backendRefs/0/weight
