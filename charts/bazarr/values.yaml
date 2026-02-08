@@ -7,13 +7,14 @@ commonLabels:
 resources:
   limits:
     memory: 2048M
-ingress:
-  host: bazarr.nwallace.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "50"
-  ingressClassName: nginx-ext
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: gateway-external
+    namespace: kube-system
+  hostnames:
+  - bazarr.nwallace.io
 pvc:
   size: 200Mi
   storageClassName: longhorn

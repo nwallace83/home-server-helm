@@ -13,8 +13,9 @@ spec:
         name: home-server
       reconcileStrategy: Revision
   values:
-    ingress:
-      host: forbes-bazarr.nwallace.io
+    httpRoute:
+      hostnames:
+      - forbes-bazarr.nwallace.io
     volumes:
       - name: forbes-media
         persistentVolumeClaim:

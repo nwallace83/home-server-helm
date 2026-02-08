@@ -14,8 +14,9 @@ spec:
     targetRevision: HEAD
     helm:
       values: |
-        ingress:
-          host: forbes-bazarr.nwallace.io
+        httpRoute:
+          hostnames:
+          - forbes-bazarr.nwallace.io
         volumes:
           - name: forbes-media
             persistentVolumeClaim:

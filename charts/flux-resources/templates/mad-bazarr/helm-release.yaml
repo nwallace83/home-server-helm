@@ -13,8 +13,9 @@ spec:
         name: home-server
       reconcileStrategy: Revision
   values:
-    ingress:
-      host: mad-bazarr.nwallace.io
+    httpRoute:
+      hostnames:
+      - mad-bazarr.nwallace.io
     volumes:
       - name: mad-media
         persistentVolumeClaim:
