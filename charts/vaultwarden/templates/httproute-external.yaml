@@ -1,9 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ .Release.Name }}
-  annotations:
-    external-dns.alpha.kubernetes.io/controller: hacktonotmanagethesehostswithexternaldns
+  name: {{ .Release.Name }}-external
 spec:
   hostnames:
     {{- toYaml .Values.httpRoute.external.hostnames | nindent 4 }}
