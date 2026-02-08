@@ -10,25 +10,23 @@ resources: {}
 pvc:
   size: 100Mi
   storageClassName: longhorn
-ingress:
-  host: vaultwarden.nwallace.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "50"
-  ingressClassName: nginx
 httpRoute:
-  parentRefs:
-  - group: gateway.networking.k8s.io	
-    kind: Gateway
-    name: gateway-internal
-    namespace: kube-system
-  hostnames:
-  - vaultwarden.nwallace.io
-ingressExternal:
-  annotations:
-    nginx.ingress.kubernetes.io/configuration-snippet: if ($uri = /admin) {return 302 /;}
-  ingressClassName: nginx-ext
+  internal:
+    parentRefs:
+    - group: gateway.networking.k8s.io	
+      kind: Gateway
+      name: gateway-internal
+      namespace: kube-system
+    hostnames:
+    - vaultwarden.nwallace.io
+  external:
+    parentRefs:
+    - group: gateway.networking.k8s.io	
+      kind: Gateway
+      name: gateway-external
+      namespace: kube-system
+    hostnames:
+    - vaultwarden.nwallace.io
 livenessProbe:
   httpGet:
     path: /

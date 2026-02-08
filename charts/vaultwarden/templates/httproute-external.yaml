@@ -6,9 +6,9 @@ metadata:
     external-dns.alpha.kubernetes.io/controller: hacktonotmanagethesehostswithexternaldns
 spec:
   hostnames:
-    {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
+    {{- toYaml .Values.httpRoute.external.hostnames | nindent 4 }}
   parentRefs:
-    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
+    {{- toYaml .Values.httpRoute.external.parentRefs | nindent 4 }}
   rules:
     - backendRefs:
         - group: ''	
@@ -20,3 +20,13 @@ spec:
         - path:
             type: PathPrefix
             value: /
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /admin
+      filters:
+      - type: URLRewrite
+        urlRewrite:
+          path:
+            type: ReplacePrefixMatch
+            replacePrefixMatch: /
