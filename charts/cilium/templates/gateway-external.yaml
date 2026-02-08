@@ -22,7 +22,8 @@ spec:
     tls:
       mode: Terminate
       certificateRefs:
-      - kind: Secret
+      - group: ''
+        kind: Secret
         name: nwallace.io-external-tls-secret
   - allowedRoutes:
       namespaces:
