@@ -54,9 +54,7 @@ spec:
                   mountPath: /vault/userconfig/vault-tls-secret
               env:
                 - name: VAULT_ADDR
-                  value: https://vault-active:8200
-                - name: VAULT_CACERT
-                  value: /vault/userconfig/vault-tls-secret/ca.crt
+                  value: https://vault.nwallace.io
                 - name: VAULT_TOKEN
                   valueFrom:
                     secretKeyRef: 
