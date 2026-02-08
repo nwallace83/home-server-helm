@@ -1,4 +1,18 @@
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
+
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io	
+    kind: Gateway
+    name: gateway-external
+    namespace: kube-system
+  webservice:
+    hostnames:
+    - gitlab.nwallace.io
+  kas:
+    hostnames:
+    - kas.nwallace.io
+
 global:
   hosts:
     domain: nwallace.io
@@ -100,6 +114,9 @@ gitlab:
     gitlab-shell:
       minReplicas: 1
       maxReplicas: 1
+      service:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.2.17
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell
     webservice:
