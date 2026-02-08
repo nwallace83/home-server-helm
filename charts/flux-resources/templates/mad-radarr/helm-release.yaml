@@ -13,8 +13,9 @@ spec:
         name: home-server
       reconcileStrategy: Revision
   values:
-    ingress:
-      host: mad-radarr.nwallace.io
+    httpRoute:
+      hostnames:
+      - mad-radarr.nwallace.io
     pvc:
       size: 1Gi
     volumes:

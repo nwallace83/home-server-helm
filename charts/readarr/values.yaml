@@ -5,13 +5,14 @@ localGID: "1000"
 commonLabels:
   backstage.io/kubernetes-id: readarr
 resources: {}
-ingress:
-  host: readarr.nwallace.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "50"
-  ingressClassName: nginx-ext
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: gateway-external
+    namespace: kube-system
+  hostnames:
+  - readarr.nwallace.io
 pvc:
   size: 400Mi
   storageClassName: longhorn

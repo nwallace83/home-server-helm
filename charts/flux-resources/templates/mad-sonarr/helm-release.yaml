@@ -13,8 +13,9 @@ spec:
         name: home-server
       reconcileStrategy: Revision
   values:
-    ingress:
-      host: mad-sonarr.nwallace.io
+    httpRoute:
+      hostnames:
+      - mad-sonarr.nwallace.io
     pvc:
       size: 600Mi
     volumes:

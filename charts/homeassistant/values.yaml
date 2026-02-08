@@ -3,14 +3,14 @@ image: harbor.nwallace.io/docker-hub/homeassistant/home-assistant:2026.2.1 # {"$
 commonLabels:
   backstage.io/kubernetes-id: homeassistant
 resources: {}
-ingress:
-  host: homeassistant.nwallace.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "50"
-    nginx.ingress.kubernetes.io/use-regex: 'true'
-  ingressClassName: nginx-ext
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: gateway-external
+    namespace: kube-system
+  hostnames:
+  - homeassistant.nwallace.io
 pvc:
   size: 8Gi
   storageClassName: longhorn

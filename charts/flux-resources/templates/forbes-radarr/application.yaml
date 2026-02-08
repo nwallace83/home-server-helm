@@ -14,8 +14,9 @@ spec:
     targetRevision: HEAD
     helm:
       values: |
-        ingress:
-          host: forbes-radarr.nwallace.io
+        httpRoute:
+          hostnames:
+          - forbes-radarr.nwallace.io
         pvc:
           size: 1Gi
         volumes:
