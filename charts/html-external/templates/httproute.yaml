@@ -8,10 +8,11 @@ spec:
   parentRefs:
     {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
   rules:
-    - type: RequestRedirect
-      requestRedirect:
-        hostname: "github.com"
-        path:
-          type: ReplacePrefixMatch
-          replacePrefixMatch: "/nwallace83"
-        statusCode: 301
+    - filters:
+      - type: RequestRedirect
+        requestRedirect:
+          hostname: "github.com"
+          path:
+            type: ReplacePrefixMatch
+            replacePrefixMatch: "/nwallace83"
+          statusCode: 301
