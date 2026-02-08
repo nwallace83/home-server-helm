@@ -37,12 +37,7 @@ global:
       secret: gitlab-postgresql-password
       key: password
   ingress:
-    class: nginx-ext
-    configureCertmanager: false
-    tls:
-      enabled: true
-    annotations:
-      "cert-manager.io/cluster-issuer": letsencrypt-prod
+    enabled: false
   nodeSelector:
     kubernetes.io/arch: amd64
   appConfig:
@@ -106,9 +101,6 @@ gitlab:
     kas:
       minReplicas: 1
       maxReplicas: 1
-      ingress:
-        tls:
-          secretName: kas.nwallace.io-tls-secret
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas
     gitlab-shell:
@@ -120,9 +112,6 @@ gitlab:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell
     webservice:
-      ingress:
-        tls:
-          secretName: gitlab.nwallace.io-tls-secret
       resources:
         requests:
           cpu: 50m
