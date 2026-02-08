@@ -14,7 +14,7 @@ spec:
   - allowedRoutes:
       namespaces:
         from: All
-    name: wildcard
+    name: https
     hostname: "*.nwallace.io"
     port: 443
     protocol: HTTPS
@@ -23,3 +23,9 @@ spec:
       certificateRefs:
       - kind: Secret
         name: nwallace.io-internal-tls-secret
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: http
+    port: 80
+    protocol: HTTP
