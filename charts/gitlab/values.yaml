@@ -38,6 +38,7 @@ global:
       key: password
   ingress:
     enabled: false
+    configureCertmanager: false
   nodeSelector:
     kubernetes.io/arch: amd64
   appConfig:
