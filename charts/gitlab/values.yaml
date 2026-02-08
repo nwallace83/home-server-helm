@@ -133,7 +133,7 @@ gitlab:
         storageClass: longhorn-db
       backups:
         cron:
-          enabled: true
+          enabled: false
           persistence:
             enabled: true
             size: 2Gi
