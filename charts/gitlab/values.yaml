@@ -134,10 +134,10 @@ gitlab:
       backups:
         cron:
           enabled: true
-        persistence:
-          enabled: true
-          size: 2Gi
-          storageClass: longhorn-db
+          persistence:
+            enabled: true
+            size: 2Gi
+            storageClass: longhorn-db
         objectStorage:
           config:
             secret: gitlab-minio
