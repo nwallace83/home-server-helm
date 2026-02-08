@@ -1,41 +1,41 @@
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: ingress-nginx-ext
-  namespace: ingress-nginx-ext
-spec:
-  interval: 60m
-  chart:
-    spec:
-      chart: ./charts/ingress-nginx
-      sourceRef:
-        kind: GitRepository
-        name: home-server
-        namespace: home-server
-      reconcileStrategy: Revision
-  driftDetection:
-    mode: enabled
-    ignore:
-      - paths: [""]
-        target:
-          kind: ServiceMonitor
-  values:
-    ingress-nginx:
-      controller:
-        ingressClassResource:
-          default: false
-          name: nginx-ext
-          controllerValue: k8s.io/ingress-nginx-ext
-        service:
-          loadBalancerIP: 192.168.2.11
-          annotations:
-            external-dns.alpha.kubernetes.io/hostname: nwallace.io
-        publishService:
-          enabled: false
-        extraArgs:
-          publish-status-address: nwallace.io
-        ingressClass: nginx-ext
-      tcp:
-        '22': 'gitlab/gitlab-gitlab-shell:22::'
-      commonLabels:
-        backstage.io/kubernetes-id: ingress-nginx-ext
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: ingress-nginx-ext
+#   namespace: ingress-nginx-ext
+# spec:
+#   interval: 60m
+#   chart:
+#     spec:
+#       chart: ./charts/ingress-nginx
+#       sourceRef:
+#         kind: GitRepository
+#         name: home-server
+#         namespace: home-server
+#       reconcileStrategy: Revision
+#   driftDetection:
+#     mode: enabled
+#     ignore:
+#       - paths: [""]
+#         target:
+#           kind: ServiceMonitor
+#   values:
+#     ingress-nginx:
+#       controller:
+#         ingressClassResource:
+#           default: false
+#           name: nginx-ext
+#           controllerValue: k8s.io/ingress-nginx-ext
+#         service:
+#           loadBalancerIP: 192.168.2.11
+#           annotations:
+#             external-dns.alpha.kubernetes.io/hostname: nwallace.io
+#         publishService:
+#           enabled: false
+#         extraArgs:
+#           publish-status-address: nwallace.io
+#         ingressClass: nginx-ext
+#       tcp:
+#         '22': 'gitlab/gitlab-gitlab-shell:22::'
+#       commonLabels:
+#         backstage.io/kubernetes-id: ingress-nginx-ext
