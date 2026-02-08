@@ -7,7 +7,9 @@ kube-prometheus-stack:
       main:
         enabled: true
         parentRefs:
-        - name: gateway-internal
+        - group: gateway.networking.k8s.io	
+          kind: Gateway
+          name: gateway-internal
           namespace: kube-system
         hostnames:
           - prometheus.nwallace.io
@@ -80,7 +82,9 @@ kube-prometheus-stack:
       main:
         enabled: true
         parentRefs:
-        - name: gateway-internal
+        - group: gateway.networking.k8s.io	
+          kind: Gateway
+          name: gateway-internal
           namespace: kube-system
         hostnames:
           - grafana.nwallace.io
