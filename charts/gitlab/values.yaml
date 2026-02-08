@@ -127,6 +127,10 @@ gitlab:
           workhorse:
             image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-workhorse-ee
     toolbox:
+      persistence:
+        enabled: true
+        size: 2Gi
+        storageClass: longhorn-db
       backups:
         cron:
           enabled: true
