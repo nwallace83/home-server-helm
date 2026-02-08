@@ -23,8 +23,9 @@ spec:
           type: PathPrefix
           value: /admin
       filters:
-      - type: URLRewrite
-        urlRewrite:
+      - type: RequestRedirect
+        requestRedirect:
           path:
             type: ReplacePrefixMatch
             replacePrefixMatch: /
+          statusCode: 302
