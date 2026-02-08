@@ -4,7 +4,7 @@ metadata:
   name: {{ printf "%s-kas" .Release.Name }}
 spec:
   hostnames:
-    {{- toYaml .Values.httpRoute.webservice.hostnames | nindent 4 }}
+    {{- toYaml .Values.httpRoute.kas.hostnames | nindent 4 }}
   parentRefs:
     {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
   rules:
