@@ -8,13 +8,14 @@ resources:
   limits:
     memory: 4096Mi
 vaultSecretPath: delugevpn
-ingress:
-  host: delugevpn.nwallace.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    nginx.ingress.kubernetes.io/limit-rps: "50"
-  ingressClassName: nginx-ext
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: gateway-external
+    namespace: kube-system
+  hostnames:
+  - delugevpn.nwallace.io
 pvc:
   size: 100Mi
   storageClassName: longhorn
