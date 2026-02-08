@@ -11,12 +11,14 @@ resources:
   requests:
     cpu: 1
     gpu.intel.com/i915: "1"
-ingress:
-  host: plex.nwallace.io
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-  ingressClassName: nginx-ext
+httpRoute:
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: gateway-internal
+    namespace: kube-system
+  hostnames:
+  - plex.nwallace.io
 pvc:
   size: 100Gi
   storageClassName: plex
