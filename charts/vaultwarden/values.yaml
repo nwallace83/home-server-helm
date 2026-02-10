@@ -1,5 +1,5 @@
 timezone: America/Denver
-image: harbor.nwallace.io/docker-hub/vaultwarden/server:1.35.2 # {"$imagepolicy": "home-server:vaultwarden"}
+image: harbor.nwallace.io/docker-hub/vaultwarden/server:1.35.3 # {"$imagepolicy": "home-server:vaultwarden"}
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
 localUID: "1000"
 localGID: "1000"
@@ -13,7 +13,7 @@ pvc:
 httpRoute:
   internal:
     parentRefs:
-    - group: gateway.networking.k8s.io	
+    - group: gateway.networking.k8s.io
       kind: Gateway
       name: gateway-internal
       namespace: kube-system
@@ -21,7 +21,7 @@ httpRoute:
     - vaultwarden.nwallace.io
   external:
     parentRefs:
-    - group: gateway.networking.k8s.io	
+    - group: gateway.networking.k8s.io
       kind: Gateway
       name: gateway-external
       namespace: kube-system
