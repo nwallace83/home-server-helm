@@ -48,9 +48,9 @@ minio:
       apiVersion: monitoring.coreos.com/v1
       namespace: minio
   clientImage:
-    registry: harbor.nwallace.io/docker-hub
+    registry: harbor.nwallace.io/home-server
   image:
-    registry: harbor.nwallace.io/docker-hub
+    registry: harbor.nwallace.io/home-server
   commonLabels:
     backstage.io/kubernetes-id: minio
   resources:
