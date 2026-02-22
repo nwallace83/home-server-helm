@@ -48,7 +48,7 @@ harbor:
         size: 100Mi
         storageClass: longhorn
       registry:
-        size: 20Gi
+        size: 50Gi
         storageClass: longhorn
       trivy:
         size: 9Gi
