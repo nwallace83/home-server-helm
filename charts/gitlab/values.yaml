@@ -172,6 +172,8 @@ gitlab:
   webservice:
     minReplicas: 1
     maxReplicas: 1
+    nodeSelector:
+      kubernetes.io/hostname: server
   prometheus:
     install: false
   upgradeCheck:
