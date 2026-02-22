@@ -10,7 +10,7 @@ harbor:
       parentRefs:
       - group: gateway.networking.k8s.io	
         kind: Gateway
-        name: gateway-extrnal
+        name: gateway-external
         namespace: kube-system
       hosts:
       - harbor.nwallace.io
