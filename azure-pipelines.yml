@@ -3,43 +3,18 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- main
+trigger: none
+
+pool: default
 
 jobs:
-  - job: API_Call
-    pool:
-      name: server
-    steps:
-    - task: InvokeRESTAPI@1
-      inputs:
-        connectionType: 'connectedServiceName'
-        serviceConnection: 'webhook'
-        method: 'POST'
-        headers: |
-          {
-          "Content-Type":"application/json", 
-          "PlanUrl": "$(system.CollectionUri)", 
-          "ProjectId": "$(system.TeamProjectId)", 
-          "HubName": "$(system.HostType)", 
-          "PlanId": "$(system.PlanId)", 
-          "JobId": "$(system.JobId)", 
-          "TimelineId": "$(system.TimelineId)", 
-          "TaskInstanceId": "$(system.TaskInstanceId)", 
-          "AuthToken": "$(system.AccessToken)",
-          "BuildID": "$(build.BuildId)"
-          }
-        waitForCompletion: 'true'
-  - job: Wait
+  - job: Hello
     pool:
       name: Default
     steps:
     - bash: |
-        sleep 600
-      displayName: Waiting_first
-    - bash: |
-        sleep 600
-      displayName: Waiting_second
+        echo "Hello World"
+      displayName: Hello
 
 
 # {
