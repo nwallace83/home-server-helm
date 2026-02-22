@@ -118,6 +118,8 @@ gitlab:
           cpu: 50m
         limits:
           memory: 3Gi
+      nodeSelector:
+        kubernetes.io/hostname: server
       minReplicas: 1
       maxReplicas: 1
       image:
@@ -172,8 +174,6 @@ gitlab:
   webservice:
     minReplicas: 1
     maxReplicas: 1
-    nodeSelector:
-      kubernetes.io/hostname: server
   prometheus:
     install: false
   upgradeCheck:
