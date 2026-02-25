@@ -2,7 +2,7 @@ commonLabels:
   backstage.io/kubernetes-id: kube-prometheus-stack
 
 kube-prometheus-stack:
-  nodeExporter:
+  prometheus-node-exporter:
     tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
