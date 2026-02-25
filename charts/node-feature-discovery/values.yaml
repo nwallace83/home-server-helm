@@ -4,3 +4,8 @@ node-feature-discovery:
   prometheus:
     labels:
       backstage.io/kubernetes-id: metrics-server
+  worker:
+    tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
