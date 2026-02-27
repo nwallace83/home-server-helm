@@ -73,8 +73,6 @@ spec:
     - name: vaultwarden
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        enabled: true	
-        isWALArchiver: false
         parameters:
           barmanObjectName: vaultwarden
           serverName: vaultwarden
