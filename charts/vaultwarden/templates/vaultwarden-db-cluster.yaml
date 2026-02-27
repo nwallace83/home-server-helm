@@ -74,7 +74,8 @@ spec:
     - name: vaultwarden
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        objectStore:
-          name: vaultwarden
+        parameters:
+          barmanObjectName: vaultwarden
+          serverName: vaultwarden
   monitoring:
     enablePodMonitor: true
