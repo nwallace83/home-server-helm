@@ -9,5 +9,7 @@ spec:
   cluster:
     name: {{ .Release.Name }}
   immediate: true
-  method: barmanObjectStore
   schedule: 0 10 6 * * *
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io

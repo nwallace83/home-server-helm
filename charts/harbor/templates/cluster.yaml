@@ -64,35 +64,17 @@ spec:
           storage: 2Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
-  backup:
-    retentionPolicy: "7d"
-    barmanObjectStore:
-      destinationPath: {{ printf "s3://%s-database/" .Release.Name }}
-      endpointURL: https://minio.nwallace.io
-      data:
-        compression: gzip
-      wal:
-        compression: gzip
-      s3Credentials:
-        accessKeyId:
-          name: {{ .Release.Name }}-postgresql-minio
-          key: AccessKey
-        secretAccessKey:
-          name: {{ .Release.Name }}-postgresql-minio
-          key: SecretKey
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: {{ .Release.Name }}
   externalClusters:
     - name: {{ .Release.Name }}
-      barmanObjectStore:
-        destinationPath: {{ printf "s3://%s-database/2024-07-20" .Release.Name }}
-        endpointURL: https://minio.nwallace.io
-        wal:
-          maxParallel: 8
-        s3Credentials:
-          accessKeyId:
-            name: {{ .Release.Name }}-postgresql-minio
-            key: AccessKey
-          secretAccessKey:
-            name: {{ .Release.Name }}-postgresql-minio
-            key: SecretKey
+      plugin:
+          name: barman-cloud.cloudnative-pg.io
+          parameters:
+            barmanObjectName: {{ .Release.Name }}
+            serverName: {{ .Release.Name }}
   monitoring:
     enablePodMonitor: true

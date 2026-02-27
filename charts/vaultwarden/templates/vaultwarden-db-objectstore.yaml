@@ -2,6 +2,8 @@ apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
   name: vaultwarden
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
 spec:
   retentionPolicy: "7d"
   configuration:
