@@ -66,7 +66,6 @@ spec:
       volumeMode: Filesystem
   plugins:
     - name: barman-cloud.cloudnative-pg.io
-      enabled: true
       isWALArchiver: true
       parameters:
         barmanObjectNamee: vaultwarden
@@ -74,6 +73,8 @@ spec:
     - name: vaultwarden
       plugin:
         name: barman-cloud.cloudnative-pg.io
+        enabled: true	
+        isWALArchiver: false
         parameters:
           barmanObjectName: vaultwarden
           serverName: vaultwarden
