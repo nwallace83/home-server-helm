@@ -16,3 +16,12 @@ spec:
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: vaultwarden
+      jsonPointers:
+        - /spec/plugins/0/enabled
+        - /spec/plugins/0/isWALArchiver
+        - /spec/externalClusters/0/plugin/enabled
+        - /spec/externalClusters/0/plugin/isWALArchiver
