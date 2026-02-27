@@ -8,3 +8,7 @@ cloudnative-pg:
       create: true
   podLabels:
     backstage.io/kubernetes-id: cloudnative-pg
+
+plugin-barman-cloud:
+  podLabels:
+    backstage.io/kubernetes-id: cloudnative-pg
