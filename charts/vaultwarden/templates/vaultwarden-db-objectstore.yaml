@@ -3,6 +3,7 @@ kind: ObjectStore
 metadata:
   name: vaultwarden
 spec:
+  retentionPolicy: "7d"
   configuration:
     destinationPath: s3://vaultwarden-database/
     endpointURL: https://minio.nwallace.io

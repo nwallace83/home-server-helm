@@ -64,13 +64,11 @@ spec:
           storage: 2Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
-  retentionPolicy: "7d"
-  backup:
-    plugins:
-      - name: barman-cloud.cloudnative-pg.io
-        isWALArchiver: true
-        objectStore:
-          name: vaultwarden
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      objectStore:
+        name: vaultwarden
   externalClusters:
     - name: vaultwarden
       plugin:
