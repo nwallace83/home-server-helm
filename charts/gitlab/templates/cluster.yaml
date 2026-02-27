@@ -74,35 +74,17 @@ spec:
           storage: 3Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
-  backup:
-    retentionPolicy: "7d"
-    barmanObjectStore:
-      destinationPath: s3://gitlab-database/
-      endpointURL: https://minio.nwallace.io
-      data:
-        compression: gzip
-      wal:
-        compression: gzip
-      s3Credentials:
-        accessKeyId:
-          name: gitlab-minio
-          key: AccessKey
-        secretAccessKey:
-          name: gitlab-minio
-          key: SecretKey
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: gitlab
   externalClusters:
     - name: gitlab
-      barmanObjectStore:
-        destinationPath: s3://gitlab-database/
-        endpointURL: https://minio.nwallace.io
-        wal:
-          maxParallel: 8
-        s3Credentials:
-          accessKeyId:
-            name: gitlab-minio
-            key: AccessKey
-          secretAccessKey:
-            name: gitlab-minio
-            key: SecretKey
+      plugin:
+          name: barman-cloud.cloudnative-pg.io
+          parameters:
+            barmanObjectName: gitlab
+            serverName: gitlab
   monitoring:
     enablePodMonitor: true

@@ -1,0 +1,22 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: gitlab
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
+spec:
+  retentionPolicy: "7d"
+  configuration:
+    destinationPath: s3://gitlab-database/
+    endpointURL: https://minio.nwallace.io
+    data:
+      compression: gzip
+    wal:
+      compression: gzip
+    s3Credentials:
+      accessKeyId:
+        name: gitlab-minio
+        key: AccessKey
+      secretAccessKey:
+        name: gitlab-minio
+        key: SecretKey
