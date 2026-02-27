@@ -67,8 +67,8 @@ spec:
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
-      objectStore:
-        name: vaultwarden
+      parameters:
+        barmanObjectNamee: vaultwarden
   externalClusters:
     - name: vaultwarden
       plugin:
