@@ -6,16 +6,17 @@ metadata:
     {{- include "commonLabels" . | nindent 4 }}
 spec:
   retentionPolicy: "7d"
-  destinationPath: {{ printf "s3://%s-database/" .Release.Name }}
-  endpointURL: https://minio.nwallace.io
-  data:
-    compression: gzip
-  wal:
-    compression: gzip
-  s3Credentials:
-    accessKeyId:
-      name: {{ .Release.Name }}-postgresql-minio
-      key: AccessKey
-    secretAccessKey:
-      name: {{ .Release.Name }}-postgresql-minio
-      key: SecretKey
+  configuration:
+    destinationPath: {{ printf "s3://%s-database/" .Release.Name }}
+    endpointURL: https://minio.nwallace.io
+    data:
+      compression: gzip
+    wal:
+      compression: gzip
+    s3Credentials:
+      accessKeyId:
+        name: {{ .Release.Name }}-postgresql-minio
+        key: AccessKey
+      secretAccessKey:
+        name: {{ .Release.Name }}-postgresql-minio
+        key: SecretKey
