@@ -64,9 +64,9 @@ spec:
           storage: 2Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
+  retentionPolicy: "7d"
   backup:
-    retentionPolicy: "7d"
-    plugin:
+    plugins:
       - name: barman-cloud.cloudnative-pg.io
         isWALArchiver: true
         objectStore:
