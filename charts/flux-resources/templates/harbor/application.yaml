@@ -132,3 +132,11 @@ spec:
         - /spec/rules/1/backendRefs/0/group
         - /spec/rules/1/backendRefs/0/kind
         - /spec/rules/1/backendRefs/0/weight
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: harbor
+      jsonPointers:
+        - /spec/plugins/0/enabled
+        - /spec/plugins/0/isWALArchiver
+        - /spec/externalClusters/0/plugin/enabled
+        - /spec/externalClusters/0/plugin/isWALArchiver
