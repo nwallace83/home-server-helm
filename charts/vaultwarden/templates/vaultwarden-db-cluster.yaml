@@ -67,9 +67,10 @@ spec:
   backup:
     retentionPolicy: "7d"
     plugin:
-      name: barman-cloud.cloudnative-pg.io
-      objectStore:
-        name: vaultwarden
+      - name: barman-cloud.cloudnative-pg.io
+        isWALArchiver: true
+        objectStore:
+          name: vaultwarden
   externalClusters:
     - name: vaultwarden
       plugin:
