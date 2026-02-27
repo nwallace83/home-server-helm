@@ -33,3 +33,11 @@ spec:
       kind: Job
       jsonPointers:
         - /metadata/labels/argocd.argoproj.io~1instance
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: gitlab
+      jsonPointers:
+        - /spec/plugins/0/enabled
+        - /spec/plugins/0/isWALArchiver
+        - /spec/externalClusters/0/plugin/enabled
+        - /spec/externalClusters/0/plugin/isWALArchiver
