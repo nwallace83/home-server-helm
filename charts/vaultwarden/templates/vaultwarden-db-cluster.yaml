@@ -66,33 +66,15 @@ spec:
       volumeMode: Filesystem
   backup:
     retentionPolicy: "7d"
-    barmanObjectStore:
-      destinationPath: s3://vaultwarden-database/
-      endpointURL: https://minio.nwallace.io
-      data:
-        compression: gzip
-      wal:
-        compression: gzip
-      s3Credentials:
-        accessKeyId:
-          name: vaultwarden-postgresql-minio
-          key: AccessKey
-        secretAccessKey:
-          name: vaultwarden-postgresql-minio
-          key: SecretKey
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      objectStore:
+        name: vaultwarden
   externalClusters:
     - name: vaultwarden
-      barmanObjectStore:
-        destinationPath: s3://vaultwarden-database
-        endpointURL: https://minio.nwallace.io
-        wal:
-          maxParallel: 8
-        s3Credentials:
-          accessKeyId:
-            name: vaultwarden-postgresql-minio
-            key: AccessKey
-          secretAccessKey:
-            name: vaultwarden-postgresql-minio
-            key: SecretKey
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        objectStore:
+          name: vaultwarden
   monitoring:
     enablePodMonitor: true

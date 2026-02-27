@@ -1,0 +1,19 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: vaultwarden
+spec:
+  configuration:
+    destinationPath: s3://vaultwarden-database/
+    endpointURL: https://minio.nwallace.io
+    data:
+      compression: gzip
+    wal:
+      compression: gzip
+    s3Credentials:
+      accessKeyId:
+        name: vaultwarden-postgresql-minio
+        key: AccessKey
+      secretAccessKey:
+        name: vaultwarden-postgresql-minio
+        key: SecretKey
