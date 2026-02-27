@@ -10,3 +10,6 @@ spec:
   immediate: true
   cluster:
     name: {{ .Release.Name }}
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
