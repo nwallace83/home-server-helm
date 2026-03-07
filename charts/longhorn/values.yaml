@@ -36,9 +36,13 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
-  instanceManager:
-    resources:
-      requests:
-        cpu: 960m
-      limits:
-        memory: 2Gi
+  image:
+    longhorn:
+      manager:
+        tag: v1.11.0-hotfix-1
+      instanceManager:
+        tag: v1.11.0-hotfix-1
+  preUpgradeChecker:
+    upgradeVersionCheck: false
+  upgradeCheck:
+    enabled: false
