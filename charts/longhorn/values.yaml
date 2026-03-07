@@ -37,7 +37,7 @@ longhorn:
     serviceMonitor:
       enabled: true
   instanceManager:
-    resource:
+    resources:
       requests:
         cpu: 960m
       limits:
