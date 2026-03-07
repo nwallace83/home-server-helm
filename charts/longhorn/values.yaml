@@ -36,3 +36,9 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
+  instanceManager:
+    resource:
+      requests:
+        cpu: 960m
+      limits:
+        memory: 2Gi
