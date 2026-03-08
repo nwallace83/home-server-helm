@@ -20,7 +20,7 @@ httpRoute:
   hostnames:
   - plex.nwallace.io
 pvc:
-  size: 175Gi
+  size: 100Gi
   storageClassName: plex
 volumes:
   - name: media
