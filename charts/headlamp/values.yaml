@@ -27,3 +27,7 @@ headlamp:
     volumeMounts:
     - mountPath: /build/plugins
       name: headlamp-plugins
+  config:
+    #sessionTTL: 86400
+    # Bypasses: https://github.com/kubernetes-sigs/headlamp/issues/4883
+    sessionTTL: null
