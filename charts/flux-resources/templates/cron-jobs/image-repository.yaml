@@ -1,4 +1,4 @@
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: busybox
@@ -7,7 +7,7 @@ spec:
   image: harbor.nwallace.io/docker-hub/library/busybox
   interval: 30m
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: aws-cli
@@ -16,7 +16,7 @@ spec:
   image: harbor.nwallace.io/docker-hub/amazon/aws-cli
   interval: 30m
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: git
@@ -25,7 +25,7 @@ spec:
   image: harbor.nwallace.io/docker-hub/alpine/git
   interval: 30m
 ---
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: helm
