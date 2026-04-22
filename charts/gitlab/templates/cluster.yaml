@@ -23,6 +23,7 @@ spec:
   postgresql:
     parameters:
       max_connections: '200'
+      max_slot_wal_keep_size: 2GB
   affinity:
     podAntiAffinityType: required
     nodeSelector:
@@ -74,9 +75,6 @@ spec:
           storage: 3Gi
       storageClassName: longhorn-db
       volumeMode: Filesystem
-  postgresql:
-    parameters:
-      max_slot_wal_keep_size: 2GB
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
