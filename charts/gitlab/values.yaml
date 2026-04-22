@@ -51,6 +51,9 @@ global:
       bucket: gitlab-backups
     defaultProjectsFeatures:
       containerRegistry: false
+    dependencyProxy:
+      enabled: true
+      bucket: gitlab-dependency-proxy
   common:
     labels:
       backstage.io/kubernetes-id: gitlab
