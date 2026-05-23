@@ -1,0 +1,20 @@
+{{- $obaDatabase := ((.Values.backups).openbao).database | default dict -}}
+{{- if or $obaDatabase.backupUser $obaDatabase.restoreUser -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}-openbao-db-backuprestore-users
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
+data:
+  {{- if $obaDatabase.backupUser }}
+  backup-user: |
+    OPENBAO_DATABASE_USER={{ $obaDatabase.backupUser }}
+  {{- end }}
+  {{- if $obaDatabase.restoreUser }}
+  restore-user: |
+    OPENBAO_DATABASE_USER={{ $obaDatabase.restoreUser }}
+  {{- end }}
+{{- end }}

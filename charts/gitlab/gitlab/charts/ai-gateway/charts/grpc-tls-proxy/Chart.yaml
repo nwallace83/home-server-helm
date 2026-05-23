@@ -1,0 +1,5 @@
+apiVersion: v2
+description: NGINX-based gRPC TLS termination proxy subchart for the AI Gateway
+name: grpc-tls-proxy
+type: application
+version: 0.1.0

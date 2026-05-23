@@ -1,0 +1,6 @@
+dependencies:
+- name: grpc-tls-proxy
+  repository: file://charts/grpc-tls-proxy
+  version: 0.1.0
+digest: sha256:3c0bce68a6b91935bc36b472274631d3bbde9ec25ca7c145fcb2e7e9202f8636
+generated: "2026-03-27T17:38:17.458503724Z"

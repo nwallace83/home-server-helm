@@ -1,0 +1,90 @@
+# Example values file for enabling the gRPC TLS proxy subchart.
+#
+# The grpc-tls-proxy subchart runs a standalone NGINX pod that terminates TLS
+# for the Duo Workflow Service gRPC endpoint (port 50052) and exposes it via
+# the gRPC ingress on port 443. This allows GitLab to reach the Duo Agent
+# Platform service over a standard HTTPS/TLS endpoint.
+#
+# Prerequisites:
+#   1. A TLS secret containing tls.crt and tls.key:
+#        kubectl create secret tls ai-gateway-tls \
+#          --cert=tls.crt --key=tls.key -n ai-gateway
+#
+#   2. duoWorkflow.enabled must be true (the proxy requires the gRPC upstream).
+#
+# In GitLab admin settings, set the Duo Agent Platform service URL to:
+#   ai-gateway.example.com:443  (port 443, handled by the ingress)
+
+image:
+  tag: self-hosted-v18.10.0-ee
+
+gitlab:
+  url: "https://gitlab.example.com"
+  apiUrl: "https://gitlab.example.com/api/v4/"
+
+duoWorkflow:
+  enabled: true
+  port: 50052
+
+# Main HTTP/HTTPS ingress (serves AI Gateway REST API on port 443)
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: ai-gateway.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: ai-gateway-tls
+      hosts:
+        - ai-gateway.example.com
+
+# gRPC ingress (serves Duo Workflow Service on port 443 via TLS proxy)
+# backend-protocol is automatically set to GRPCS when grpc-tls-proxy is enabled
+grpcIngress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: ai-gateway.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: ai-gateway-tls
+      hosts:
+        - ai-gateway.example.com
+
+# gRPC TLS proxy subchart
+# upstream.host must match the Helm release name (the AI Gateway service name).
+# For example, if you install with: helm upgrade --install ai-gateway ...
+# then upstream.host should be "ai-gateway".
+grpc-tls-proxy:
+  enabled: true
+  port: 8443
+  tlsSecretName: ai-gateway-tls
+  upstream:
+    host: ai-gateway   # set to your Helm release name
+    port: 50052
+  # service.type defaults to ClusterIP — the ingress handles external exposure.
+  # Override to LoadBalancer if you need to expose port 8443 directly
+  # (e.g. when not using an ingress controller).
+  service:
+    type: ClusterIP
+    annotations: {}
+    # AWS NLB example:
+    #   service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    # GCP internal LB example:
+    #   cloud.google.com/load-balancer-type: "Internal"
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: 2000m
+    memory: 2Gi

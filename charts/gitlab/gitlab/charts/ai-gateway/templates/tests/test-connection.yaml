@@ -1,0 +1,17 @@
+{{- if .Values.test.enabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "ai-gateway.fullname" . }}-test-connection"
+  labels:
+    {{- include "ai-gateway.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: "{{ .Values.test.image }}"
+      command: ['wget']
+      args: ['-O', '/dev/null', 'http://{{ include "ai-gateway.fullname" . }}:{{ .Values.service.port }}{{ .Values.readinessProbe.httpGet.path }}']
+  restartPolicy: Never
+{{- end }}

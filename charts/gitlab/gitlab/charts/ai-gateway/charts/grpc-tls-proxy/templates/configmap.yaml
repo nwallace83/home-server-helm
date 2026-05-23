@@ -1,0 +1,46 @@
+{{- if .Values.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "grpc-tls-proxy.fullname" . }}-nginx
+  labels:
+    {{- include "grpc-tls-proxy.labels" . | nindent 4 }}
+data:
+  nginx.conf: |
+{{- if .Values.nginxConfig }}
+{{ .Values.nginxConfig | nindent 4 }}
+{{- else }}
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log /var/log/nginx/access.log main;
+        error_log /var/log/nginx/error.log info;
+
+        upstream grpcservers {
+            server {{ required "grpcTlsProxy.upstream.host is required" .Values.upstream.host }}:{{ required "grpcTlsProxy.upstream.port is required" .Values.upstream.port }};
+        }
+
+        server {
+            listen {{ required "grpcTlsProxy.port is required" .Values.port }} ssl;
+            http2 on;
+            ssl_certificate /etc/nginx/ssl/tls.crt;
+            ssl_certificate_key /etc/nginx/ssl/tls.key;
+
+            ssl_protocols TLSv1.2 TLSv1.3;
+            ssl_ciphers HIGH:!aNULL:!MD5;
+            ssl_prefer_server_ciphers on;
+
+            location / {
+                grpc_pass grpc://grpcservers;
+                grpc_set_header Host $host;
+            }
+        }
+    }
+{{- end }}
+{{- end }}

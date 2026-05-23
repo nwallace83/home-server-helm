@@ -1,0 +1,28 @@
+{{- if and .Values.enabled (eq (include "webservice.gatewayApi.sectionCtp.enabled" .) "true") }}
+{{/*
+ClientTrafficPolicy targeting the main Rails listener (gitlab-web).
+Keeps paths with escaped slashes unchanged, as they are commonly used
+in GitLab API calls to identify projects.
+Only rendered when HTTPS is on for the gitlab service (either via
+global.hosts.https or the per-service global.hosts.gitlab.https override):
+in HTTP-only deployments all listeners share port 80, so section-scoped
+CTPs are rejected by Envoy Gateway (port overlap). The gateway-wide CTP
+(gatewayApiResources.envoy.clientTrafficPolicySpec) covers that case
+instead.
+*/}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: {{ template "fullname" . }}-ctp
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
+spec:
+  targetRefs:
+  {{- $ref := (include "gitlab.gatewayApi.gatewayRef" . | fromYamlArray) }}
+  {{- $_ := unset (first $ref) "namespace" }}
+  {{- $ref | toYaml | nindent 2 }}
+  path:
+    escapedSlashesAction: KeepUnchanged
+{{- end }}

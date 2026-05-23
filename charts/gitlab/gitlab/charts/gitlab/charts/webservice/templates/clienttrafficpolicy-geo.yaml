@@ -1,0 +1,22 @@
+{{- if and .Values.enabled .Values.global.gatewayApi.installEnvoy (eq "true" (include "gitlab.gatewayApi.gateway.geo.configure" .)) }}
+{{/*
+ClientTrafficPolicy targeting the Geo Rails listener (gitlab-web-geo).
+Keeps paths with escaped slashes unchanged, as they are commonly used
+in GitLab API calls to identify projects.
+*/}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: {{ template "fullname" . }}-ctp-geo
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
+spec:
+  targetRefs:
+  {{- $ref := (include "webservice.gatewayApi.gatewayRef.geo" . | fromYamlArray) }}
+  {{- $_ := unset (first $ref) "namespace" }}
+  {{- $ref | toYaml | nindent 2 }}
+  path:
+    escapedSlashesAction: KeepUnchanged
+{{- end }}

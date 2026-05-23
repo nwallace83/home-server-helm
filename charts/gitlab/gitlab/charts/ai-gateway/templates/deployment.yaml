@@ -1,0 +1,168 @@
+{{- $aigwSigningKeySecret := (include "ai-gateway.aigwSigningKey.secret" .) -}}
+{{- $aigwValidationKeySecret := (include "ai-gateway.aigwValidationKey.secret" .) -}}
+{{- $duoWorkflowSigningKeySecret := (include "ai-gateway.duoWorkflowSigningKey.secret" .) -}}
+{{- $duoWorkflowValidationKeySecret := (include "ai-gateway.duoWorkflowValidationKey.secret" .) -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ai-gateway.fullname" . }}
+  labels:
+    {{- include "ai-gateway.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "ai-gateway.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        {{- include "ai-gateway.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ai-gateway.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.api.port }}
+              protocol: TCP
+            {{- if .Values.duoWorkflow.enabled }}
+            - name: grpc
+              containerPort: {{ .Values.duoWorkflow.port }}
+              protocol: TCP
+            {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ template "ai-gateway.fullname" . }}
+            {{- range .Values.extraConfigMapRefs }}
+            - configMapRef:
+                name: {{ .name }}
+            {{- end }}
+            - secretRef:
+                name: {{ template "ai-gateway.fullname" . }}
+            {{- range .Values.extraSecretRefs }}
+            - secretRef:
+                name: {{ .name }}
+            {{- end }}
+          env:
+          {{- if (.Values.anthropicApiKey).secretKeyRef }}
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "anthroic key secret name is required" .Values.anthropicApiKey.secretKeyRef.name }}
+                  key: {{ required "anthroic key secret key is required" .Values.anthropicApiKey.secretKeyRef.key }}
+          {{- end }}
+          {{- if ((.Values.vertexTextModel).jsonKey).secretKeyRef }}
+            - name: AIGW_VERTEX_TEXT_MODEL__JSON_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "vertexTextModel json key secret name is required" .Values.vertexTextModel.jsonKey.secretKeyRef.name }}
+                  key: {{ required "vertexTextModel json key secret key is required" .Values.vertexTextModel.jsonKey.secretKeyRef.key }}
+          {{- end }}
+          {{- if $aigwSigningKeySecret }}
+            - name: AIGW_SELF_SIGNED_JWT__SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aigwSigningKey secret name is required" ( include "ai-gateway.aigwSigningKey.secret" . ) }}
+                  key: {{ required "aigwSigningKey secret key is required" ( include "ai-gateway.aigwSigningKey.key" . ) }}
+          {{- else }}
+            - name: AIGW_SELF_SIGNED_JWT__SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ai-gateway.fullname" . }}-jwt-keys
+                  key: aigwSigningKey
+          {{- end }}
+          {{- if $aigwValidationKeySecret }}
+            - name: AIGW_SELF_SIGNED_JWT__VALIDATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "aigwValidationKey secret name is required" ( include "ai-gateway.aigwValidationKey.secret" . ) }}
+                  key: {{ required "aigwValidationKey secret key is required" ( include "ai-gateway.aigwValidationKey.key" . ) }}
+          {{- else }}
+            - name: AIGW_SELF_SIGNED_JWT__VALIDATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ai-gateway.fullname" . }}-jwt-keys
+                  key: aigwValidationKey
+          {{- end }}
+          {{- if $duoWorkflowSigningKeySecret }}
+            - name: DUO_WORKFLOW_SELF_SIGNED_JWT__SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "duoWorkflowSigningKey secret name is required" ( include "ai-gateway.duoWorkflowSigningKey.secret" . ) }}
+                  key: {{ required "duoWorkflowSigningKey secret key is required" ( include "ai-gateway.duoWorkflowSigningKey.key" . ) }}
+          {{- else }}
+            - name: DUO_WORKFLOW_SELF_SIGNED_JWT__SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ai-gateway.fullname" . }}-jwt-keys
+                  key: duoWorkflowSigningKey
+          {{- end }}
+          {{- if $duoWorkflowValidationKeySecret }}
+            - name: DUO_WORKFLOW_SELF_SIGNED_JWT__VALIDATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "duoWorkflowValidationKey secret name is required" ( include "ai-gateway.duoWorkflowValidationKey.secret" . ) }}
+                  key: {{ required "duoWorkflowValidationKey secret key is required" ( include "ai-gateway.duoWorkflowValidationKey.key" . ) }}
+          {{- else }}
+            - name: DUO_WORKFLOW_SELF_SIGNED_JWT__VALIDATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ai-gateway.fullname" . }}-jwt-keys
+                  key: duoWorkflowValidationKey
+          {{- end }}
+          {{/* extraEnvironmentVariables must be last in the env list so that
+               user-provided values take precedence over chart-managed values. */}}
+          {{- with .Values.extraEnvironmentVariables }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- with .Values.sidecars }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      volumes:
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,342 @@
+# Default values for ai-gateway.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: "registry.gitlab.com/gitlab-org/modelops/applied-ml/code-suggestions/ai-assist/model-gateway"
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+grpcIngress:
+  hosts:
+    - host:  grpc-chart-example.local
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+  tls: []
+  annotations: {
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+  }
+  # Additional annotations specific to gRPC ingress
+  # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /monitoring/healthz
+    port: http
+readinessProbe:
+  httpGet:
+    path: /monitoring/healthz
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# URL of the GitLab instance that sends request to AI Gateway
+# The endpoint is used to fetch OIDC data to authorize the requests
+gitlab:
+  url: "https://gitlab.com/"
+  apiUrl: "https://gitlab.com/api/v4/"
+
+cloudConnectorServiceName: "gitlab-ai-gateway"
+
+# logging defines the log configuration
+logging:
+  # level define the level of logging
+  level: "info"
+  # json defines whether the output is in JSON format
+  json: true
+  # file defines the location where logs are written
+  file: ""
+  uvicornLogger: '{"version": 1, "disable_existing_loggers": false}'
+
+# duoWorkflow defines the workflow service server configuration
+duoWorkflow:
+  host: "0.0.0.0"
+  enabled: true
+  port: 50052
+  cloudConnectorServiceName: "gitlab-duo-workflow-service"
+  authEnabled: true
+
+# api defines the main server configuration
+api:
+  host: "0.0.0.0"
+  port: 5052
+
+# metrics defines the metrics configuration
+metrics:
+  host: "0.0.0.0"
+  port: 8082
+
+docsUrl: "/docs"
+openApiUrl: "/openapi.json"
+redocUrl: "/redoc"
+
+# googleCloudProfiler defines how profiling configuration
+googleCloudProfiler:
+  enabled: false
+  verbose: 2
+  # periods is defined in milliseconds
+  periods: 10
+
+# instrumentators defines instrumentation configuration
+instrumentators:
+  threadMonitoringEnabled: false
+  threadMonitoringInterval: 60
+
+# featureFlags defines the featureFlags to be configured
+featureFlags:
+  codeSuggestionsExclPostProc: "[]"
+
+# snowplow defines the tracking configuration
+snowplow:
+  enabled: false
+  endpoint: "http://127.0.0.1:9090"
+  batchSize: 10
+  threadCount: 1
+
+# custom models
+customModels:
+  enabled: true
+  disableStreaming: false
+
+# Keys required for the key exchange
+
+# Keys required for the key exchange
+# issuing short-lived user JWT for the AI Gateway (e.g. Duo Chat)
+# You can use any value generated with `openssl genrsa -out aigw_signing.key 2048`.
+aigwSigningKey: {}
+#   secret: "mysecret"
+#   key: "mykey"
+
+# Key required for the key exchange
+# You can use any value generated with `openssl genrsa -out aigw_validation.key 2048`.
+aigwValidationKey: {}
+#   secret: "mysecret"
+#   key: "mykey"
+
+# Keys required for the key exchange
+# issuing short-lived user JWT for Duo Workflow
+# You can use any value generated with `openssl genrsa -out duo_workflow_signing.key 2048`.
+duoWorkflowSigningKey: {}
+#   secret: "mysecret"
+#   key: "mykey"
+
+# Key required for the key exchange
+# You can use any value generated with `openssl genrsa -out duo_workflow_validation.key 2048`.
+duoWorkflowValidationKey: {}
+#   secret: "mysecret"
+#   key: "mykey"
+
+# anthropicApiKey defines the anthropic access key.
+# either direct value can be passed or
+# a reference to an existing secret containing the value.
+anthropicApiKey: {}
+  # value: ""
+  # secretKeyRef:
+  #   name: "mysecret"
+  #   key: "mykey"
+
+# vertexTextModel defines the vertex configuration
+vertexTextModel: {}
+  # project defines the GCP project to use. (required)
+  # project: ""
+  # location: "us-central1"
+  # endpoint: "us-central1-aiplatform.googleapis.com"
+  # jsonKey defines the GOOGLE_APPLICATION_CREDENTIALS.
+  # either direct value can be passed or
+  # a reference to an existing secret containing the value.
+  # jsonKey:
+    # value: ""
+    # secretKeyRef:
+    #   name: "mysecret"
+    #   key: "mykey"
+
+modelEngineConcurrencyLimits: "{}"
+
+authBypassExternal: false
+
+# extraEnvironmentVariables specifies extra environment variables to be added.
+# Environment variables can be defined as a list of either key-value pairs or
+# using valueFrom to reference a secret or config map.
+# These environment variables will take precendence over any other setting
+# that is defined above if there is an overlap.
+# https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#environment-variables
+extraEnvironmentVariables: []
+  # - name: <ENV_VAR_NAME>
+  #   value: <value>
+  # - name: PASSWORD
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: mysecret
+  #       key: password
+  #       optional: false
+
+extraSecretRefs: []
+  # - name: app-config
+  # - name: db-credentials
+extraConfigMapRefs: []
+  # - name: app-config
+  # - name: db-credentials
+test:
+  enabled: true
+  image: "busybox"
+
+# Sidecar containers configuration
+# Allows adding arbitrary additional containers to the AI Gateway pod.
+# For gRPC TLS termination, use the grpc-tls-proxy subchart instead.
+sidecars: []
+# Example:
+# sidecars:
+#   - name: log-shipper
+#     image: fluent/fluent-bit:latest
+#     volumeMounts:
+#       - name: varlog
+#         mountPath: /var/log
+#     resources:
+#       requests:
+#         cpu: 50m
+#         memory: 32Mi
+#       limits:
+#         cpu: 100m
+#         memory: 64Mi
+
+# gRPC TLS Proxy subchart configuration
+# Enables a standalone NGINX pod for TLS termination on the gRPC port.
+# Values here are passed through to the grpc-tls-proxy subchart.
+grpc-tls-proxy:
+  enabled: false
+  # Port for TLS-terminated gRPC traffic
+  port: 8443
+  # NGINX image to use
+  image:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
+  # TLS certificate secret name (must contain tls.crt and tls.key)
+  tlsSecretName: ""
+  # Upstream AI Gateway gRPC service the proxy forwards to.
+  # host must be set to the AI Gateway service name (typically the Helm release name).
+  upstream:
+    host: ""
+    port: 50052
+  # Service configuration for the proxy.
+  # Defaults to ClusterIP — the gRPC ingress handles external TLS exposure on port 443.
+  # Set type to LoadBalancer if you need to expose the proxy port directly without an ingress
+  # controller, and add cloud-specific annotations as needed (AWS NLB, GCP NEG, Azure LB, etc.).
+  service:
+    type: ClusterIP
+    annotations: {}
+  # Custom NGINX configuration (must be a complete nginx.conf).
+  # If not provided, a default configuration will be generated.
+  nginxConfig: ""
+  # Number of proxy pod replicas
+  replicaCount: 1
+  # Image pull secrets for private registries (GCR, ECR, ACR, etc.)
+  imagePullSecrets: []
+  # Pod-level security context
+  podSecurityContext: {}
+    # fsGroup: 2000
+  # Container-level security context
+  securityContext: {}
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # allowPrivilegeEscalation: false
+    # capabilities:
+    #   drop: [ALL]
+  # Resources for the NGINX proxy pod
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi

@@ -1,0 +1,19 @@
+{{- if .Values.global.gatewayApi.configureCertmanager }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "gitlab.gatewayApi.certmanager.issuer" . }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
+spec:
+  acme:
+    server: {{ .Values.server | quote }}
+    email: {{ required "You must provide an email to associate with your TLS certificates. Please set certmanager-issuer.email" .Values.email | quote }}
+    privateKeySecretRef:
+      name: {{ .Release.Name }}-gateway-acme-key
+    solvers:
+      - http01:
+          gatewayHTTPRoute: {}
+{{- end }}

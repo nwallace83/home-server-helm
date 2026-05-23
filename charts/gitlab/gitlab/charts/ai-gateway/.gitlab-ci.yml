@@ -1,0 +1,58 @@
+stages:
+  - validate
+  - build
+  - release
+
+variables:
+  HELM_RELEASE: ai-gateway
+  PACKAGES_CHART_URL: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/helm"
+
+# Prevent double-pipelines for branch pipelines vs. merge request pipelines
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+include:
+  - local: .gitlab-ci-asdf-versions.yml
+  - local: .gitlab-ci-other-versions.yml
+  # TODO: Use helm-build instead once https://gitlab.com/gitlab-com/gl-infra/common-ci-tasks/-/merge_requests/1280 lands.
+  - component: $CI_SERVER_FQDN/gitlab-com/gl-infra/common-ci-tasks/helm-lint@v3.5.3
+    inputs:
+      chart_dir: .
+  - component: $CI_SERVER_FQDN/gitlab-com/gl-infra/common-ci-tasks/semantic-release@v3.5.3
+
+helm-package:
+  stage: build
+  image:
+    name: ${CI_REGISTRY}/gitlab-com/gl-infra/common-ci-tasks-images/helm:${GL_ASDF_HELM_VERSION}
+    entrypoint: [""]
+  artifacts:
+    paths:
+      - ai-gateway-$CI_COMMIT_TAG.tgz
+  script:
+    - helm package .
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+helm-publish:devel:
+  stage: release
+  needs:
+    - job: helm-package
+      artifacts: true
+  image:
+    name: ${CI_REGISTRY}/gitlab-com/gl-infra/common-ci-tasks-images/helm:${GL_ASDF_HELM_VERSION}
+    entrypoint: [""]
+  rules:
+    - if: $CI_COMMIT_TAG
+  before_script:
+    - apk add --no-cache curl
+  script:
+    - curl --fail-with-body --request POST --form "chart=@ai-gateway-$CI_COMMIT_TAG.tgz" --user gitlab-ci-token:"$CI_JOB_TOKEN" "$PACKAGES_CHART_URL/api/$HELM_CHANNEL/charts"
+  variables:
+    HELM_CHANNEL: devel

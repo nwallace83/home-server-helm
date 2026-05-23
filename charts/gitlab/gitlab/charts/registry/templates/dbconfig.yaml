@@ -1,0 +1,32 @@
+{{- if .Values.enabled -}}
+{{- if or .Values.database.enabled .Values.database.configure -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "registry.fullname" . }}-db-connection-config
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
+data:
+  db-connection.env: |
+    REGISTRY_DATABASE_HOST={{ default (include "gitlab.psql.host" .) .Values.database.host | quote }}
+    REGISTRY_DATABASE_PORT={{ default (include "gitlab.psql.port" .) .Values.database.port | quote }}
+    REGISTRY_DATABASE_NAME={{ include "registry.database.name" . | quote }}
+    REGISTRY_DATABASE_SSLMODE={{ .Values.database.sslmode | quote }}
+    {{- if .Values.global.psql.ssl }}
+    # NOTE: due to technical limitations of helm charts, we can't reference
+    # variables of the registry subchart (i.e. names of secrets containing
+    # certificates) from the toolbox sub-sub-chart.
+    # Hence, we only support mutual TLS auth for Postgresql when it is
+    # configured *globally* in the main chart, set via `global.psql.ssl` key of
+    # the main values.yml file.
+    REGISTRY_DATABASE_SSL_CERT=/etc/gitlab/postgres/ssl/client-certificate.pem
+    REGISTRY_DATABASE_SSL_KEY=/etc/gitlab/postgres/ssl/client-key.pem
+    REGISTRY_DATABASE_SSL_ROOTCERT=/etc/gitlab/postgres/ssl/server-ca.pem
+    {{- end }}
+    {{- if .Values.database.connecttimeout }}
+    REGISTRY_DATABASE_CONNECTION_TIMEOUT={{ .Values.database.connecttimeout | quote }}
+    {{- end }}
+{{- end -}}
+{{- end -}}

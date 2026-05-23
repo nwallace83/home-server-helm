@@ -1,0 +1,33 @@
+{{- if and .Values.global.appConfig.smartcard.enabled .Values.global.gatewayApi.enabled .Values.global.gatewayApi.installEnvoy }}
+{{/*
+ClientTrafficPolicy to handle smartcard traffic with Envoy Gateway by handling mutual
+TLS and passing the client certificate to the backend.
+Also keeps paths with escaped slashes unchanged for GitLab API calls.
+*/}}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: {{ template "fullname" . }}-ctp-smartcard
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gitlab.standardLabels" . | nindent 4 }}
+    {{- include "gitlab.commonLabels" . | nindent 4 }}
+spec:
+  targetRefs:
+  {{- $ref := (include "webservice.gatewayApi.gatewayRef.smartcard" . | fromYamlArray) }}
+  {{- $_ := unset (first $ref) "namespace" }}
+  {{- $ref | toYaml | nindent 2 }}
+  path:
+    escapedSlashesAction: KeepUnchanged
+  tls:
+    clientValidation:
+      caCertificateRefs:
+      - kind: "Secret"
+        group: ""
+        name: {{ $.Values.global.appConfig.smartcard.CASecret | quote }}
+  headers:
+    xForwardedClientCert:
+      certDetailsToAdd:
+      - Cert
+      mode: SanitizeSet
+{{- end }}

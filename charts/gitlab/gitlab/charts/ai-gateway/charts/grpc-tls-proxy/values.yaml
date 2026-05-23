@@ -1,0 +1,43 @@
+enabled: false
+
+replicaCount: 1
+
+port: 8443
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+image:
+  repository: nginx
+  tag: alpine
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+tlsSecretName: ""
+
+upstream:
+  host: ""
+  port: 50052
+
+nginxConfig: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

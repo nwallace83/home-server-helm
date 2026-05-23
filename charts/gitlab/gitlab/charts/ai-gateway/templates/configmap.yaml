@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ai-gateway.fullname" . }}
+  labels:
+    {{- include "ai-gateway.labels" . | nindent 4 }}
+data:
+  AIGW_GITLAB_URL: {{ include "ai-gateway.gitlab.url" . | quote }}
+  AIGW_GITLAB_API_URL: {{ include "ai-gateway.gitlab.apiUrl" . | quote }}
+  CLOUD_CONNECTOR_SERVICE_NAME: {{ .Values.cloudConnectorServiceName | quote }}
+  AIGW_CUSTOM_MODELS__ENABLED: {{ .Values.customModels.enabled | quote }}
+  AIGW_CUSTOM_MODELS__DISABLE_STREAMING: {{ .Values.customModels.disableStreaming | quote }}
+  AIGW_LOGGING__LEVEL: {{ .Values.logging.level | quote }}
+  AIGW_LOGGING__FORMAT_JSON: {{ .Values.logging.json | quote}}
+  AIGW_LOGGING__TO_FILE: {{ .Values.logging.file | quote }}
+  AIGW_FASTAPI__API_HOST: {{ .Values.api.host | quote }}
+  AIGW_FASTAPI__API_PORT: {{ .Values.api.port | quote}}
+  AIGW_FASTAPI__METRICS_HOST: {{ .Values.metrics.host | quote }}
+  AIGW_FASTAPI__METRICS_PORT: {{ .Values.metrics.port | quote}}
+  AIGW_FASTAPI__UVICORN_LOGGER: {{ .Values.logging.uvicornLogger | quote }}
+  AIGW_FASTAPI__DOCS_URL: {{ .Values.docsUrl | quote }}
+  AIGW_FASTAPI__OPENAPI_URL: {{ .Values.openApiUrl | quote }}
+  AIGW_FASTAPI__REDOC_URL: {{ .Values.redocUrl | quote }}
+  AIGW_GOOGLE_CLOUD_PROFILER__ENABLED: {{ .Values.googleCloudProfiler.enabled | quote}}
+  AIGW_GOOGLE_CLOUD_PROFILER__VERBOSE: {{ .Values.googleCloudProfiler.verbose | quote}}
+  AIGW_GOOGLE_CLOUD_PROFILER__PERIODS_MS: {{ .Values.googleCloudProfiler.periods | quote}}
+  AIGW_INSTRUMENTATOR__THREAD_MONITORING_ENABLED: {{ .Values.instrumentators.threadMonitoringEnabled | quote}}
+  AIGW_INSTRUMENTATOR__THREAD_MONITORING_INTERVAL: {{ .Values.instrumentators.threadMonitoringInterval | quote}}
+  AIGW_F__CODE_SUGGESTIONS__EXCL_POST_PROC: {{ .Values.featureFlags.codeSuggestionsExclPostProc | quote }}
+  AIGW_MODEL_ENGINE_CONCURRENCY_LIMITS: {{ .Values.modelEngineConcurrencyLimits | quote }}
+  AIGW_AUTH__BYPASS_EXTERNAL: {{ .Values.authBypassExternal | quote }}
+  {{- if .Values.snowplow.enabled }}
+  AIGW_SNOWPLOW__ENABLED: {{ .Values.snowplow.enabled | quote}}
+  AIGW_SNOWPLOW__ENDPOINT: {{ .Values.snowplow.endpoint | quote }}
+  AIGW_SNOWPLOW__BATCH_SIZE: {{ .Values.snowplow.batchSize | quote}}
+  AIGW_SNOWPLOW__THREAD_COUNT: {{ .Values.snowplow.threadCount | quote}}
+  {{- end }}
+  {{- if .Values.vertexTextModel }}
+  AIGW_VERTEX_TEXT_MODEL__PROJECT: {{ .Values.vertexTextModel.project | quote }}
+  AIGW_VERTEX_TEXT_MODEL__LOCATION: {{ .Values.vertexTextModel.location | quote }}
+  AIGW_VERTEX_TEXT_MODEL__ENDPOINT: {{ .Values.vertexTextModel.endpoint | quote }}
+  {{- end }}
+  {{- if .Values.duoWorkflow.enabled }}
+  ENABLE_DUO_WORKFLOW_SERVICE: {{ .Values.duoWorkflow.enabled | quote }}
+  DUO_WORKFLOW_AUTH__OIDC_GITLAB_URL: {{ include "ai-gateway.gitlab.url" . | quote }}
+  DUO_WORKFLOW_CLOUD_CONNECTOR_SERVICE_NAME: {{ .Values.duoWorkflow.cloudConnectorServiceName | quote }}
+  DUO_WORKFLOW_AUTH__ENABLED: {{ .Values.duoWorkflow.authEnabled | quote }}
+  {{- end }}

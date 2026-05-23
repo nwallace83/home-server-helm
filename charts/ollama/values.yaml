@@ -9,7 +9,7 @@ ollama:
         - "carstenuhlig/omnicoder-9b:q4_k_m"
   extraEnv:
     - name: OLLAMA_CONTEXT_LENGTH
-      value: "8192"
+      value: "16384"
   httpRoute:
     enabled: true
     parentRefs:

@@ -22,6 +22,8 @@ global:
   certificates:
     image:
       repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates
+  certmanager-issuer:
+    email: admin@nwallace.io
   gitlabBase:
     image:
       repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base
