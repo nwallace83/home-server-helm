@@ -39,6 +39,9 @@ global:
   ingress:
     enabled: false
     configureCertmanager: false
+  gatewayApi:
+    enabled: false
+    configureCertmanager: false
   nodeSelector:
     kubernetes.io/arch: amd64
   appConfig:
