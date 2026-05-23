@@ -1,5 +1,5 @@
 gpu-operator:
   operator:
-    repository: harbor.nwallace.io/nvidia
+    repository: harbor.nwallace.io/nvidia/nvidia
   nfd:
     enabled: false
