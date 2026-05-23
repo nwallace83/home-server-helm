@@ -4,7 +4,9 @@ ollama:
       enabled: true
     models:
       pull:
-        - "qwen2.5-coder:7b-instruct"
+        - "carstenuhlig/omnicoder-9b:q4_k_m"
+      run:
+        - "carstenuhlig/omnicoder-9b:q4_k_m"
   extraEnv:
     - name: OLLAMA_CONTEXT_LENGTH
       value: "8192"
