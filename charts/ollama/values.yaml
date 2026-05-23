@@ -5,6 +5,9 @@ ollama:
     models:
       pull:
         - "qwen2.5-coder:7b-instruct"
+    extraEnv:
+      - name: OLLAMA_CONTEXT_LENGTH
+        value: "8192"
   httpRoute:
     enabled: true
     parentRefs:
