@@ -36,13 +36,5 @@ longhorn:
   metrics:
     serviceMonitor:
       enabled: true
-  # image:
-  #   longhorn:
-  #     manager:
-  #       tag: v1.11.0-hotfix-1
-  #     instanceManager:
-  #       tag: v1.11.0-hotfix-1
-  # preUpgradeChecker:
-  #   upgradeVersionCheck: false
-  # upgradeCheck:
-  #   enabled: false
+  longhornDriver:
+    tolerations: "nvidia.com/gpu=true:NoSchedule"
