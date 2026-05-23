@@ -27,3 +27,6 @@ dependencies:
 - name: gitlab
   version: ">=8.5.2"
   repository: https://charts.gitlab.io
+- name: valkey
+  version: ">=0.9.4"
+  repository: https://valkey.io/valkey-helm/

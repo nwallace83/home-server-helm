@@ -2,7 +2,7 @@ dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
 
 httpRoute:
   parentRefs:
-  - group: gateway.networking.k8s.io	
+  - group: gateway.networking.k8s.io
     kind: Gateway
     name: gateway-external
     namespace: kube-system
@@ -42,6 +42,10 @@ global:
   gatewayApi:
     enabled: false
     configureCertmanager: false
+  redis:
+    auth:
+      enabled: false
+    host: valkey-master
   nodeSelector:
     kubernetes.io/arch: amd64
   appConfig:
@@ -188,3 +192,15 @@ gitlab:
     selfsign:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/cfssl-self-sign
+valkey:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+    persistence:
+      storageClass: longhorn
+      size: 1Gi
+  image:
+    registry: harbor.nwallace.io/docker-hub
