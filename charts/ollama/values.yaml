@@ -4,7 +4,7 @@ ollama:
       enabled: true
     models:
       pull:
-        - "qwen2.5-coder:7b-instruct"
+        - "llama3.1:8b"
   httpRoute:
     enabled: true
     parentRefs:
