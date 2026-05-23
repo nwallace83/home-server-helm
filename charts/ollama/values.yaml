@@ -11,11 +11,6 @@ ollama:
         namespace: kube-system
     hostnames:
       - ollama.nwallace.io
-  persistentVolume:
-    enabled: true
-    accessModes:
-      - ReadWriteMany
-    storageClass: longhorn-rwx
   models:
     pull:
       - "qwen2.5-coder:7b-instruct"
