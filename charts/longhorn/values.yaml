@@ -37,4 +37,5 @@ longhorn:
     serviceMonitor:
       enabled: true
   longhornDriver:
-    tolerations: "nvidia.com/gpu=true:NoSchedule"
+    tolerations: 
+      - "nvidia.com/gpu=true:NoSchedule"
