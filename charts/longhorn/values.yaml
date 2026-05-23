@@ -1,12 +1,6 @@
 commonLabels:
   backstage.io/kubernetes-id: longhorn
 
-global:
-  tolerations:
-    - key: nvidia.com/gpu
-      operator: Exists
-      effect: NoSchedule
-
 longhorn:
   httproute:
     enabled: true
