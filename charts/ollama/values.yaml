@@ -1,4 +1,7 @@
 ollama:
+  ollama:
+    gpu:
+      enabled: true
   httpRoute:
     enabled: true
     parentRefs:
@@ -13,8 +16,8 @@ ollama:
     accessModes:
       - ReadWriteMany
     storageClass: longhorn-rwx
-  gpu:
-    enabled: true
   models:
     pull:
       - "qwen2.5-coder:7b-instruct"
+  nodeSelector:
+    kubernetes.io/hostname: arch-desktop
