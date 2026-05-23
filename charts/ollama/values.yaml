@@ -2,6 +2,9 @@ ollama:
   ollama:
     gpu:
       enabled: true
+    models:
+      pull:
+        - "qwen2.5-coder:7b-instruct"
   httpRoute:
     enabled: true
     parentRefs:
@@ -11,8 +14,5 @@ ollama:
         namespace: kube-system
     hostnames:
       - ollama.nwallace.io
-  models:
-    pull:
-      - "qwen2.5-coder:7b-instruct"
   nodeSelector:
     kubernetes.io/hostname: arch-desktop
