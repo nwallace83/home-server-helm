@@ -3,21 +3,21 @@ ollama:
     gpu:
       enabled: true
     models:
-      pull:
-        - "carstenuhlig/omnicoder-9b:q4_k_m"
+      create:
+      - name: "omnicoder-9b-16k"
+        template: |
+          FROM carstenuhlig/omnicoder-9b:q4_k_m
+          PARAMETER num_ctx 16384
       run:
-        - "carstenuhlig/omnicoder-9b:q4_k_m"
-  extraEnv:
-    - name: OLLAMA_CONTEXT_LENGTH
-      value: "16384"
+      - "omnicoder-9b-16k"
   httpRoute:
     enabled: true
     parentRefs:
-      - group: gateway.networking.k8s.io
-        kind: Gateway
-        name: gateway-internal
-        namespace: kube-system
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway-internal
+      namespace: kube-system
     hostnames:
-      - ollama.nwallace.io
+    - ollama.nwallace.io
   nodeSelector:
     kubernetes.io/hostname: arch-desktop
