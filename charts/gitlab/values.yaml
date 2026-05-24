@@ -6,6 +6,7 @@ httpRoute:
     kind: Gateway
     name: gateway-external
     namespace: kube-system
+    sectionName: ""
   webservice:
     hostnames:
     - gitlab.nwallace.io
@@ -17,11 +18,19 @@ global:
   hosts:
     domain: nwallace.io
     externalIP: 192.168.2.12
+    https: false
   monitoring:
     enabled: true
   certificates:
     image:
       repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates
+  gatewayApi:
+    enabled: true
+    installEnvoy: false
+    configureCertmanager: false
+    gatewayRef:
+      name: gateway-external
+      namespace: kube-system
   gitlabBase:
     image:
       repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base
@@ -39,13 +48,10 @@ global:
   ingress:
     enabled: false
     configureCertmanager: false
-  gatewayApi:
-    enabled: false
-    configureCertmanager: false
   redis:
     auth:
       enabled: false
-    host: valkey-master
+    host: gitlab-valkey
   nodeSelector:
     kubernetes.io/arch: amd64
   appConfig:
@@ -70,6 +76,7 @@ gitlab:
   installCertmanager: false
   gitlab-runner:
     runners:
+      locked: null
       config: |
         [[runners]]
           [runners.kubernetes]
@@ -127,7 +134,7 @@ gitlab:
         requests:
           cpu: 50m
         limits:
-          memory: 3Gi
+          memory: 4Gi
       nodeSelector:
         kubernetes.io/hostname: server
       minReplicas: 1
@@ -159,6 +166,7 @@ gitlab:
     gitlab-exporter:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-exporter
+        tag: 16.7.0
     migrations:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-toolbox-ee
@@ -192,6 +200,8 @@ gitlab:
     selfsign:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/cfssl-self-sign
+  certmanagerIssuer:
+    enabled: false
 valkey:
   enabled: true
   auth:
