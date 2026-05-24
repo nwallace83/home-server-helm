@@ -1,4 +1,4 @@
-dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:17
+dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
 
 httpRoute:
   parentRefs:
