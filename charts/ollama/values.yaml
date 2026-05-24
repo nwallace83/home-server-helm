@@ -7,7 +7,7 @@ ollama:
       - name: "omnicoder-9b-16k"
         template: |
           FROM carstenuhlig/omnicoder-9b:q4_k_m
-          PARAMETER num_ctx 16384
+          PARAMETER num_ctx 24576
       run:
       - "omnicoder-9b-16k"
   httpRoute:
