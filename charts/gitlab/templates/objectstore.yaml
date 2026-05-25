@@ -1,7 +1,7 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: gitlab
+  name: gitlab-db
   labels:
     {{- include "commonLabels" . | nindent 4 }}
 spec:

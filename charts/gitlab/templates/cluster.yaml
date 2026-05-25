@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: gitlab
+  name: gitlab-db
   annotations:
     helm.sh/resource-policy: keep
   labels:
@@ -43,8 +43,8 @@ spec:
     #     - CREATE EXTENSION IF NOT EXISTS pg_trgm
     #     - CREATE EXTENSION IF NOT EXISTS plpgsql
     recovery:
-      source: gitlab
-      database: gitlab-old
+      source: gitlab-db
+      database: gitlab-db
       owner: gitlab
       secret:
         name: gitlab-postgresql-password
@@ -81,11 +81,11 @@ spec:
       parameters:
         barmanObjectName: gitlab
   externalClusters:
-    - name: gitlab
+    - name: gitlab-db
       plugin:
           name: barman-cloud.cloudnative-pg.io
           parameters:
-            barmanObjectName: gitlab
-            serverName: gitlab
+            barmanObjectName: gitlab-db
+            serverName: gitlab-db
   monitoring:
     enablePodMonitor: true
