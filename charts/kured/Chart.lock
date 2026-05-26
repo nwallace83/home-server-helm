@@ -1,6 +1,6 @@
 dependencies:
 - name: kured
   repository: oci://ghcr.io/kubereboot/charts
-  version: 5.11.0
-digest: sha256:581f7f08dc2ce321e3c0c1c5a79b7e30348b03cab482f7e342903c167020fd8a
-generated: "2026-01-22T19:20:19.614391402Z"
+  version: 5.12.0
+digest: sha256:70c96bc819c091c4703a8a94fb315bca08c2f0aa7f0e88cb60d3aa02c0b69b59
+generated: "2026-05-26T14:20:25.305555739Z"
