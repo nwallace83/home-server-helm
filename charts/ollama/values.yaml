@@ -21,3 +21,6 @@ ollama:
     - ollama.nwallace.io
   nodeSelector:
     kubernetes.io/hostname: arch-desktop
+  volumes:
+  - name: ollama-data
+    hostPath:
