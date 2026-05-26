@@ -6,8 +6,8 @@ ollama:
       create:
       - name: "qwen3-coder"
         template: |
-          FROM qwen3-coder:9b
-          PARAMETER num_ctx 65536
+          FROM qwen3.5:9b-q5_k_m
+          PARAMETER num_ctx 32768
       run:
       - "qwen3-coder"
   httpRoute:
