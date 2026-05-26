@@ -4,12 +4,12 @@ ollama:
       enabled: true
     models:
       create:
-      - name: "qwen3-coder"
-        template: |
-          FROM qwen3.5:9b-q5_k_m
-          PARAMETER num_ctx 32768
+        - name: "qwen3-coder"
+          template: |
+            FROM qwen3.5:9b-q4_k_m
+            PARAMETER num_ctx 32768
       run:
-      - "qwen3-coder"
+        - "qwen3-coder"
   httpRoute:
     enabled: true
     parentRefs:
@@ -21,6 +21,8 @@ ollama:
     - ollama.nwallace.io
   nodeSelector:
     kubernetes.io/hostname: arch-desktop
-  volumes:
-  - name: ollama-data
-    hostPath:
+  persistentVolume:
+    enabled: true
+    existingClaim: ollama-data
+  image:
+    repository: harbor.nwallace.io/docker-hub/ollama/ollama
