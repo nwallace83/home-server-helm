@@ -79,7 +79,7 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName: gitlab
+        barmanObjectName: gitlab-db
   externalClusters:
     - name: gitlab-db
       plugin:
