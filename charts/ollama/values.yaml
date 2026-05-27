@@ -7,7 +7,7 @@ ollama:
         - name: "qwen3-coder"
           template: |
             FROM qwen3.5:9b-q4_k_m
-            PARAMETER num_ctx 32768
+            PARAMETER num_ctx 131072
       run:
         - "qwen3-coder"
   httpRoute:
