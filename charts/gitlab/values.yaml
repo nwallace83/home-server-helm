@@ -14,8 +14,8 @@ global:
     enabled: true
     installEnvoy: false
     configureCertmanager: false
+    httpToHttpsRedirect: false
     gatewayRef:
-      httpToHttpsRedirect: false
       name: gateway-external
       namespace: kube-system
   gitlabBase:
