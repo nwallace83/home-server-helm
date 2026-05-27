@@ -1,19 +1,5 @@
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
 
-httpRoute:
-  parentRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: gateway-external
-    namespace: kube-system
-    sectionName: ""
-  webservice:
-    hostnames:
-    - gitlab.nwallace.io
-  kas:
-    hostnames:
-    - kas.nwallace.io
-
 global:
   hosts:
     domain: nwallace.io
@@ -29,6 +15,7 @@ global:
     installEnvoy: false
     configureCertmanager: false
     gatewayRef:
+      httpToHttpsRedirect: false
       name: gateway-external
       namespace: kube-system
   gitlabBase:
