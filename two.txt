@@ -1,0 +1,5936 @@
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitaly/templates/pdb.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: release-name-gitaly
+  namespace: default
+  labels:
+    app: gitaly
+    chart: gitaly-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  maxUnavailable:  1
+  selector:
+    matchLabels:
+      app: gitaly
+      release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/pdb.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: release-name-gitlab-shell
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: gitlab-shell
+      release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/kas/templates/pdb.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: release-name-kas
+  namespace: default
+  labels:
+    app: kas
+    chart: kas-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: kas
+      release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/sidekiq/templates/pdb.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: release-name-sidekiq-all-in-1-v1
+  namespace: default
+  labels:
+    app: sidekiq
+    chart: sidekiq-10.0.0
+    release: release-name
+    heritage: Helm
+    
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: sidekiq
+      release: release-name
+      
+      queue-pod-name: all-in-1
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/pdb.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: release-name-webservice-default
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    gitlab.com/webservice-name: default
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: webservice
+      release: release-name
+      
+      
+      gitlab.com/webservice-name: default
+---
+# Source: gitlab/charts/gitlab/charts/gitlab-runner/templates/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "release-name-gitlab-runner"
+  namespace: "default"
+  labels:
+    app: release-name-gitlab-runner
+    chart: gitlab-runner-0.88.3
+    release: "release-name"
+    heritage: "Helm"
+---
+# Source: gitlab/charts/valkey/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-valkey
+  labels:
+    helm.sh/chart: valkey-0.9.4
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "9.0.2"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
+---
+# Source: gitlab/charts/gitlab/charts/gitlab-runner/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-gitlab-runner
+  namespace: "default"
+  labels:
+    app: release-name-gitlab-runner
+    chart: gitlab-runner-0.88.3
+    release: "release-name"
+    heritage: "Helm"
+data:
+  entrypoint: |
+    #!/bin/bash
+    set -e
+
+    export CONFIG_PATH_FOR_INIT="/home/gitlab-runner/.gitlab-runner/"
+    mkdir -p ${CONFIG_PATH_FOR_INIT}
+    cp /configmaps/config.toml ${CONFIG_PATH_FOR_INIT}
+
+    # Set up environment variables for cache
+    if [[ -f /secrets/accesskey && -f /secrets/secretkey ]]; then
+      export CACHE_S3_ACCESS_KEY=$(cat /secrets/accesskey)
+      export CACHE_S3_SECRET_KEY=$(cat /secrets/secretkey)
+    fi
+
+    if [[ -f /secrets/gcs-applicaton-credentials-file ]]; then
+      export GOOGLE_APPLICATION_CREDENTIALS="/secrets/gcs-applicaton-credentials-file"
+    elif [[ -f /secrets/gcs-application-credentials-file ]]; then
+      export GOOGLE_APPLICATION_CREDENTIALS="/secrets/gcs-application-credentials-file"
+    else
+      if [[ -f /secrets/gcs-access-id && -f /secrets/gcs-private-key ]]; then
+        export CACHE_GCS_ACCESS_ID=$(cat /secrets/gcs-access-id)
+        # echo -e used to make private key multiline (in google json auth key private key is oneline with \n)
+        export CACHE_GCS_PRIVATE_KEY=$(echo -e $(cat /secrets/gcs-private-key))
+      fi
+    fi
+
+    if [[ -f /secrets/azure-account-name && -f /secrets/azure-account-key ]]; then
+      export CACHE_AZURE_ACCOUNT_NAME=$(cat /secrets/azure-account-name)
+      export CACHE_AZURE_ACCOUNT_KEY=$(cat /secrets/azure-account-key)
+    fi
+
+    if [[ -f /secrets/runner-registration-token ]]; then
+      export REGISTRATION_TOKEN=$(cat /secrets/runner-registration-token)
+    fi
+
+    if [[ -f /secrets/runner-token ]]; then
+      export CI_SERVER_TOKEN=$(cat /secrets/runner-token)
+    fi
+    if ! sh /configmaps/register-the-runner; then
+      exit 1
+    fi
+
+    # Run pre-entrypoint-script
+    if ! bash /configmaps/pre-entrypoint-script; then
+      exit 1
+    fi
+
+    # Start the runner
+    exec /entrypoint run \
+      --working-directory=/home/gitlab-runner
+  config.toml: |
+    shutdown_timeout = 0
+    concurrent = 10
+    check_interval = 3
+    log_level = "info"
+
+  
+  config.template.toml:   |
+    [[runners]]
+      [runners.kubernetes]
+      image = "ubuntu:22.04"
+      privileged = true
+      [[runners.kubernetes.volumes.empty_dir]]
+        name = "docker-certs"
+        mount_path = "/certs/client"
+        medium = "Memory"
+      [runners.kubernetes.node_selector]
+        "kubernetes.io/hostname" = "server"
+  
+
+  register-the-runner: |
+    #!/bin/sh
+    signal_handler() {
+      if [ ! -d "/proc/$register_pid" ]; then
+        wait $register_pid
+      fi
+      exit
+    }
+    trap 'signal_handler' QUIT INT
+
+    MAX_REGISTER_ATTEMPTS=30
+
+    # Reset/unset the not needed flags when an authentication token
+    RUN_UNTAGGED=""
+    ACCESS_LEVEL=""
+
+    if [ -n "$CI_SERVER_TOKEN" ] && [ "${CI_SERVER_TOKEN#glrt-}" != "$CI_SERVER_TOKEN" ]; then
+      RUN_UNTAGGED=""
+      ACCESS_LEVEL=""
+      unset REGISTER_LOCKED
+      unset RUNNER_TAG_LIST
+    fi
+
+    for i in $(seq 1 "${MAX_REGISTER_ATTEMPTS}"); do
+      echo "Registration attempt ${i} of ${MAX_REGISTER_ATTEMPTS}"
+      /entrypoint register \
+        ${RUN_UNTAGGED} \
+        ${ACCESS_LEVEL} \
+        --template-config /configmaps/config.template.toml \
+        --non-interactive &
+
+      register_pid=$!
+      wait $register_pid
+      retval=$?
+
+      if [ ${retval} = 0 ]; then
+        break
+      elif [ ${i} = ${MAX_REGISTER_ATTEMPTS} ]; then
+        exit 1
+      fi
+
+      sleep 5
+    done
+
+  check-live: |
+    #!/bin/bash
+    set -eou pipefail
+
+    # default timeout is 3 seconds, can be overriden
+    VERIFY_TIMEOUT=${1:-${VERIFY_TIMEOUT:-3}}
+
+    if ! /usr/bin/pgrep -f ".*register-the-runner"  > /dev/null && ! /usr/bin/pgrep -f "gitlab.*runner"  > /dev/null ; then
+      exit 1
+    fi
+
+    status=0
+    # empty --url= helps `gitlab-runner verify` select all configured runners (otherwise filters for $CI_SERVER_URL)
+    verify_output=$(timeout "${VERIFY_TIMEOUT}" gitlab-runner verify --url= 2>&1) || status=$?
+
+    # timeout exit code is 143 with busybox, and 124 with coreutils
+    if (( status == 143 )) || (( status == 124 )) ; then
+      echo "'gitlab-runner verify' terminated by timeout, not a conclusive failure" >&2
+      exit 0
+    elif (( status > 0 )) ; then
+      exit ${status}
+    fi
+
+    grep -qE "is (alive|valid)" <<<"${verify_output}"
+
+  pre-entrypoint-script: |
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitaly/templates/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-gitaly
+  namespace: default
+  labels:
+    app: gitaly
+    chart: gitaly-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  configure: |
+    set -e
+    mkdir -p /init-secrets/gitaly /init-secrets/shell
+    cp -v -r -L /init-config/.gitlab_shell_secret  /init-secrets/shell/.gitlab_shell_secret
+    cp -v -r -L /init-config/gitaly_token  /init-secrets/gitaly/gitaly_token
+  config.toml.tpl: |
+    # The directory where Gitaly's executables are stored
+    bin_dir = "/usr/local/bin"
+
+    # listen on a TCP socket. This is insecure (no authentication)
+    listen_addr = ":8075"
+
+    # Directory where internal sockets reside
+    # note: no value will result in a `/tmp/gitlab-internal-*` path
+    # internal_socket_dir = "/home/git"
+
+    # If metrics collection is enabled, inform gitaly about that
+    prometheus_listen_addr = ":9236"
+
+    # Graceful shutdown timeout, how long to wait for in-flight requests to complete
+    graceful_restart_timeout = "25s"
+
+    # Storage configuration
+    {% $storages := coll.Slice  "default" %}
+    {% $hostid := index (.Env.HOSTNAME | strings.Split "-" | coll.Reverse) 0 %}
+    {% $index := 0 %}
+    {% if regexp.Match "^[0-9]+$" $hostid %}
+      {% $index = conv.ToInt64 $hostid %}
+    {% end %}
+    {% if len $storages | lt $index %}
+    [[storage]]
+    name = "{% index $storages $index %}"
+    path = "/home/git/repositories"
+    {% else %}
+    {% printf "Storage for node %d is not present in the storageNames array. Did you use kubectl to scale up? You need to solely use helm for this purpose." $index | fail %}
+    {% end %}
+
+    [logging]
+    format = "json"
+    dir = "/var/log/gitaly"
+
+    [auth]
+    token = {% file.Read "/etc/gitlab-secrets/gitaly/gitaly_token" | strings.TrimSpace | data.ToJSON %}
+
+    [git]
+    use_bundled_binaries = true
+    ignore_gitconfig = true
+
+    [gitlab-shell]
+    # The directory where gitlab-shell is installed
+    dir = "/srv/gitlab-shell"
+
+    [gitlab]
+    # location of shared secret for GitLab Shell / API interaction
+    secret_file = "/etc/gitlab-secrets/shell/.gitlab_shell_secret"
+    # URL of API
+    url = "http://release-name-webservice-default.default.svc:8181/"
+
+    [gitlab.http-settings]
+    # read_timeout = 300
+    # user = someone
+    # password = somepass
+    # ca_file = /etc/ssl/cert.pem
+    # ca_path = /etc/pki/tls/certs
+
+    [hooks]
+    # directory containing custom hooks
+    custom_hooks_dir = "/home/git/custom_hooks"
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-exporter/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-gitlab-exporter
+  namespace: default
+  labels:
+    app: gitlab-exporter
+    chart: gitlab-exporter-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  gitlab-exporter.yml.erb: |
+    server:
+      name: webrick
+      listen_address: "*"
+      listen_port: 9168
+      
+
+    probes:
+      db_common: &db_common
+        methods:
+          - probe_db
+        opts:
+          connection_string: dbname=gitlab user=gitlab host=gitlab-db-rw port=5432 password='<%= File.read('/etc/gitlab/postgres/psql-password-main').strip.gsub(/[\'\\]/) { |esc| '\\' + esc } %>'
+      database:
+        multiple: true
+        ci_builds:
+          class_name: Database::CiBuildsProber
+          <<: *db_common
+        tuple_stats:
+          class_name: Database::TuplesProber
+          <<: *db_common
+        rows_count:
+          class_name: Database::RowCountProber
+          <<: *db_common
+      database_bloat:
+        class_name: Database::BloatProber
+        <<: *db_common
+
+      sidekiq: &sidekiq
+        methods:
+          - probe_queues
+          - probe_workers
+          - probe_retries
+          - probe_stats
+        opts:
+          redis_url: redis://gitlab-valkey:6379/0
+          
+          redis_enable_client: false
+          probe_non_namespaced: true
+
+      ruby: &ruby
+        methods:
+          - probe_gc
+        opts:
+          quantiles: false
+
+      metrics:
+        multiple: true
+        ruby:
+          <<: *ruby
+        sidekiq:
+          <<: *sidekiq
+        ci_builds:
+          class_name: Database::CiBuildsProber
+          <<: *db_common
+        tuple_stats:
+          class_name: Database::TuplesProber
+          <<: *db_common
+        rows_count:
+          class_name: Database::RowCountProber
+          <<: *db_common
+        pg_sequences:
+          class_name: Database::PgSequencesProber
+          <<: *db_common
+
+  configure: |
+    # BEGIN gitlab.scripts.configure.secrets
+    set -e
+    config_dir="/init-config"
+    secret_dir="/init-secrets"
+    # optional
+    for secret in redis redis-sentinel postgres gitlab-exporter ; do
+      if [ -e "${config_dir}/${secret}" ]; then
+        mkdir -p "${secret_dir}/${secret}"
+        cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+      fi
+    done
+    # END gitlab.scripts.configure.secrets
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/configmap-sshd.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-gitlab-shell-sshd
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  sshd_config: |
+    #	$OpenBSD: sshd_config,v 1.101 2017/03/14 07:19:07 djm Exp $
+
+    # This is the sshd server system-wide configuration file.  See
+    # sshd_config(5) for more information.
+
+    # This sshd was compiled with PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
+    # The strategy used for options in the default sshd_config shipped with
+    # OpenSSH is to specify options with their default value where
+    # possible, but leave them commented.  Uncommented options override the
+    # default value.
+
+    Port 2222
+    #AddressFamily any
+    #ListenAddress 0.0.0.0
+    #ListenAddress ::
+
+    #HostKey /etc/ssh/ssh_host_rsa_key
+    #HostKey /etc/ssh/ssh_host_dsa_key
+    #HostKey /etc/ssh/ssh_host_ecdsa_key
+    #HostKey /etc/ssh/ssh_host_ed25519_key
+
+    # Ciphers and keying
+    #RekeyLimit default none
+
+    # Logging
+    #SyslogFacility AUTH
+    LogLevel ERROR
+
+    # Authentication:
+
+    PermitRootLogin no
+    #StrictModes yes
+    #MaxAuthTries 6
+    #MaxSessions 10
+
+    #PubkeyAuthentication yes
+
+    #AuthorizedPrincipalsFile none
+
+    # For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
+    #HostbasedAuthentication no
+    # Change to yes if you don't trust ~/.ssh/known_hosts for
+    # HostbasedAuthentication
+    #IgnoreUserKnownHosts no
+    # Don't read the user's ~/.rhosts and ~/.shosts files
+    #IgnoreRhosts yes
+
+    #PermitEmptyPasswords no
+
+    # Change to no to disable s/key passwords
+    #ChallengeResponseAuthentication yes
+
+    # Kerberos options
+    #KerberosAuthentication no
+    #KerberosOrLocalPasswd yes
+    #KerberosTicketCleanup yes
+    #KerberosGetAFSToken no
+
+    # GSSAPI options
+    #GSSAPIAuthentication no
+    #GSSAPICleanupCredentials yes
+
+    # Set this to 'yes' to enable PAM authentication, account processing,
+    # and session processing. If this is enabled, PAM authentication will
+    # be allowed through the ChallengeResponseAuthentication and
+    # PasswordAuthentication.  Depending on your PAM configuration,
+    # PAM authentication via ChallengeResponseAuthentication may bypass
+    # the setting of "PermitRootLogin without-password".
+    # If you just want the PAM account and session checks to run without
+    # PAM authentication, then enable this but set PasswordAuthentication
+    # and ChallengeResponseAuthentication to 'no'.
+    #UsePAM no
+
+    #AllowAgentForwarding yes
+    #AllowTcpForwarding yes
+    #GatewayPorts no
+    #X11Forwarding no
+    #X11DisplayOffset 10
+    #X11UseLocalhost yes
+    #PermitTTY yes
+    #PrintMotd yes
+    #PrintLastLog yes
+    #TCPKeepAlive yes
+    #UseLogin no
+    #PermitUserEnvironment no
+    #Compression delayed
+    ClientAliveInterval 0
+    #ClientAliveCountMax 3
+    #UseDNS no
+    PidFile /srv/sshd/sshd.pid
+    #PermitTunnel no
+    #ChrootDirectory none
+    #VersionAddendum none
+
+    # no default banner path
+    #Banner none
+
+    # override default of no subsystems
+    # Subsystem	sftp	/usr/lib/ssh/sftp-server
+
+    # the following are HPN related configuration options
+    # tcp receive buffer polling. disable in non autotuning kernels
+    #TcpRcvBufPoll yes
+
+    # disable hpn performance boosts
+    #HPNDisabled no
+
+    # buffer size for hpn to non-hpn connections
+    #HPNBufferSize 2048
+
+
+    # Example of overriding settings on a per-user basis
+    #Match User anoncvs
+    #	X11Forwarding no
+    #	AllowTcpForwarding no
+    #	PermitTTY no
+    #	ForceCommand cvs server
+
+    # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
+    # but this is overridden so installations will only check .ssh/authorized_keys
+    AuthorizedKeysFile	.ssh/authorized_keys
+
+    AuthorizedKeysCommand /authorized_keys %u %k
+    AuthorizedKeysCommandUser git
+
+    PasswordAuthentication no
+
+    AllowUsers git
+
+    # Enable the use of Git protcol v2
+    AcceptEnv GIT_PROTOCOL
+
+    # Hard disable all forwarding
+    DisableForwarding yes
+
+    # Specifies the maximum number of concurrent unauthenticated connections to the SSH daemon.
+    # See `man sshd_config(5)`
+    
+    MaxStartups 10:30:100
+    
+
+    # Specifies amount of time athat the server will disconnect after if the user has not successfully logged in
+    LoginGraceTime 60
+
+    # Includes
+    Include /etc/ssh/sshd_config.d/*.conf
+
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-gitlab-shell
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  configure: |
+    # BEGIN gitlab.scripts.configure.secrets
+    set -e
+    config_dir="/init-config"
+    secret_dir="/init-secrets"
+    # required
+    for secret in shell ; do
+      mkdir -p "${secret_dir}/${secret}"
+      cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+    done
+    # END gitlab.scripts.configure.secrets
+    mkdir -p /${secret_dir}/ssh
+    cp -v -r -L /${config_dir}/ssh_host_* /${secret_dir}/ssh/
+    chmod 0400 /${secret_dir}/ssh/ssh_host_*
+  config.yml.tpl: |
+    # GitLab user. git by default
+    user: git
+
+    # Url to gitlab instance. Used for api calls. Should end with a slash.
+    gitlab_url: "http://release-name-webservice-default.default.svc:8181/"
+
+    secret_file: /etc/gitlab-secrets/shell/.gitlab_shell_secret
+
+    # File used as authorized_keys for gitlab user
+    auth_file: "/home/git/.ssh/authorized_keys"
+
+    # Log file.
+    # Default is gitlab-shell.log in the root directory.
+    log_file: "/var/log/gitlab-shell/gitlab-shell.log"
+
+    log_format: json
+
+    # Audit usernames.
+    # Set to true to see real usernames in the logs instead of key ids, which is easier to follow, but
+    # incurs an extra API call on every gitlab-shell command.
+    audit_usernames: false
+
+    
+    lfs:
+      pure_ssh_protocol: false
+    pat:
+      enabled: true
+      allowed_scopes:
+        []
+  krb5.conf: |
+    
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/nginx-tcp-configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-nginx-ingress-tcp
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  "22": "default/release-name-gitlab-shell:22::"
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/kas/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-kas
+  namespace: default
+  labels:
+    app: kas
+    chart: kas-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  # See https://gitlab.com/gitlab-org/cluster-integration/gitlab-agent/-/blob/master/pkg/kascfg/kascfg_proto_docs.md#gitlab-agent-kascfg-ConfigurationFile
+  config.yaml: |
+    agent:
+      kubernetes_api:
+        listen:
+          address: :8154
+        url_path_prefix: /k8s-proxy
+        websocket_token_secret_file: /etc/kas/.gitlab_kas_websocket_token_secret
+      listen:
+        address: :8150
+        websocket: true
+    api:
+      listen:
+        address: :8153
+        authentication_secret_file: /etc/kas/.gitlab_kas_secret
+    gitlab:
+      address: http://release-name-webservice-default.default.svc:8181
+      authentication_secret_file: /etc/kas/.gitlab_kas_secret
+      external_url: http://gitlab.nwallace.io
+    observability:
+      listen:
+        address: :8151
+      liveness_probe:
+        url_path: /liveness
+      readiness_probe:
+        url_path: /readiness
+    private_api:
+      listen:
+        address: :8155
+        authentication_secret_file: /etc/kas/.gitlab_kas_private_api_secret
+    redis:
+      database_index: 0
+      server:
+        address: gitlab-valkey:6379
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/migrations/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-migrations
+  namespace: default
+  labels:
+    app: migrations
+    chart: migrations-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  pages_redirect_uri: http://projects.pages.nwallace.io/auth
+  installation_type: |
+    gitlab-helm-chart
+  database.yml.erb: |
+    
+    production:
+      main:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-main').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: true
+        
+        
+      ci:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-ci').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: false
+        
+        
+  resque.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+  
+  
+  
+  
+  cable.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+      adapter: redis
+  
+  
+  
+  
+  
+  
+  
+  gitlab.yml.erb: |
+    production: &base
+      gitlab:
+        host: gitlab.nwallace.io
+        https: false
+      # Consolidated object storage configuration
+      ## property local configuration will override object_store
+      object_store:
+        enabled: true
+        proxy_download: false
+        connection: <%= YAML.load_file("/etc/gitlab/objectstorage/object_store").to_json() %>
+        objects:
+          artifacts:
+            bucket: gitlab-artifacts
+            proxy_download: true
+          lfs:
+            bucket: git-lfs
+            proxy_download: true
+          uploads:
+            bucket: gitlab-uploads
+            proxy_download: true
+          packages:
+            bucket: gitlab-packages
+            proxy_download: true
+          
+          
+          dependency_proxy:
+            bucket: gitlab-dependency-proxy
+            proxy_download: true
+          
+          pages:
+            bucket: gitlab-pages
+      artifacts:
+        enabled: true
+      lfs:
+        enabled: true
+      uploads:
+        enabled: true
+      packages:
+        enabled: true
+      external_diffs:
+        enabled: false
+        when: 
+      terraform_state:
+        enabled: false
+      ci_secure_files:
+        enabled: false
+      dependency_proxy:
+        enabled: true
+      gitaly:
+        client_path: /home/git/gitaly/bin
+        client_max_attempts: 4
+        client_max_backoff: "1.4s"
+        token: <%= File.read('/etc/gitlab/gitaly/gitaly_token').strip.to_json %>
+      repositories:
+        storages: # You must have at least a `default` storage path.
+          default:
+            path: /var/opt/gitlab/repo
+            gitaly_address: tcp://release-name-gitaly-0.release-name-gitaly.default.svc:8075
+          
+      
+      sidekiq:
+        log_format: json
+      oidc_provider:
+        openid_id_token_expire_in_seconds: 120
+      
+      gravatar:
+        plain_url: 
+        ssl_url: 
+      
+  configure: |
+    # BEGIN gitlab.scripts.configure.secrets
+    set -e
+    config_dir="/init-config"
+    secret_dir="/init-secrets"
+    # required
+    for secret in rails-secrets migrations gitaly ; do
+      mkdir -p "${secret_dir}/${secret}"
+      cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+    done
+    # optional
+    for secret in redis redis-sentinel objectstorage postgres ldap duo omniauth smtp kas pages oauth-secrets mailroom gitlab-exporter microsoft_graph_mailer zoekt clickhouse openbao knowledge_graph iam-auth ; do
+      if [ -e "${config_dir}/${secret}" ]; then
+        mkdir -p "${secret_dir}/${secret}"
+        cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+      fi
+    done
+    # END gitlab.scripts.configure.secrets
+    
+    
+    
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/sidekiq/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-sidekiq
+  namespace: default
+  labels:
+    app: sidekiq
+    chart: sidekiq-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  installation_type: |
+    gitlab-helm-chart
+  database.yml.erb: |
+    
+    production:
+      main:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-main').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: true
+        
+        
+      ci:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-ci').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: false
+        
+        
+  session_store.yml.erb: |
+    production:
+        session_cookie_token_prefix: ""
+  krb5.conf: |
+    
+  smtp_settings.rb: |
+    
+  resque.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+  
+  
+  
+  
+  cable.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+      adapter: redis
+  
+  
+  
+  
+  
+  
+  
+  gitlab.yml.erb: |
+    production: &base
+      gitlab:
+        host: gitlab.nwallace.io
+        https: false
+        action_cable_allowed_origins: []
+        max_request_duration_seconds: 57
+        impersonation_enabled: 
+        application_settings_cache_seconds: 60
+        usage_ping_enabled: true
+        seat_link_enabled: true
+        username_changing_enabled: true
+        issue_closing_pattern: 
+        default_theme: 
+        default_projects_features:
+          issues: true
+          merge_requests: true
+          wiki: true
+          snippets: true
+          builds: true
+          container_registry: false
+        graphql_timeout: 
+        webhook_timeout: 
+        trusted_proxies:
+        time_zone: "UTC"        
+        email_from: "gitlab@nwallace.io"
+        email_display_name: "GitLab"
+        email_reply_to: "noreply@nwallace.io"
+        email_subject_suffix: ""
+      
+      gravatar:
+        plain_url: 
+        ssl_url: 
+      extra:
+        
+        
+        
+        
+        
+        
+      # Consolidated object storage configuration
+      ## property local configuration will override object_store
+      object_store:
+        enabled: true
+        proxy_download: false
+        connection: <%= YAML.load_file("/etc/gitlab/objectstorage/object_store").to_json() %>
+        objects:
+          artifacts:
+            bucket: gitlab-artifacts
+            proxy_download: true
+          lfs:
+            bucket: git-lfs
+            proxy_download: true
+          uploads:
+            bucket: gitlab-uploads
+            proxy_download: true
+          packages:
+            bucket: gitlab-packages
+            proxy_download: true
+          
+          
+          dependency_proxy:
+            bucket: gitlab-dependency-proxy
+            proxy_download: true
+          
+          pages:
+            bucket: gitlab-pages
+      artifacts:
+        enabled: true
+      lfs:
+        enabled: true
+      uploads:
+        enabled: true
+      packages:
+        enabled: true
+      external_diffs:
+        enabled: false
+        when: 
+      terraform_state:
+        enabled: false
+      ci_secure_files:
+        enabled: false
+      dependency_proxy:
+        enabled: true
+      
+      sentry:
+        enabled: false
+        dsn: 
+        clientside_dsn: 
+        environment: 
+      
+      sidekiq:
+        log_format: json
+      oidc_provider:
+        openid_id_token_expire_in_seconds: 120
+      
+      pages:
+        enabled: false
+        access_control: false
+        artifacts_server: true
+        path: /srv/gitlab/shared/pages
+        host: pages.nwallace.io
+        port: 80
+        https: false
+        secret_file: /etc/gitlab/pages/secret
+        external_http: false
+        external_https: false
+        local_store:
+          enabled: false
+          path: 
+        namespace_in_path: false
+      
+      mattermost:
+        enabled: false
+      ## Registry Integration
+      registry:
+        enabled: false
+        host: registry.nwallace.io
+        api_url: http://release-name-registry.default.svc:5000
+        key: /etc/gitlab/registry/gitlab-registry.key
+        issuer: gitlab-issuer
+        notification_secret: <%= YAML.load_file("/etc/gitlab/registry/notificationSecret").flatten.first %>
+      gitlab_ci:
+      ldap:
+        enabled: false
+      
+      omniauth:
+        enabled: false
+        sync_profile_from_provider: []
+        sync_profile_attributes: ["email"]
+        allow_single_sign_on: ["saml"]
+        block_auto_created_users: true
+        auto_link_ldap_user: false
+        auto_link_saml_user: false
+        external_providers: []
+      kerberos:
+        enabled: false
+        keytab: /etc/krb5.keytab
+        use_dedicated_port: false
+        port: 8443
+        https: true
+        simple_ldap_linking_allowed_realms: []
+      
+      duo_auth:
+        enabled: false
+        hostname: 
+        integration_key: 
+        secret_key: 
+      
+      duo_auth:
+        enabled: false
+        hostname: 
+        integration_key: 
+        secret_key: 
+      shared:
+      gitaly:
+        client_path: /home/git/gitaly/bin
+        client_max_attempts: 4
+        client_max_backoff: "1.4s"
+        token: <%= File.read('/etc/gitlab/gitaly/gitaly_token').strip.to_json %>
+      repositories:
+        storages: # You must have at least a `default` storage path.
+          default:
+            path: /var/opt/gitlab/repo
+            gitaly_address: tcp://release-name-gitaly-0.release-name-gitaly.default.svc:8075
+          
+      backup:
+        path: "tmp/backups"   # Relative paths are relative to Rails.root (default: tmp/backups/)
+      gitlab_kas:
+        enabled: true
+        secret_file: /etc/gitlab/kas/.gitlab_kas_secret
+        external_url: "ws://kas.nwallace.io"
+        internal_url: "grpc://release-name-kas.default.svc:8153"
+        
+      
+      
+      
+      
+      iam_auth_service:
+        enabled: false
+        secret_file: /etc/gitlab/iam-auth/.gitlab_iam_auth_secret
+        http:
+          host: ""
+          port: 0
+        grpc:
+          host: ""
+          port: 0
+        jwt_audience: "gitlab-rails"
+        jwt_issuer: ""
+      gitlab_shell:
+        path: /home/git/gitlab-shell/
+        hooks_path: /home/git/gitlab-shell/hooks/
+        upload_pack: true
+        receive_pack: true
+        ssh_port: 22
+      workhorse:
+      git:
+        bin_path: /usr/bin/git
+      webpack:
+      monitoring:
+        ip_whitelist:
+          - "127.0.0.0/8"
+          - "::1/128"
+        sidekiq_exporter:
+          enabled: true
+          address: "*"
+          port: 3807
+          log_enabled: false
+        sidekiq_health_checks:
+          enabled: true
+          address: "*"
+          port: 3808
+      
+  configure: |
+    # BEGIN gitlab.scripts.configure.secrets
+    set -e
+    config_dir="/init-config"
+    secret_dir="/init-secrets"
+    # required
+    for secret in gitaly registry rails-secrets ; do
+      mkdir -p "${secret_dir}/${secret}"
+      cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+    done
+    # optional
+    for secret in redis redis-sentinel objectstorage postgres ldap duo omniauth smtp kas pages oauth-secrets mailroom gitlab-exporter microsoft_graph_mailer zoekt clickhouse openbao knowledge_graph iam-auth ; do
+      if [ -e "${config_dir}/${secret}" ]; then
+        mkdir -p "${secret_dir}/${secret}"
+        cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+      fi
+    done
+    # END gitlab.scripts.configure.secrets
+    
+    
+    
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/toolbox/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-toolbox
+  namespace: default
+  labels:
+    app: toolbox
+    chart: toolbox-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  database.yml.erb: |
+    
+    production:
+      main:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-main').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: true
+        
+        
+      ci:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-ci').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: false
+        
+        
+  session_store.yml.erb: |
+    production:
+        session_cookie_token_prefix: ""
+  krb5.conf: |
+    
+  smtp_settings.rb: |
+    
+  resque.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+  
+  
+  
+  
+  cable.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+      adapter: redis
+  
+  
+  
+  
+  
+  
+  
+  gitlab.yml.erb: |
+    production: &base
+      gitlab:
+        host: gitlab.nwallace.io
+        https: false
+        max_request_duration_seconds: 57
+        impersonation_enabled: 
+        application_settings_cache_seconds: 60
+        usage_ping_enabled: true
+        seat_link_enabled: true
+        username_changing_enabled: true
+        issue_closing_pattern: 
+        default_theme: 
+        default_projects_features:
+          issues: true
+          merge_requests: true
+          wiki: true
+          snippets: true
+          builds: true
+          container_registry: false
+        graphql_timeout: 
+        webhook_timeout: 
+        trusted_proxies:
+        time_zone: "UTC"        
+        email_from: "gitlab@nwallace.io"
+        email_display_name: "GitLab"
+        email_reply_to: "noreply@nwallace.io"
+        email_subject_suffix: ""
+      
+      gravatar:
+        plain_url: 
+        ssl_url: 
+      # Consolidated object storage configuration
+      ## property local configuration will override object_store
+      object_store:
+        enabled: true
+        proxy_download: false
+        connection: <%= YAML.load_file("/etc/gitlab/objectstorage/object_store").to_json() %>
+        objects:
+          artifacts:
+            bucket: gitlab-artifacts
+            proxy_download: true
+          lfs:
+            bucket: git-lfs
+            proxy_download: true
+          uploads:
+            bucket: gitlab-uploads
+            proxy_download: true
+          packages:
+            bucket: gitlab-packages
+            proxy_download: true
+          
+          
+          dependency_proxy:
+            bucket: gitlab-dependency-proxy
+            proxy_download: true
+          
+          pages:
+            bucket: gitlab-pages
+      artifacts:
+        enabled: true
+      lfs:
+        enabled: true
+      uploads:
+        enabled: true
+      packages:
+        enabled: true
+      external_diffs:
+        enabled: false
+        when: 
+      terraform_state:
+        enabled: false
+      ci_secure_files:
+        enabled: false
+      dependency_proxy:
+        enabled: true
+      
+      sidekiq:
+        log_format: json
+      oidc_provider:
+        openid_id_token_expire_in_seconds: 120
+      
+      
+      pages:
+        enabled: false
+        access_control: false
+        artifacts_server: true
+        path: /srv/gitlab/shared/pages
+        host: pages.nwallace.io
+        port: 80
+        https: false
+        secret_file: /etc/gitlab/pages/secret
+        external_http: false
+        external_https: false
+        local_store:
+          enabled: false
+          path: 
+        namespace_in_path: false
+      
+      mattermost:
+        enabled: false
+      ## Registry Integration
+      registry:
+        enabled: false
+        host: registry.nwallace.io
+        api_url: http://release-name-registry.default.svc:5000
+        key: /etc/gitlab/registry/gitlab-registry.key
+        issuer: gitlab-issuer
+        notification_secret: <%= YAML.load_file("/etc/gitlab/registry/notificationSecret").flatten.first %>
+      gitlab_ci:
+      ldap:
+        enabled: false
+      
+      omniauth:
+        enabled: false
+        sync_profile_from_provider: []
+        sync_profile_attributes: ["email"]
+        allow_single_sign_on: ["saml"]
+        block_auto_created_users: true
+        auto_link_ldap_user: false
+        auto_link_saml_user: false
+        external_providers: []
+      kerberos:
+        enabled: false
+        keytab: /etc/krb5.keytab
+        use_dedicated_port: false
+        port: 8443
+        https: true
+        simple_ldap_linking_allowed_realms: []
+      
+      duo_auth:
+        enabled: false
+        hostname: 
+        integration_key: 
+        secret_key: 
+      shared:
+      gitaly:
+        client_path: /home/git/gitaly/bin
+        client_max_attempts: 4
+        client_max_backoff: "1.4s"
+        token: <%= File.read('/etc/gitlab/gitaly/gitaly_token').strip.to_json %>
+      repositories:
+        storages: # You must have at least a `default` storage path.
+          default:
+            path: /var/opt/gitlab/repo
+            gitaly_address: tcp://release-name-gitaly-0.release-name-gitaly.default.svc:8075
+          
+      backup:
+        path: "tmp/backups"   # Relative paths are relative to Rails.root (default: tmp/backups/)
+      gitlab_kas:
+        enabled: true
+        secret_file: /etc/gitlab/kas/.gitlab_kas_secret
+        external_url: "ws://kas.nwallace.io"
+        internal_url: "grpc://release-name-kas.default.svc:8153"
+        
+      
+      
+      
+      
+      iam_auth_service:
+        enabled: false
+        secret_file: /etc/gitlab/iam-auth/.gitlab_iam_auth_secret
+        http:
+          host: ""
+          port: 0
+        grpc:
+          host: ""
+          port: 0
+        jwt_audience: "gitlab-rails"
+        jwt_issuer: ""
+      gitlab_shell:
+        path: /home/git/gitlab-shell/
+        hooks_path: /home/git/gitlab-shell/hooks/
+        upload_pack: true
+        receive_pack: true
+        ssh_port: 22
+        secret_file: /etc/gitlab/shell/.gitlab_shell_secret
+      workhorse:
+      git:
+        bin_path: /usr/bin/git
+      webpack:
+      monitoring:
+        ip_whitelist:
+          - 127.0.0.0/8
+        sidekiq_exporter:
+      extra:
+      
+  configure: |
+    # BEGIN gitlab.scripts.configure.secrets
+    set -e
+    config_dir="/init-config"
+    secret_dir="/init-secrets"
+    # required
+    for secret in shell gitaly registry rails-secrets ; do
+      mkdir -p "${secret_dir}/${secret}"
+      cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+    done
+    # optional
+    for secret in redis redis-sentinel objectstorage postgres ldap duo omniauth smtp kas pages oauth-secrets mailroom gitlab-exporter microsoft_graph_mailer zoekt clickhouse openbao knowledge_graph iam-auth ; do
+      if [ -e "${config_dir}/${secret}" ]; then
+        mkdir -p "${secret_dir}/${secret}"
+        cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+      fi
+    done
+    # END gitlab.scripts.configure.secrets
+    
+    
+
+    # Mount point for registry DB secrets. Needs to be pre-created as later the
+    # volume is remounted read-only
+    mkdir "/${secret_dir}/registry-db/"
+
+    # Mount point for OpenBao DB secrets. Needs to be pre-created as later the
+    # volume is remounted read-only
+    mkdir "/${secret_dir}/openbao-db/"
+    if [ -f "/${secret_dir}/objectstorage/.s3cfg" ]; then
+      mv "/${secret_dir}/objectstorage/.s3cfg" "/${secret_dir}/.s3cfg"
+    fi
+    
+  configure-gsutil: |
+    if [ -e "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+      # The following script is used to configure gsutil when creating backups
+      # It provides inputs to the `gsutil config -e` prompt as follows:
+      # 1) Path to service account JSON key file
+      # 2) Do not set permissions for key file
+      # 3) GCP Project ID
+      # 4) Decline anonymous usage statistics
+      printf "$GOOGLE_APPLICATION_CREDENTIALS\nN\n\nN\n" | gsutil config -e
+    else
+      # If the backup config is not configured, assume that
+      # Application Default Credentials are used with a service account.
+      # This enables GKE Workload Identity Federation to work.
+      echo '[GoogleCompute]\nservice_account = default' > ~/.boto
+    fi
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-webservice
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  installation_type: |
+    gitlab-helm-chart
+  database.yml.erb: |
+    
+    production:
+      main:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-main').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: true
+        
+        
+      ci:
+        adapter: postgresql
+        encoding: unicode
+        database: gitlab
+        username: gitlab
+        password: <%= File.read('/etc/gitlab/postgres/psql-password-ci').strip.to_json %>
+        host: "gitlab-db-rw"
+        port: 5432
+        connect_timeout: 
+        keepalives: 
+        keepalives_idle: 
+        keepalives_interval: 
+        keepalives_count: 
+        tcp_user_timeout: 
+        application_name: 
+        prepared_statements: false
+        database_tasks: false
+        
+        
+  session_store.yml.erb: |
+    production:
+        session_cookie_token_prefix: ""
+  krb5.conf: |
+    
+  smtp_settings.rb: |
+    
+  resque.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+  
+  
+  
+  
+  cable.yml.erb: |
+    production:
+      url: redis://gitlab-valkey:6379/0
+      
+      
+      id:
+      adapter: redis
+  
+  
+  
+  
+  
+  
+  
+  gitlab.yml.erb: |
+    production: &base
+      gitlab:
+        host: gitlab.nwallace.io
+        https: false
+        action_cable_allowed_origins: []
+        max_request_duration_seconds: 57
+        impersonation_enabled: 
+        application_settings_cache_seconds: 60
+        usage_ping_enabled: true
+        seat_link_enabled: true
+        username_changing_enabled: true
+        issue_closing_pattern: 
+        default_theme: 
+        default_color_mode: 
+        default_syntax_highlighting_theme: 
+        default_projects_features:
+          issues: true
+          merge_requests: true
+          wiki: true
+          snippets: true
+          builds: true
+          container_registry: false
+        graphql_timeout: 
+        webhook_timeout: 
+        trusted_proxies:
+        time_zone: "UTC"        
+        email_from: "gitlab@nwallace.io"
+        email_display_name: "GitLab"
+        email_reply_to: "noreply@nwallace.io"
+        email_subject_suffix: ""
+      
+      gravatar:
+        plain_url: 
+        ssl_url: 
+      extra:
+        
+        
+        
+        
+        
+        
+      # Consolidated object storage configuration
+      ## property local configuration will override object_store
+      object_store:
+        enabled: true
+        proxy_download: false
+        connection: <%= YAML.load_file("/etc/gitlab/objectstorage/object_store").to_json() %>
+        objects:
+          artifacts:
+            bucket: gitlab-artifacts
+            proxy_download: true
+          lfs:
+            bucket: git-lfs
+            proxy_download: true
+          uploads:
+            bucket: gitlab-uploads
+            proxy_download: true
+          packages:
+            bucket: gitlab-packages
+            proxy_download: true
+          
+          
+          dependency_proxy:
+            bucket: gitlab-dependency-proxy
+            proxy_download: true
+          
+          pages:
+            bucket: gitlab-pages
+      artifacts:
+        enabled: true
+      lfs:
+        enabled: true
+      uploads:
+        enabled: true
+      packages:
+        enabled: true
+      external_diffs:
+        enabled: false
+        when: 
+      terraform_state:
+        enabled: false
+      ci_secure_files:
+        enabled: false
+      dependency_proxy:
+        enabled: true
+      
+      sentry:
+        enabled: false
+        dsn: 
+        clientside_dsn: 
+        environment: 
+      gitlab_docs:
+        enabled: false
+        host: ""
+      
+      sidekiq:
+        log_format: json
+      oidc_provider:
+        openid_id_token_expire_in_seconds: 120
+      
+      pages:
+        enabled: false
+        access_control: false
+        artifacts_server: true
+        path: /srv/gitlab/shared/pages
+        host: pages.nwallace.io
+        port: 80
+        https: false
+        secret_file: /etc/gitlab/pages/secret
+        external_http: false
+        external_https: false
+        local_store:
+          enabled: false
+          path: 
+        namespace_in_path: false
+      
+      mattermost:
+        enabled: false
+      gitlab_ci:
+      ldap:
+        enabled: false
+      
+      omniauth:
+        enabled: false
+        sync_profile_from_provider: []
+        sync_profile_attributes: ["email"]
+        allow_single_sign_on: ["saml"]
+        block_auto_created_users: true
+        auto_link_ldap_user: false
+        auto_link_saml_user: false
+        external_providers: []
+      kerberos:
+        enabled: false
+        keytab: /etc/krb5.keytab
+        use_dedicated_port: false
+        port: 8443
+        https: true
+        simple_ldap_linking_allowed_realms: []
+      
+      duo_auth:
+        enabled: false
+        hostname: 
+        integration_key: 
+        secret_key: 
+      shared:
+      gitaly:
+        client_path: /home/git/gitaly/bin
+        client_max_attempts: 4
+        client_max_backoff: "1.4s"
+        token: <%= File.read('/etc/gitlab/gitaly/gitaly_token').strip.to_json %>
+      repositories:
+        storages: # You must have at least a `default` storage path.
+          default:
+            path: /var/opt/gitlab/repo
+            gitaly_address: tcp://release-name-gitaly-0.release-name-gitaly.default.svc:8075
+          
+      backup:
+        path: "tmp/backups"   # Relative paths are relative to Rails.root (default: tmp/backups/)
+      gitlab_kas:
+        enabled: true
+        secret_file: /etc/gitlab/kas/.gitlab_kas_secret
+        external_url: "ws://kas.nwallace.io"
+        internal_url: "grpc://release-name-kas.default.svc:8153"
+        
+      
+      
+      
+      
+      iam_auth_service:
+        enabled: false
+        secret_file: /etc/gitlab/iam-auth/.gitlab_iam_auth_secret
+        http:
+          host: ""
+          port: 0
+        grpc:
+          host: ""
+          port: 0
+        jwt_audience: "gitlab-rails"
+        jwt_issuer: ""
+      gitlab_shell:
+        path: /home/git/gitlab-shell/
+        hooks_path: /home/git/gitlab-shell/hooks/
+        upload_pack: true
+        receive_pack: true
+        ssh_port: 22
+        secret_file: /etc/gitlab/shell/.gitlab_shell_secret
+      workhorse:
+        secret_file: /etc/gitlab/gitlab-workhorse/secret
+      git:
+        bin_path: /usr/bin/git
+      webpack:
+      monitoring:
+        ip_whitelist:
+          - "0.0.0.0/0"
+          - "::/0"
+        web_exporter:
+          enabled: true
+          address: "0.0.0.0"
+          port: 8083
+        sidekiq_exporter:
+      shutdown:
+        blackout_seconds: <%= ENV["SHUTDOWN_BLACKOUT_SECONDS"] %>
+      rack_attack:
+        git_basic_auth:
+      ## Registry Integration
+      registry:
+        enabled: false
+        host: registry.nwallace.io
+        api_url: http://release-name-registry.default.svc:5000
+        key: /etc/gitlab/registry/gitlab-registry.key
+        issuer: gitlab-issuer
+        notification_secret: <%= YAML.load_file("/etc/gitlab/registry/notificationSecret").flatten.first %>
+      smartcard:
+        enabled: false
+        ca_file: '/etc/gitlab/rails-secrets/smartcard-ca.crt'
+        client_certificate_required_host: smartcard.nwallace.io
+        client_certificate_required_port: 443
+        san_extensions: false
+        required_for_git_access: false
+      
+  configure: |
+    # BEGIN gitlab.scripts.configure.secrets
+    set -e
+    config_dir="/init-config"
+    secret_dir="/init-secrets"
+    # required
+    for secret in shell gitaly registry rails-secrets gitlab-workhorse ; do
+      mkdir -p "${secret_dir}/${secret}"
+      cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+    done
+    # optional
+    for secret in redis redis-sentinel objectstorage postgres ldap duo omniauth smtp kas pages oauth-secrets mailroom gitlab-exporter microsoft_graph_mailer zoekt clickhouse openbao knowledge_graph iam-auth ; do
+      if [ -e "${config_dir}/${secret}" ]; then
+        mkdir -p "${secret_dir}/${secret}"
+        cp -f -v -r -L "${config_dir}/${secret}/." "${secret_dir}/${secret}/"
+      fi
+    done
+    # END gitlab.scripts.configure.secrets
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-workhorse-default
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  installation_type: |
+    gitlab-helm-chart
+  workhorse-config.toml.tpl: |
+    shutdown_timeout = "61s"
+    [redis]
+    DB = 0
+    URL = "redis://gitlab-valkey:6379"
+    {%- $supported_providers := coll.Slice "AWS" "AzureRM" "Google" -%}
+    {%- $connection := coll.Dict "provider" "" -%}
+    {%- if file.Exists "/etc/gitlab/objectstorage/object_store" %}
+      {%- $connection = file.Read "/etc/gitlab/objectstorage/object_store" | strings.TrimSpace | data.YAML -%}
+    {%- end %}
+    {%- if has $supported_providers $connection.provider %}
+    [object_storage]
+    provider = "{% $connection.provider %}"
+    {%-   if eq $connection.provider "AWS" %}
+    {%-     $connection = coll.Merge $connection (coll.Dict "aws_access_key_id" "" "aws_secret_access_key" "" ) %}
+    # AWS / S3 object storage configuration.
+    [object_storage.s3]
+    # access/secret can be blank!
+    aws_access_key_id = {% $connection.aws_access_key_id | strings.TrimSpace | data.ToJSON %}
+    aws_secret_access_key = {% $connection.aws_secret_access_key | strings.TrimSpace | data.ToJSON %}
+    {%-   else if eq $connection.provider "AzureRM" %}
+    {%-     $connection = coll.Merge $connection (coll.Dict "azure_storage_account_name" "" "azure_storage_access_key" "") %}
+    # Azure Blob storage configuration.
+    [object_storage.azurerm]
+    azure_storage_account_name = {% $connection.azure_storage_account_name | strings.TrimSpace | data.ToJSON %}
+    azure_storage_access_key = {% $connection.azure_storage_access_key | strings.TrimSpace | data.ToJSON %}
+    {%-   else if eq $connection.provider "Google" %}
+    # Google storage configuration.
+    [object_storage.google]
+    {% $connection | coll.Omit "provider" | data.ToTOML %}
+    {%-   end %}
+    {%- end %}
+    [image_resizer]
+    max_scaler_procs = 2
+    max_filesize = 250000
+    [[listeners]]
+    network = "tcp"
+    addr = ":8181"
+  configure: |
+      set -e
+      mkdir -p /init-secrets-workhorse/gitlab-workhorse
+      cp -v -r -L /init-config/gitlab-workhorse/secret /init-secrets-workhorse/gitlab-workhorse/secret
+      
+      if [ -f /init-config/objectstorage/object_store ]; then
+        mkdir -p /init-secrets-workhorse/objectstorage
+        cp -v -r -L /init-config/objectstorage/object_store /init-secrets-workhorse/objectstorage/
+      fi
+
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/tests/tests.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-webservice-tests
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  test_login: |
+    set -e
+    echo 'Start Test'
+    endpoint="http://gitlab.nwallace.io"
+    cookie_read="-c /tmp/test_login.cookie"
+    cookie_readwrite="$cookie_read -b /tmp/test_login.cookie"
+
+    signin_url="$endpoint/users/sign_in"
+    echo "Login to create a session: $signin_url"
+    csrf=$(curl -L $signin_url --fail -s $cookie_read | grep -Po '<meta.*name="csrf-token".*content="\K[a-zA-Z0-9\+=\-\/]*')
+    curl -X POST $signin_url -s $cookie_readwrite -F "authenticity_token=$csrf" -F 'user[login]=root' -F "user[password]=$(cat /initial_root_password)"
+
+    profile_url="$endpoint/-/profile"
+    echo "Confirm session valid: $profile_url"
+    profile_status=$(curl -L -s -o /tmp/profile_output -w "%{http_code}" $cookie_readwrite $profile_url)
+
+    if [ "$profile_status" != "200" ]; then
+      echo "Error: Session Invalid"
+      cat /tmp/profile_output
+      exit 1
+    fi
+
+    echo 'Test Passed'
+    exit 0
+
+# Leave this here - This line denotes end of block to the parser.
+---
+# Source: gitlab/charts/gitlab/templates/chart-info.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-gitlab-chart-info
+  namespace: default
+  labels:
+    app: gitlab
+    chart: gitlab-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+data:
+  gitlabVersion: "19.0.0"
+  gitlabChartVersion: "10.0.0"
+---
+# Source: gitlab/charts/valkey/templates/init_config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-valkey-init-scripts
+  labels:
+    helm.sh/chart: valkey-0.9.4
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "9.0.2"
+    app.kubernetes.io/managed-by: Helm
+data:
+  init.sh: |-
+    #!/bin/sh
+    set -eu
+
+    # Default config paths
+    VALKEY_CONFIG=${VALKEY_CONFIG_PATH:-/data/conf/valkey.conf}
+
+    LOGFILE="/data/init.log"
+    DATA_DIR="/data/conf"
+
+    # Logging function (outputs to stderr and file)
+    log() {
+      echo "$(date) $1" | tee -a "$LOGFILE" >&2
+    }
+
+    # Clean old log if requested
+    if [ "${KEEP_OLD_LOGS:-false}" != "true" ]; then
+      rm -f "$LOGFILE"
+    fi
+
+    if [ -f "$LOGFILE" ]; then
+      log "Detected restart of this instance ($HOSTNAME)"
+    fi
+
+    log "Creating configuration in $DATA_DIR..."
+    mkdir -p "$DATA_DIR"
+    rm -f "$VALKEY_CONFIG"
+
+
+    # Base valkey.conf
+    log "Generating base valkey.conf"
+    {
+      echo "port 6379"
+      echo "protected-mode no"
+      echo "bind * -::*"
+      echo "dir /data"
+    } >>"$VALKEY_CONFIG"
+
+    # Append extra configs if present
+    if [ -f /usr/local/etc/valkey/valkey.conf ]; then
+      log "Appending /usr/local/etc/valkey/valkey.conf"
+      cat /usr/local/etc/valkey/valkey.conf >>"$VALKEY_CONFIG"
+    fi
+    if [ -d /extravalkeyconfigs ]; then
+      log "Appending files in /extravalkeyconfigs/"
+      cat /extravalkeyconfigs/* >>"$VALKEY_CONFIG"
+    fi
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/toolbox/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: release-name-toolbox-tmp
+  namespace: default
+  labels:
+    app: toolbox
+    chart: toolbox-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "2Gi"
+  storageClassName: "longhorn-db"
+  selector:
+---
+# Source: gitlab/charts/gitlab/charts/gitlab-runner/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: "Role"
+metadata:
+  name: release-name-gitlab-runner
+  labels:
+    app: release-name-gitlab-runner
+    chart: gitlab-runner-0.88.3
+    release: "release-name"
+    heritage: "Helm"
+  namespace: "default"
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+---
+# Source: gitlab/charts/gitlab/charts/gitlab-runner/templates/role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: "RoleBinding"
+metadata:
+  name: release-name-gitlab-runner
+  labels:
+    app: release-name-gitlab-runner
+    chart: gitlab-runner-0.88.3
+    release: "release-name"
+    heritage: "Helm"
+  namespace: "default"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: "Role"
+  name: release-name-gitlab-runner
+subjects:
+- kind: ServiceAccount
+  name: "release-name-gitlab-runner"
+  namespace: "default"
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitaly/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-gitaly
+  namespace: default
+  labels:
+    app: gitaly
+    chart: gitaly-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    
+  annotations:
+    
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 8075
+      # This port is NOT prefixed with `grpc` due to
+      # https://gitlab.com/gitlab-org/charts/gitlab/-/issues/3822
+      name: tcp-gitaly
+      targetPort: grpc-gitaly
+    - port: 9236
+      name: http-metrics
+      targetPort: http-metrics
+  selector:
+    app: gitaly
+    release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-exporter/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-gitlab-exporter
+  namespace: default
+  labels:
+    app: gitlab-exporter
+    chart: gitlab-exporter-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    
+  annotations:
+    
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9168
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app: gitlab-exporter
+    release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-gitlab-shell
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    
+  annotations:
+    
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 22
+      targetPort: 2222
+      protocol: TCP
+      name: ssh
+  externalTrafficPolicy: Cluster
+  loadBalancerIP: 192.168.2.16
+  selector:
+    app: gitlab-shell
+    release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/kas/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-kas
+  namespace: default
+  labels:
+    app: kas
+    chart: kas-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    
+  annotations:
+    
+spec:
+  type: "ClusterIP"
+  ports:
+    - port: 8150
+      targetPort: 8150
+      protocol: TCP
+      name: tcp-kas-external-api
+    - port: 8153
+      targetPort: 8153
+      protocol: TCP
+      name: tcp-kas-internal-api
+    - port: 8154
+      targetPort: 8154
+      protocol: TCP
+      name: tcp-kas-k8s-api
+    - port: 8151
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
+  selector:
+    app: kas
+    release: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-webservice-default
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    gitlab.com/webservice-name: default
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http-webservice
+      protocol: TCP
+      name: http-webservice
+    - port: 8181
+      targetPort: http-workhorse
+      protocol: TCP
+      name: http-workhorse
+    - port: 8083
+      targetPort: http-metrics-ws
+      protocol: TCP
+      name: http-metrics-ws
+  selector:
+    app: webservice
+    release: release-name
+    
+    gitlab.com/webservice-name: default
+---
+# Source: gitlab/charts/valkey/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-valkey
+  labels:
+    helm.sh/chart: valkey-0.9.4
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "9.0.2"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: tcp
+      protocol: TCP
+      name: tcp
+  selector:
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/instance: release-name
+---
+# Source: gitlab/charts/gitlab/charts/gitlab-runner/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-gitlab-runner
+  namespace: "default"
+  labels:
+    app: release-name-gitlab-runner
+    chart: gitlab-runner-0.88.3
+    release: "release-name"
+    heritage: "Helm"
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: release-name-gitlab-runner
+  template:
+    metadata:
+      labels:
+        app: release-name-gitlab-runner
+        chart: gitlab-runner-0.88.3
+        release: "release-name"
+        heritage: "Helm"
+      annotations:
+        checksum/configmap: 406340628cfd38b05d0ede4d92c0db22a4620dd38e6ad1bd28f369cef496fd2f
+        checksum/secrets: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+        gitlab.com/prometheus_port: "9252"
+        gitlab.com/prometheus_scrape: "true"
+    spec:
+      securityContext: 
+        fsGroup: 65533
+        runAsUser: 100
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 3600
+      serviceAccountName: "release-name-gitlab-runner"
+      containers:
+      - name: release-name-gitlab-runner
+        image: registry.gitlab.com/gitlab-org/gitlab-runner:alpine-v18.11.3
+        imagePullPolicy: "IfNotPresent"
+        securityContext: 
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/entrypoint", "unregister", "--all-runners"]
+        command: ["/usr/bin/dumb-init", "--", "/bin/bash", "/configmaps/entrypoint"]
+        env:        
+        - name: CI_SERVER_URL
+          value: http://gitlab.nwallace.io
+        - name: RUNNER_EXECUTOR
+          value: "kubernetes"
+        - name: REGISTER_LOCKED
+          value: "false"
+        - name: RUNNER_TAG_LIST
+          value: ""
+        - name: KUBERNETES_NAMESPACE
+          value: "default"
+        - name: SESSION_SERVER_ADDRESS
+          value:
+        livenessProbe:
+          exec:
+            command: ["/bin/bash", "/configmaps/check-live", "3"]
+          initialDelaySeconds: 60
+          timeoutSeconds: 4
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command: ["/usr/bin/pgrep","gitlab.*runner"]
+          initialDelaySeconds: 60
+          timeoutSeconds: 4
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 3
+        ports:
+        - name: "metrics"
+          containerPort: 9252
+        volumeMounts:
+        - name: projected-secrets
+          mountPath: /secrets
+        - name: etc-gitlab-runner
+          mountPath: /home/gitlab-runner/.gitlab-runner
+        - name: configmaps
+          mountPath: /configmaps
+        resources:
+          {}
+      volumes:
+      - name: runner-secrets
+        emptyDir:
+          medium: "Memory"
+      - name: etc-gitlab-runner
+        emptyDir:
+          medium: "Memory"
+      - name: projected-secrets
+        projected:
+          sources:
+            - secret:
+                name: "release-name-gitlab-runner-secret"
+                items:
+                  - key: runner-registration-token
+                    path: runner-registration-token
+                  - key: runner-token
+                    path: runner-token
+      - name: configmaps
+        configMap:
+          name: release-name-gitlab-runner
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-exporter/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-gitlab-exporter
+  namespace: default
+  labels:
+    app: gitlab-exporter
+    chart: gitlab-exporter-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+  annotations:
+    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab-exporter
+      release: release-name
+      
+  template:
+    metadata:
+      labels:
+        app: gitlab-exporter
+        chart: gitlab-exporter-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        
+      annotations:
+        checksum/config: 97d56bf7fc3557c44b0f7e0930aeb51c71f6fe7f1fa6a07a72bd88fc3fcd0d96
+        gitlab.com/prometheus_scrape: "true"
+        gitlab.com/prometheus_port: "9168"
+        gitlab.com/prometheus_path: /metrics
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9168"
+        prometheus.io/path: /metrics
+
+    spec:
+      
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchLabels:
+                        app: gitlab-exporter
+                        release: release-name
+                        
+                        
+      automountServiceAccountToken: false
+      
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          - name: MALLOC_CONF
+            value: "dirty_decay_ms:0,muzzy_decay_ms:0"
+          - name: RUBY_GC_HEAP_FREE_SLOTS_MAX_RATIO
+            value: "0.111"
+          - name: RUBY_GC_HEAP_FREE_SLOTS_MIN_RATIO
+            value: "0.055"
+          - name: RUBY_GC_HEAP_INIT_SLOTS
+            value: "80000"
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          - name: MALLOC_CONF
+            value: "dirty_decay_ms:0,muzzy_decay_ms:0"
+          - name: RUBY_GC_HEAP_FREE_SLOTS_MAX_RATIO
+            value: "0.111"
+          - name: RUBY_GC_HEAP_FREE_SLOTS_MIN_RATIO
+            value: "0.055"
+          - name: RUBY_GC_HEAP_INIT_SLOTS
+            value: "80000"
+          
+          volumeMounts:
+          
+          
+          - name: gitlab-exporter-config
+            mountPath: /config
+            readOnly: true
+          - name: init-gitlab-exporter-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: gitlab-exporter-secrets
+            mountPath: /init-secrets
+            readOnly: false
+          resources:
+            requests:
+              cpu: 50m      
+      containers:
+        
+        - name: gitlab-exporter
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-exporter:16.7.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+            
+            - name: TZ
+              value: "UTC"
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab-exporter/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/etc/gitlab-exporter'
+            
+            - name: MALLOC_CONF
+              value: "dirty_decay_ms:0,muzzy_decay_ms:0"
+            - name: RUBY_GC_HEAP_FREE_SLOTS_MAX_RATIO
+              value: "0.111"
+            - name: RUBY_GC_HEAP_FREE_SLOTS_MIN_RATIO
+              value: "0.055"
+            - name: RUBY_GC_HEAP_INIT_SLOTS
+              value: "80000"
+            
+          ports:
+          - containerPort: 9168
+            name: http-metrics
+          volumeMounts:
+            - name: gitlab-exporter-config
+              mountPath: /var/opt/gitlab-exporter/templates/gitlab-exporter.yml.erb
+              subPath: gitlab-exporter.yml.erb
+            - name: gitlab-exporter-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+          livenessProbe:
+            exec:
+              command:
+                - pgrep
+                - -f
+                - gitlab-exporter
+          readinessProbe:
+            exec:
+              command:
+                - pgrep
+                - -f
+                - gitlab-exporter
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "-c", "pkill -f 'gitlab-exporter'"]
+          resources:
+            requests:
+              cpu: 75m
+              memory: 100M
+      volumes:
+      
+      
+      - name: gitlab-exporter-config
+        configMap:
+          name: release-name-gitlab-exporter
+      - name: init-gitlab-exporter-secrets
+        projected:
+          defaultMode: 0400
+          sources:
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-ci
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-main
+          
+          
+          
+
+      - name: gitlab-exporter-secrets
+        emptyDir:
+          medium: "Memory"
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-gitlab-shell
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+  annotations:
+    
+spec:
+  selector:
+    matchLabels:
+      app: gitlab-shell
+      release: release-name
+      
+  template:
+    metadata:
+      labels:
+        app: gitlab-shell
+        chart: gitlab-shell-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        
+      annotations:
+        checksum/config: 02cc5d92fcd4b9736e1f4cad5f456591e71509bf5982c873a7f4aba1f4061ffa
+        checksum/config-sshd: 7d6ca12167364425a4d519423dbd9c7ac53e0297d89f9028201f8df648f545f8
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+    spec:
+      
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          
+          - name: shell-config
+            mountPath: /config
+            readOnly: true
+          - name: shell-init-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: shell-secrets
+            mountPath: /init-secrets
+            readOnly: false
+          resources:
+            requests:
+              cpu: 50m
+      
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault      
+      
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchLabels:
+                        app: gitlab-shell
+                        release: release-name
+                        
+                        
+      automountServiceAccountToken: false
+      containers:
+        
+        - name: gitlab-shell
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell:v14.51.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          ports:
+            - containerPort: 2222
+              name: ssh
+          env:
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/etc/gitlab-shell'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab-shell'
+            - name: KEYS_DIRECTORY
+              value: '/etc/gitlab-secrets/ssh'
+            - name: SSH_DAEMON
+              value: "openssh"
+            
+            - name: GODEBUG
+              value: 'tlsmlkem=0,tlskyber=0'
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          volumeMounts:
+            - name: shell-config
+              mountPath: '/etc/gitlab-shell'
+            - name: shell-secrets
+              mountPath: '/etc/gitlab-secrets'
+              readOnly: true
+            - name: shell-config
+              mountPath: '/etc/krb5.conf'
+              subPath: krb5.conf
+              readOnly: true
+            - name: sshd-config
+              mountPath: /etc/ssh/sshd_config
+              subPath: sshd_config
+              readOnly: true
+            
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+          livenessProbe:
+            exec:
+              command:
+              - /scripts/healthcheck
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 2222
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 2
+          resources:
+            requests:
+              cpu: 0
+              memory: 6M
+      terminationGracePeriodSeconds: 30
+      volumes:
+      
+      - name: shell-config
+        configMap:
+          name: release-name-gitlab-shell
+      - name: sshd-config
+        configMap:
+          name: release-name-gitlab-shell-sshd
+      - name: shell-init-secrets
+        projected:
+          defaultMode: 0440
+          sources:
+            - secret:
+                name: "release-name-gitlab-shell-host-keys"
+            - secret:
+                name: "release-name-gitlab-shell-secret"
+                items:
+                  - key: "secret"
+                    path: shell/.gitlab_shell_secret
+      # Actual config dirs that will be used in the container
+      - name: shell-secrets
+        emptyDir:
+          medium: "Memory"
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/kas/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-kas
+  namespace: default
+  labels:
+    app: kas
+    chart: kas-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+  annotations:
+    
+spec:
+  selector:
+    matchLabels:
+      app: kas
+      release: release-name
+      
+  template:
+    metadata:
+      labels:
+        app: kas
+        chart: kas-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        
+      annotations:
+        checksum/config: 82e9f9af9f2fb1227702ff3a029289171078ebb3c7e3410d0c731b679c850393
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        gitlab.com/prometheus_scrape: "true"
+        gitlab.com/prometheus_port: "8151"
+        gitlab.com/prometheus_path: /metrics
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8151"
+        prometheus.io/path: /metrics
+    spec:
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      automountServiceAccountToken: false
+      
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchLabels:
+                        app: kas
+                        release: release-name
+                        
+                        
+      
+      securityContext:
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault      
+      
+      initContainers:
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+      containers:
+        
+        - name: kas
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 65532
+          args:
+            - "--configuration-file=/etc/kas/config.yaml"
+          env:
+            - name: OWN_PRIVATE_API_HOST
+              value: release-name-kas.default.svc
+            
+            - name: GODEBUG
+              value: 'tlsmlkem=0,tlskyber=0'
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          ports:
+            - containerPort: 8150
+              name: kas
+            - containerPort: 8154
+              name: kas-k8s-api
+            - containerPort: 8155
+              name: kas-private-api
+            - containerPort: 8151
+              name: http-metrics
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8151
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8151
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          volumeMounts:
+            - name: init-etc-kas
+              mountPath: /etc/kas
+              readOnly: true
+            
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+      terminationGracePeriodSeconds: 300
+      volumes:
+      
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+      - name: init-etc-kas
+        projected:
+          defaultMode: 0440
+          sources:
+            - configMap:
+                name: release-name-kas
+            - secret:
+                name: "release-name-gitlab-kas-secret"
+                items:
+                  - key: "kas_shared_secret"
+                    path: .gitlab_kas_secret
+            - secret:
+                name: "release-name-kas-private-api"
+                items:
+                  - key: "kas_private_api_secret"
+                    path: .gitlab_kas_private_api_secret
+            - secret:
+                name: "release-name-kas-websocket-token"
+                items:
+                  - key: "kas_websocket_token_secret"
+                    path: .gitlab_kas_websocket_token_secret
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/sidekiq/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-sidekiq-all-in-1-v2
+  namespace: default
+  labels:
+    app: sidekiq
+    chart: sidekiq-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+    queue-pod-name: all-in-1
+  annotations:
+    
+spec:
+  selector:
+    matchLabels:
+      app: sidekiq
+      release: release-name
+      
+      queue-pod-name: all-in-1
+  template:
+    metadata:
+      labels:
+        app: sidekiq
+        chart: sidekiq-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        
+        queue-pod-name: all-in-1
+      annotations:
+        checksum/configmap: c7ad236b76731d974147a97604a921f15938b4af81fe321f34a9c47b3df0c03a
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        gitlab.com/prometheus_scrape: "true"
+        gitlab.com/prometheus_port: "3807"
+        gitlab.com/prometheus_path: /metrics
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3807"
+        prometheus.io/path: /metrics
+    spec:
+      
+      
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: "kubernetes.io/hostname"
+                labelSelector:
+                  matchLabels:
+                    app: sidekiq
+                    release: release-name
+                    
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          
+          
+          
+          
+          - name: sidekiq-config
+            mountPath: /config
+            readOnly: true
+          - name: init-sidekiq-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: sidekiq-secrets
+            mountPath: /init-secrets
+            readOnly: false
+          resources:
+            requests:
+              cpu: 50m
+        - name: dependencies
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-sidekiq-ee:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          args:
+            - /scripts/wait-for-deps
+          env:
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            - name: SIDEKIQ_CONCURRENCY
+              value: "20"
+            - name: SIDEKIQ_TIMEOUT
+              value: "25"
+            - name: ENABLE_BOOTSNAP
+              value: "1"
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          volumeMounts:
+          
+          
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs/
+            readOnly: true
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: true
+          - name: sidekiq-config
+            mountPath: '/var/opt/gitlab/templates'
+            readOnly: true
+          - name: sidekiq-secrets
+            mountPath: '/etc/gitlab'
+            readOnly: true
+          - name: sidekiq-secrets
+            mountPath: /srv/gitlab/config/secrets.yml
+            subPath: rails-secrets/secrets.yml
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m      
+      containers:
+        
+        - name: sidekiq
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-sidekiq-ee:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+            - name: prometheus_multiproc_dir
+              value: /metrics
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            - name: SIDEKIQ_CONCURRENCY
+              value: "20"
+            - name: GITLAB_SIDEKIQ_MAX_REPLICAS
+              value: "1"
+            - name: SIDEKIQ_TIMEOUT
+              value: "25"
+            - name: SIDEKIQ_QUEUES
+              value: 
+            - name: SIDEKIQ_DAEMON_MEMORY_KILLER
+              value: "1"
+            - name: SIDEKIQ_MEMORY_KILLER_CHECK_INTERVAL
+              value: "3"
+            - name: SIDEKIQ_MEMORY_KILLER_MAX_RSS
+              value: "2000000"
+            - name: SIDEKIQ_MEMORY_KILLER_GRACE_TIME
+              value: "900"
+            - name: SIDEKIQ_MEMORY_KILLER_SHUTDOWN_WAIT
+              value: "30"
+            - name: ENABLE_BOOTSNAP
+              value: "1"
+            
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          ports:
+          - containerPort: 3807
+            name: http-metrics
+          volumeMounts:
+          
+          
+          
+          - name: sidekiq-metrics
+            mountPath: '/metrics'
+          - name: sidekiq-config
+            mountPath: '/var/opt/gitlab/templates'
+            readOnly: true
+          - name: sidekiq-secrets
+            mountPath: '/etc/gitlab'
+            readOnly: true
+          - name: sidekiq-secrets
+            mountPath: /srv/gitlab/config/secrets.yml
+            subPath: rails-secrets/secrets.yml
+          - name: sidekiq-config
+            mountPath: '/etc/krb5.conf'
+            subPath: krb5.conf
+          
+          - name: sidekiq-config
+            mountPath: '/srv/gitlab/config/initializers/smtp_settings.rb'
+            subPath: smtp_settings.rb
+          - name: sidekiq-config
+            mountPath: '/srv/gitlab/INSTALLATION_TYPE'
+            subPath: installation_type
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs/
+            readOnly: true
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 3808
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            timeoutSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 3808
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "-c", "pkill -f 'sidekiq'"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 2G
+      volumes:
+      
+      
+      
+      
+      
+      - name: sidekiq-metrics
+        emptyDir:
+          medium: "Memory"
+      - name: sidekiq-config
+        projected:
+          sources:
+            - configMap:
+                name: release-name-sidekiq
+      - name: init-sidekiq-secrets
+        projected:
+          defaultMode: 0400
+          sources:
+          - secret:
+              name: "release-name-rails-secret"
+              items:
+                - key: secrets.yml
+                  path: rails-secrets/secrets.yml
+          
+          - secret:
+              name: "release-name-gitaly-secret"
+              items:
+                - key: "token"
+                  path: gitaly/gitaly_token
+          
+          
+          
+          
+          
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-ci
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-main
+          - secret:
+              name: "release-name-registry-secret"
+              items:
+                - key: registry-auth.key
+                  path: registry/gitlab-registry.key
+          - secret:
+              name: "release-name-registry-notification"
+              items:
+                - key: "secret"
+                  path: registry/notificationSecret
+          
+          # mount secret for kas
+          - secret:
+              name: "release-name-gitlab-kas-secret"
+              items:
+                - key: "kas_shared_secret"
+                  path: kas/.gitlab_kas_secret
+          
+          
+          # mount secret for object_store
+          - secret:
+              name: gitlab-minio
+              items:
+                - key: connection
+                  path: objectstorage/object_store
+          # mount secret for lfs
+          # mount secret for artifacts
+          # mount secret for uploads
+          # mount secret for packages
+          # mount secret for external_diffs
+          # mount secret for terraform_state
+          # mount secret for ci_secure_files
+          # mount secret for dependency_proxy
+          # mount secret for pages
+          # mount secrets for LDAP
+          
+          
+          # mount secrets for microsoftGraphMailer
+          # mount secrets for SMTP
+      - name: sidekiq-secrets
+        emptyDir:
+          medium: "Memory"
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/toolbox/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-toolbox
+  namespace: default
+  labels:
+    app: toolbox
+    chart: toolbox-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+  annotations:
+    
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toolbox
+      release: release-name
+      
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: toolbox
+        chart: toolbox-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        
+      annotations:
+        checksum/config: 5a8f87d1fc8662f145a699b7a7ff9a55278a00c6a196ca1a5bffe9216c07ee1c
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+    spec:
+      
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      automountServiceAccountToken: false
+      
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          
+          
+          
+          - name: toolbox-config
+            mountPath: /config
+            readOnly: true
+          - name: init-toolbox-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: toolbox-secrets
+            mountPath: /init-secrets
+            readOnly: false
+          resources:
+            requests:
+              cpu: 50m      
+      
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchLabels:
+                        app: gitaly
+                        release: release-name
+      containers:
+        
+        - name: toolbox
+          args:
+            - /bin/bash
+            - -c
+            - cp -v -r -L /etc/gitlab/.s3cfg $HOME/.s3cfg && while sleep 3600; do :; done # alpine sleep has no infinity
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-toolbox-ee:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+            - name: ARTIFACTS_BUCKET_NAME
+              value: gitlab-artifacts
+            - name: REGISTRY_BUCKET_NAME
+              value: registry
+            - name: LFS_BUCKET_NAME
+              value: git-lfs
+            - name: UPLOADS_BUCKET_NAME
+              value: gitlab-uploads
+            - name: PACKAGES_BUCKET_NAME
+              value: gitlab-packages
+            - name: EXTERNAL_DIFFS_BUCKET_NAME
+              value: gitlab-mr-diffs
+            - name: TERRAFORM_STATE_BUCKET_NAME
+              value: gitlab-terraform-state
+            - name: CI_SECURE_FILES_BUCKET_NAME
+              value: gitlab-ci-secure-files
+            - name: BACKUP_BUCKET_NAME
+              value: gitlab-backups
+            - name: BACKUP_BACKEND
+              value: s3
+            - name: TMP_BUCKET_NAME
+              value: tmp
+            - name: PAGES_BUCKET_NAME
+              value: gitlab-pages
+            - name: ENABLE_BOOTSNAP
+              value: "1"
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          volumeMounts:
+            
+            - name: registry-db-config
+              mountPath: /etc/gitlab/registry-db/
+              readOnly: true
+            - name: openbao-db-config
+              mountPath: /etc/gitlab/openbao-db/
+              readOnly: true
+            - name: toolbox-config
+              mountPath: '/var/opt/gitlab/templates'
+            - name: toolbox-config
+              mountPath: '/etc/krb5.conf'
+              subPath: krb5.conf
+            
+            - name: toolbox-config
+              mountPath: '/srv/gitlab/config/initializers/smtp_settings.rb'
+              subPath: smtp_settings.rb
+            - name: toolbox-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            - name: toolbox-secrets
+              mountPath: /srv/gitlab/config/secrets.yml
+              subPath: rails-secrets/secrets.yml
+            
+            - name: toolbox-tmp
+              mountPath: '/srv/gitlab/tmp'
+              readOnly: false
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 350M
+      volumes:
+      
+      
+      
+      
+      - name: registry-db-config
+        projected:
+          defaultMode: 0440
+          sources:
+            - configMap:
+                name: release-name-registry-db-connection-config
+                items:
+                - key: db-connection.env
+                  path: connection.env
+                optional: true
+            - configMap:
+                name: release-name-toolbox-registry-db-backuprestore-users
+                items:
+                - key: backup-user
+                  path: backup-user.env
+                - key: restore-user
+                  path: restore-user.env
+                optional: true
+            - secret:
+                name: release-name-toolbox-registry-database-password
+                items:
+                - key: backupPassword
+                  path: backup-pass
+                - key: restorePassword
+                  path: restore-pass
+                optional: true
+      - name: openbao-db-config
+        projected:
+          defaultMode: 0440
+          sources:
+            - configMap:
+                name: release-name-toolbox-openbao-db-connection-config
+                items:
+                - key: db-connection.env
+                  path: connection.env
+                optional: true
+            - configMap:
+                name: release-name-toolbox-openbao-db-backuprestore-users
+                items:
+                - key: backup-user
+                  path: backup-user.env
+                - key: restore-user
+                  path: restore-user.env
+                optional: true
+            - secret:
+                name: release-name-toolbox-openbao-database-password
+                items:
+                - key: backupPassword
+                  path: backup-pass
+                - key: restorePassword
+                  path: restore-pass
+                optional: true
+      - name: toolbox-config
+        projected:
+          sources:
+            - configMap:
+                name: release-name-toolbox
+      - name: toolbox-tmp
+        persistentVolumeClaim:
+          claimName: release-name-toolbox-tmp
+      - name: init-toolbox-secrets
+        projected:
+          defaultMode: 0400
+          sources:
+          - secret:
+              name: "release-name-rails-secret"
+              items:
+                - key: secrets.yml
+                  path: rails-secrets/secrets.yml
+          - secret:
+              name: "release-name-gitlab-shell-secret"
+              items:
+                - key: "secret"
+                  path: shell/.gitlab_shell_secret
+          - secret:
+              name: "release-name-gitaly-secret"
+              items:
+                - key: "token"
+                  path: gitaly/gitaly_token
+          
+          
+          
+          
+          
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-ci
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-main
+          
+          - secret:
+              name: "release-name-registry-secret"
+              items:
+                - key: registry-auth.key
+                  path: registry/gitlab-registry.key
+          - secret:
+              name: "release-name-registry-notification"
+              items:
+                - key: "secret"
+                  path: registry/notificationSecret
+          - secret:
+              name: gitlab-minio
+              items:
+                - key: config
+                  path: objectstorage/.s3cfg
+          
+          # mount secret for kas
+          - secret:
+              name: "release-name-gitlab-kas-secret"
+              items:
+                - key: "kas_shared_secret"
+                  path: kas/.gitlab_kas_secret
+          
+          
+          # mount secret for object_store
+          - secret:
+              name: gitlab-minio
+              items:
+                - key: connection
+                  path: objectstorage/object_store
+          # mount secret for artifacts
+          # mount secret for lfs
+          # mount secret for uploads
+          # mount secret for packages
+          # mount secret for external_diffs
+          # mount secret for terraform_state
+          # mount secret for ci_secure_files
+          # mount secret for dependency_proxy
+          # mount secret for pages
+          # mount secrets for LDAP
+          
+          
+          # mount secrets for microsoftGraphMailer
+          # mount secrets for SMTP
+      - name: toolbox-secrets
+        emptyDir:
+          medium: "Memory"
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-webservice-default
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    gitlab.com/webservice-name: default
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    
+spec:
+  # Don't provide replicas when HPA are present
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: webservice
+      release: release-name
+      
+      
+      gitlab.com/webservice-name: default
+  template:
+    metadata:
+      labels:
+        app: webservice
+        chart: webservice-10.0.0
+        release: release-name
+        heritage: Helm
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        gitlab.com/webservice-name: default
+        
+        
+        backstage.io/kubernetes-id: "gitlab"
+        
+      annotations:
+        checksum/config: b764ce406055767d1540de2653a891f8448467ea33dc150ce6176ec0aa4bb094
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        gitlab.com/prometheus_scrape: "true"
+        gitlab.com/prometheus_port: "8083"
+        gitlab.com/prometheus_path: /metrics
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8083"
+        prometheus.io/path: /metrics
+    spec:
+      
+      nodeSelector:
+        kubernetes.io/hostname: server
+      
+      
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchLabels:
+                  app: webservice
+                  release: release-name
+                  
+                  gitlab.com/webservice-name: default
+      automountServiceAccountToken: false
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh']
+          args: [ '-c', 'sh -x /config-webservice/configure ; sh -x /config-workhorse/configure ; mkdir -p -m 3770 /tmp/gitlab']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+            
+            - name: TZ
+              value: "UTC"
+            
+            
+          volumeMounts:
+          
+          
+          
+          - name: webservice-config
+            mountPath: /config-webservice
+            readOnly: true
+          - name: workhorse-config
+            mountPath: /config-workhorse
+            readOnly: true
+          - name: init-webservice-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: webservice-secrets
+            mountPath: /init-secrets
+            readOnly: false
+          - name: workhorse-secrets
+            mountPath: /init-secrets-workhorse
+            readOnly: false
+          - name: shared-tmp
+            mountPath: /tmp
+            readOnly: false
+          resources:
+            requests:
+              cpu: 50m
+        - name: dependencies
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-webservice-ee:v19.0.0                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          args:
+            - /scripts/wait-for-deps
+          env:
+            
+            - name: TZ
+              value: "UTC"
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            - name: WORKHORSE_ARCHIVE_CACHE_DISABLED
+              value: "1"
+            - name: ENABLE_BOOTSNAP
+              value: "1"
+            
+            
+          volumeMounts:
+            
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+            - name: webservice-config
+              mountPath: '/var/opt/gitlab/templates'
+            - name: webservice-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            - name: webservice-secrets
+              mountPath: /srv/gitlab/config/secrets.yml
+              subPath: rails-secrets/secrets.yml
+              readOnly: true
+          resources:
+            requests:
+              cpu: 50m      
+      containers:
+        
+        - name: webservice
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-webservice-ee:v19.0.0                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          ports:
+            - containerPort: 8080
+              name: http-webservice
+            - containerPort: 8083
+              name: http-metrics-ws
+          env:
+            
+            - name: TZ
+              value: "UTC"
+            - name: GITLAB_WEBSERVER
+              value: puma
+            - name: TMPDIR
+              value: "/tmp/gitlab"
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            - name: prometheus_multiproc_dir
+              value: /metrics
+            - name: ENABLE_BOOTSNAP
+              value: "1"
+            - name: WORKER_PROCESSES
+              value: "2"
+            - name: WORKER_TIMEOUT
+              value: "60"
+            - name: INTERNAL_PORT
+              value: "8080"
+            - name: PUMA_THREADS_MIN
+              value: "4"
+            - name: PUMA_THREADS_MAX
+              value: "4"
+            - name: PUMA_WORKER_MAX_MEMORY
+              value: ""
+            - name: DISABLE_PUMA_WORKER_KILLER
+              value: "true"
+            - name: BIND_IP6
+              value: "false"
+            - name: PUMA_CONTROL_PORT
+              value: "9293"
+            - name: SHUTDOWN_BLACKOUT_SECONDS
+              value: "10"
+            
+            - name: WORKHORSE_ARCHIVE_CACHE_DISABLED
+              value: "true"
+            
+            
+          volumeMounts:
+            - name: webservice-metrics
+              mountPath: '/metrics'
+            - name: webservice-config
+              mountPath: '/var/opt/gitlab/templates'
+            - name: webservice-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            - name: webservice-secrets
+              mountPath: /srv/gitlab/config/secrets.yml
+              subPath: rails-secrets/secrets.yml
+            
+            - name: webservice-config
+              mountPath: '/etc/krb5.conf'
+              subPath: krb5.conf
+            
+            - name: webservice-config
+              mountPath: '/srv/gitlab/config/initializers/smtp_settings.rb'
+              subPath: smtp_settings.rb
+            - name: webservice-config
+              mountPath: '/srv/gitlab/INSTALLATION_TYPE'
+              subPath: installation_type
+            - name: shared-upload-directory
+              mountPath: /srv/gitlab/public/uploads/tmp
+              readOnly: false
+            - name: shared-tmp
+              mountPath: '/tmp'
+              readOnly: false
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+            
+          livenessProbe:
+            httpGet:
+              path: /-/liveness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            timeoutSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /-/readiness
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 2
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "-c", "pkill -SIGINT -o ruby"]
+          resources:
+            limits:
+              memory: 4Gi
+            requests:
+              cpu: 50m
+              memory: 2.5G
+        - name: gitlab-workhorse
+          image: "registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ee:v19.0.0"          
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          ports:
+            - containerPort: 8181
+              name: http-workhorse
+          env:
+            
+            - name: TZ
+              value: "UTC"
+            
+            - name: GODEBUG
+              value: 'tlsmlkem=0,tlskyber=0'
+            - name: TMPDIR
+              value: "/tmp/gitlab"
+            - name: GITLAB_WORKHORSE_AUTH_BACKEND
+              value: "http://localhost:8080"
+            - name: GITLAB_WORKHORSE_EXTRA_ARGS
+              value: ""
+            - name: GITLAB_WORKHORSE_LISTEN_PORT
+              value: "8181"
+            - name: GITLAB_WORKHORSE_LOG_FORMAT
+              value: "json"
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            - name: SHUTDOWN_BLACKOUT_SECONDS
+              value: "10"
+            - name: PUMA_CONTROL_PORT
+              value: "9293"
+            
+            
+            
+          volumeMounts:
+            - name: workhorse-config
+              mountPath: '/var/opt/gitlab/templates'
+            - name: workhorse-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            - name: shared-upload-directory
+              mountPath: /srv/gitlab/public/uploads/tmp
+              readOnly: false
+            - name: shared-tmp
+              mountPath: '/tmp'
+              readOnly: false
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+            
+            
+          
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /bin/bash
+                - -c
+                - sleep $SHUTDOWN_BLACKOUT_SECONDS
+          livenessProbe:
+            exec:
+              command:
+              - /scripts/healthcheck
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            timeoutSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            
+            exec:
+              command:
+              - /scripts/healthcheck
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100M
+      volumes:
+      
+      
+      
+      
+      - name: shared-tmp
+        emptyDir: {}
+      - name: webservice-metrics
+        emptyDir:
+          medium: "Memory"
+      - name: webservice-config
+        configMap:
+          name: release-name-webservice
+      - name: workhorse-config
+        configMap:
+            name: release-name-workhorse-default
+      - name: init-webservice-secrets
+        projected:
+          defaultMode: 0400
+          sources:
+          - secret:
+              name: "release-name-rails-secret"
+              items:
+                - key: secrets.yml
+                  path: rails-secrets/secrets.yml
+          - secret:
+              name: "release-name-gitlab-shell-secret"
+              items:
+                - key: "secret"
+                  path: shell/.gitlab_shell_secret
+          
+          # mount secrets for microsoftGraphMailer
+          # mount secrets for incomingEmail
+          # mount secrets for serviceDeskEmail
+          - secret:
+              name: "release-name-gitaly-secret"
+              items:
+                - key: "token"
+                  path: gitaly/gitaly_token
+          
+          
+          
+          
+          
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-ci
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-main
+          - secret:
+              name: "release-name-registry-secret"
+              items:
+                - key: registry-auth.key
+                  path: registry/gitlab-registry.key
+          - secret:
+              name: "release-name-registry-notification"
+              items:
+                - key: "secret"
+                  path: registry/notificationSecret
+          - secret:
+              name: "release-name-gitlab-workhorse-secret"
+              items:
+                - key: "shared_secret"
+                  path: gitlab-workhorse/secret
+          
+          # mount secret for kas
+          - secret:
+              name: "release-name-gitlab-kas-secret"
+              items:
+                - key: "kas_shared_secret"
+                  path: kas/.gitlab_kas_secret
+          
+          
+          # mount secret for object_store
+          - secret:
+              name: gitlab-minio
+              items:
+                - key: connection
+                  path: objectstorage/object_store
+          # mount secret for artifacts
+          # mount secret for lfs
+          # mount secret for uploads
+          # mount secret for packages
+          # mount secret for external_diffs
+          # mount secret for terraform_state
+          # mount secret for ci_secure_files
+          # mount secret for dependency_proxy
+          # mount secret for pages
+          # mount secrets for LDAP
+          
+          
+          # mount secrets for SMTP
+      - name: webservice-secrets
+        emptyDir:
+          medium: "Memory"
+      - name: workhorse-secrets
+        emptyDir:
+          medium: "Memory"
+      - name: shared-upload-directory
+        emptyDir: {}
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+---
+# Source: gitlab/charts/valkey/templates/deploy_valkey.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-valkey
+  labels:
+    helm.sh/chart: valkey-0.9.4
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "9.0.2"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: valkey
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: valkey
+        app.kubernetes.io/instance: release-name
+      annotations:
+        checksum/initconfig: c1e0b2e8a66babb603720fa8b6a19a86
+    spec:
+      
+      automountServiceAccountToken: false
+      serviceAccountName: release-name-valkey
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: release-name-valkey-init
+          image: harbor.nwallace.io/docker-hub/valkey/valkey:9.0.2
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          command: [ "/scripts/init.sh" ]
+          volumeMounts:
+            - name: valkey-data
+              mountPath: /data
+            - name: scripts
+              mountPath: /scripts
+      containers:
+        - name: release-name-valkey
+          image: harbor.nwallace.io/docker-hub/valkey/valkey:9.0.2
+          imagePullPolicy: IfNotPresent
+          command: [ "valkey-server" ]
+          args: [ "/data/conf/valkey.conf" ]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+            - name: VALKEY_LOGLEVEL
+              value: "notice"
+          ports:
+            - name: tcp
+              containerPort: 6379
+              protocol: TCP
+          startupProbe:
+            exec:
+              command: [ "sh", "-c", "valkey-cli ping" ]
+          livenessProbe:
+            exec:
+              command: [ "sh", "-c", "valkey-cli ping" ]
+          resources:
+            {}
+          volumeMounts:
+            - name: valkey-data
+              mountPath: /data
+      volumes:
+        - name: scripts
+          configMap:
+            name: release-name-valkey-init-scripts
+            defaultMode: 0555
+        - name: valkey-data
+          emptyDir: {}
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/hpa.yaml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: release-name-gitlab-shell
+  namespace: default
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: release-name-gitlab-shell
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageValue: 100m
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/kas/templates/hpa.yaml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: release-name-kas
+  namespace: default
+  labels:
+    app: kas
+    chart: kas-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: release-name-kas
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageValue: 100m
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/sidekiq/templates/hpa.yaml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: release-name-sidekiq-all-in-1-v2
+  namespace: default
+  labels:
+    app: sidekiq
+    chart: sidekiq-10.0.0
+    release: release-name
+    heritage: Helm
+    
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: release-name-sidekiq-all-in-1-v2
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageValue: 350m
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/hpa.yaml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: release-name-webservice-default
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    gitlab.com/webservice-name: default
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: release-name-webservice-default
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageValue: 1
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitaly/templates/statefulset.yml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: release-name-gitaly
+  namespace: default
+  labels:
+    app: gitaly
+    chart: gitaly-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+    app.kubernetes.io/name: release-name
+    app.kubernetes.io/version: v19.0.0
+spec:
+  selector:
+    matchLabels:
+      app: gitaly
+      release: release-name
+      
+  serviceName: release-name-gitaly
+  replicas: 1
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: gitaly
+        chart: gitaly-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        app.kubernetes.io/name: release-name
+        app.kubernetes.io/version: v19.0.0
+        
+      annotations:
+        checksum/config: 719acdb6a5b6113b0298015bccd776750d6848209226b0887f7e99dac97f9440
+        gitlab.com/prometheus_scrape: "true"
+        gitlab.com/prometheus_port: "9236"
+        gitlab.com/prometheus_path: /metrics
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9236"
+        prometheus.io/path: /metrics
+    spec:
+      
+      terminationGracePeriodSeconds: 30
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+            
+            - name: TZ
+              value: "UTC"
+            
+            
+          volumeMounts:
+            
+            - name: gitaly-config
+              mountPath: /config
+              readOnly: true
+            - name: init-gitaly-secrets
+              mountPath: /init-config
+              readOnly: true
+            - name: gitaly-secrets
+              mountPath: /init-secrets
+              readOnly: false
+          resources:
+            requests:
+              cpu: 50m
+      
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 1
+                podAffinityTerm:
+                  topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchLabels:
+                        app: gitaly
+                        release: release-name
+                        
+                              
+      automountServiceAccountToken: false
+      containers:
+        
+        - name: gitaly
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitaly:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          ports:
+            - containerPort: 8075
+              name: grpc-gitaly
+            - containerPort: 9236
+              name: http-metrics
+          env:
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/etc/gitaly/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/etc/gitaly'
+            - name: GITALY_CONFIG_FILE
+              value: '/etc/gitaly/config.toml'
+            - name: SSL_CERT_DIR
+              value: '/etc/ssl/certs'
+            
+            - name: GODEBUG
+              value: 'tlsmlkem=0,tlskyber=0'
+            
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          volumeMounts:
+            
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+            - name: gitaly-config
+              mountPath: '/etc/gitaly/templates'
+            - name: gitaly-secrets
+              mountPath: '/etc/gitlab-secrets'
+              readOnly: true
+            - name: repo-data
+              mountPath: '/home/git/repositories'
+          startupProbe:
+            grpc:
+              port: 8075
+            initialDelaySeconds: 1
+            periodSeconds:  1
+            timeoutSeconds:  1
+            successThreshold:  1
+            failureThreshold: 60
+          livenessProbe:
+            grpc:
+              port: 8075
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            grpc:
+              port: 8075
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      volumes:
+        
+        - name: gitaly-config
+          configMap:
+            name: release-name-gitaly
+        - name: gitaly-secrets
+          emptyDir:
+            medium: "Memory"
+        - name: init-gitaly-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+            - secret:
+                name: "release-name-gitaly-secret"
+                items:
+                  - key: "token"
+                    path: "gitaly_token"
+            - secret:
+                name: "release-name-gitlab-shell-secret"
+                items:
+                  - key: "secret"
+                    path: ".gitlab_shell_secret"
+        
+        - name: etc-ssl-certs
+          emptyDir:
+            medium: "Memory"
+        - name: etc-pki-ca-trust-extracted-pem
+          emptyDir:
+            medium: "Memory"
+        - name: custom-ca-certificates
+          projected:
+            defaultMode: 0440
+            sources:
+            - secret:
+                name: release-name-wildcard-tls-ca
+
+  
+  volumeClaimTemplates:
+    - metadata:
+        name: repo-data
+        labels:
+          app: gitaly
+          release: release-name
+        annotations:
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "5Gi"
+        storageClassName: "longhorn"
+        selector:
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/migrations/templates/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: release-name-migrations-e8fd619
+  namespace: default
+  labels:
+    app: migrations
+    chart: migrations-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  activeDeadlineSeconds: 3600
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        app: migrations
+        chart: migrations-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        
+    spec:
+      
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      automountServiceAccountToken: false
+      
+      initContainers:
+        
+        - name: certificates
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/certificates:v19.0.0    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          - name: etc-ssl-certs
+            mountPath: /etc/ssl/certs
+            readOnly: false
+          - name: etc-pki-ca-trust-extracted-pem
+            mountPath: /etc/pki/ca-trust/extracted/pem
+            readOnly: false
+          - name: custom-ca-certificates
+            mountPath: /usr/local/share/ca-certificates
+            readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-base:v19.0.0"                    
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          env:
+          
+          - name: TZ
+            value: "UTC"
+          
+          
+          volumeMounts:
+          
+          
+          
+          - name: migrations-config
+            mountPath: /config
+            readOnly: true
+          - name: init-migrations-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: migrations-secrets
+            mountPath: /init-secrets
+            readOnly: false
+          resources:
+            requests:
+              cpu: 50m
+      restartPolicy: OnFailure      
+      containers:
+        
+        - name: migrations
+          image: "harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-toolbox-ee:v19.0.0"
+          args:
+            - /bin/bash
+            - -c
+            - |
+              set -e;
+              /scripts/wait-for-deps;
+              /scripts/db-migrate;
+                                  
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            runAsUser: 1000
+          env:
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/srv/gitlab/config'
+            - name: BYPASS_SCHEMA_VERSION
+              value: 'true'
+            - name: ENABLE_BOOTSNAP
+              value: '1'
+            
+            
+            
+            - name: TZ
+              value: "UTC"
+          volumeMounts:
+            - name: migrations-config
+              mountPath: '/var/opt/gitlab/templates'
+            - name: migrations-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            - name: migrations-secrets
+              mountPath: /srv/gitlab/config/secrets.yml
+              subPath: rails-secrets/secrets.yml
+            
+            - name: migrations-secrets
+              mountPath: /srv/gitlab/config/initial_root_password
+              subPath: migrations/initial_root_password
+            - name: migrations-secrets
+              mountPath: /srv/gitlab/config/gitlab_shared_runners_registration_token
+              subPath: migrations/gitlab_shared_runners_registration_token
+            
+            - name: etc-ssl-certs
+              mountPath: /etc/ssl/certs/
+              readOnly: true
+            - name: etc-pki-ca-trust-extracted-pem
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 200Mi
+      volumes:
+      
+      
+      
+      - name: migrations-config
+        configMap:
+          name: release-name-migrations
+      - name: init-migrations-secrets
+        projected:
+          defaultMode: 0400
+          sources:
+          
+          - secret:
+              name: "release-name-rails-secret"
+              items:
+                - key: secrets.yml
+                  path: rails-secrets/secrets.yml
+          - secret:
+              name: "release-name-gitaly-secret"
+              items:
+                - key: "token"
+                  path: gitaly/gitaly_token
+          
+          
+          
+          
+          
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-ci
+          - secret:
+              name: "gitlab-postgresql-password"
+              items:
+                - key: "password"
+                  path: postgres/psql-password-main
+          
+          # Object storage secrets - start
+          # mount secret for object_store
+          - secret:
+              name: gitlab-minio
+              items:
+                - key: connection
+                  path: objectstorage/object_store
+          # mount secret for artifacts
+          # mount secret for lfs
+          # mount secret for uploads
+          # mount secret for packages
+          # mount secret for external_diffs
+          # mount secret for terraform_state
+          # mount secret for ci_secure_files
+          # mount secret for dependency_proxy
+          # mount secret for pages
+          # Object storage secrets - end
+          - secret:
+              name: "release-name-gitlab-initial-root-password"
+              items:
+                - key: "password"
+                  path: migrations/initial_root_password
+          - secret:
+              name: "release-name-gitlab-runner-secret"
+              optional: true
+              items:
+                - key: runner-registration-token
+                  path: migrations/gitlab_shared_runners_registration_token
+      - name: migrations-secrets
+        emptyDir:
+          medium: "Memory"
+      
+      - name: etc-ssl-certs
+        emptyDir:
+          medium: "Memory"
+      - name: etc-pki-ca-trust-extracted-pem
+        emptyDir:
+          medium: "Memory"
+      - name: custom-ca-certificates
+        projected:
+          defaultMode: 0440
+          sources:
+          - secret:
+              name: release-name-wildcard-tls-ca
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: gitlab/templates/cluster.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: gitlab-db
+  annotations:
+    helm.sh/resource-policy: keep
+  labels:
+    app.kubernetes.io/name: gitlab
+    helm.sh/chart: gitlab-0.0.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    backstage.io/kubernetes-id: gitlab
+    workload: database
+spec:
+  resources:
+    limits:
+        memory: "500Mi"
+  instances: 3
+  switchoverDelay: 60
+  smartShutdownTimeout: 120
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  inheritedMetadata:
+    labels:
+      app.kubernetes.io/name: gitlab
+      helm.sh/chart: gitlab-0.0.0
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/instance: release-name
+      backstage.io/kubernetes-id: gitlab
+  postgresql:
+    parameters:
+      max_connections: '200'
+      max_slot_wal_keep_size: 2GB
+  affinity:
+    podAntiAffinityType: required
+    nodeSelector:
+      storage: 'true'
+  # minSyncReplicas: 1
+  # maxSyncReplicas: 2
+  imageName: harbor.nwallace.io/github/cloudnative-pg/postgresql:16
+  imagePullPolicy: Always
+  bootstrap:
+    # initdb:
+    #   database: gitlabhq_production
+    #   owner: gitlab
+    #   secret:
+    #     name: gitlab-postgresql-password
+    #   postInitSQL:
+    #     - CREATE EXTENSION IF NOT EXISTS btree_gist
+    #     - CREATE EXTENSION IF NOT EXISTS pg_trgm
+    #     - CREATE EXTENSION IF NOT EXISTS plpgsql
+    recovery:
+      source: gitlab-db
+      database: gitlab-db
+      owner: gitlab
+      secret:
+        name: gitlab-postgresql-password
+  managed:
+    roles:
+    - name: gitlab
+      connectionLimit: -1
+      inherit: true
+      ensure: present
+      login: true
+      passwordSecret:
+        name: gitlab-postgresql-password
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
+  walStorage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 3Gi
+      storageClassName: longhorn-db
+      volumeMode: Filesystem
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: gitlab-db
+  externalClusters:
+    - name: gitlab-db
+      plugin:
+          name: barman-cloud.cloudnative-pg.io
+          parameters:
+            barmanObjectName: gitlab-db
+            serverName: gitlab-db
+  monitoring:
+    enablePodMonitor: true
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/kas/templates/httproute.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: release-name-kas
+  namespace: default
+  labels:
+    app: kas
+    chart: kas-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    
+    {}
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: "gateway-external"
+      namespace: "kube-system"
+      sectionName: "kas-web"
+  hostnames:
+    - "kas.nwallace.io"
+  rules:
+  - backendRefs:
+    - kind: Service
+      name: release-name-kas
+      port: 8154
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: "/k8s-proxy"
+    
+    timeouts:
+      request: 0s
+  - backendRefs:
+    - kind: Service
+      name: release-name-kas
+      port: 8150
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: "/"
+    
+    timeouts:
+      request: 0s
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/httproute.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: release-name-gitlab
+  namespace: default
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    
+    {}
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: "gateway-external"
+      namespace: "kube-system"
+      sectionName: "gitlab-web"
+  hostnames:
+    
+    - "gitlab.nwallace.io"
+  rules:
+  
+  
+  - backendRefs:
+    - kind: Service
+      name: release-name-webservice-default
+      port: 8181
+      weight: 1
+    
+    name: default-root
+    matches:
+      - path:
+          type: PathPrefix
+          value: /
+    timeouts:
+      backendRequest: 15s
+      request: 15s
+  - backendRefs:
+    - kind: Service
+      name: release-name-webservice-default
+      port: 8181
+      weight: 1
+    
+    name: default-long-running
+    matches:
+      - path:
+          type: RegularExpression
+          value: ^/.*/ssh-receive-pack$
+      - path:
+          type: RegularExpression
+          value: ^/.*/ssh-upload-pack$
+    timeouts:
+      backendRequest: 0s
+      request: 0s
+---
+# Source: gitlab/templates/objectstore.yaml
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: gitlab-db
+  labels:
+    app.kubernetes.io/name: gitlab
+    helm.sh/chart: gitlab-0.0.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    backstage.io/kubernetes-id: gitlab
+spec:
+  retentionPolicy: "7d"
+  configuration:
+    destinationPath: s3://gitlab-database/
+    endpointURL: https://minio.nwallace.io
+    data:
+      compression: gzip
+    wal:
+      compression: gzip
+    s3Credentials:
+      accessKeyId:
+        name: gitlab-minio
+        key: AccessKey
+      secretAccessKey:
+        name: gitlab-minio
+        key: SecretKey
+---
+# Source: gitlab/templates/scheduled-backup.yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: gitlab-db-backup
+  labels:
+    app.kubernetes.io/name: gitlab
+    helm.sh/chart: gitlab-0.0.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    backstage.io/kubernetes-id: gitlab
+spec:
+  schedule: "0 0 6 * * *"
+  backupOwnerReference: cluster
+  immediate: true
+  cluster:
+    name: gitlab-db
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/gitlab-shell/templates/tcproute.yaml
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: release-name-gitlab-shell
+  namespace: "default"
+  labels:
+    app: gitlab-shell
+    chart: gitlab-shell-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    
+    {}
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: "gateway-external"
+      namespace: "kube-system"
+      sectionName: "gitlab-ssh"
+  rules:
+  - backendRefs:
+    - name: release-name-gitlab-shell
+      port: 22
+---
+# Source: gitlab/templates/vault-static-secrets.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: gitlab-postgresql-password
+  labels:
+    app.kubernetes.io/name: gitlab
+    helm.sh/chart: gitlab-0.0.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    backstage.io/kubernetes-id: gitlab
+spec:
+  mount: kv
+  type: kv-v2
+  path:  gitlab/postgresql-password
+  refreshAfter: 60s
+  destination:
+    create: true
+    overwrite: true
+    name: gitlab-postgresql-password
+---
+# Source: gitlab/templates/vault-static-secrets.yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: gitlab-minio
+  labels:
+    app.kubernetes.io/name: gitlab
+    helm.sh/chart: gitlab-0.0.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    backstage.io/kubernetes-id: gitlab
+spec:
+  mount: kv
+  type: kv-v2
+  path:  gitlab/minio-credentials
+  refreshAfter: 60s
+  destination:
+    create: true
+    overwrite: true
+    name: gitlab-minio
+---
+# Source: gitlab/charts/gitlab/templates/shared-secrets/rbac-config.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-shared-secrets
+  namespace: default
+  labels:
+    app: gitlab
+    chart: gitlab-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+---
+# Source: gitlab/charts/gitlab/templates/shared-secrets/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-shared-secrets
+  namespace: default
+  labels:
+    app: gitlab
+    chart: gitlab-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-3"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+data:
+  generate-secrets: |
+    # vim: set filetype=sh:
+    
+    namespace=default
+    release=release-name
+    env=production
+    
+    pushd $(mktemp -d)
+    
+    # Args pattern, length
+    function gen_random(){
+      head -c 4096 /dev/urandom | LC_CTYPE=C tr -cd $1 | head -c $2
+    }
+    
+    # Args: length
+    function gen_random_base64(){
+      local len="$1"
+      gen_random_bytes "$len" | base64 -w0
+    }
+    
+    # Args: length
+    function gen_random_bytes(){
+      local len="$1"
+      head -c "$len" /dev/urandom
+    }
+    
+    # Args: yaml file, search path
+    function fetch_rails_value(){
+      local value=$(yq --prettyPrint --no-colors ".${2}" $1)
+    
+      # Don't return null values
+      if [ "${value}" != "null" ]; then echo "${value}"; fi
+    }
+    
+    # Args: secretname
+    function label_secret(){
+      local secret_name=$1
+    # Remove application labels if they exist
+      kubectl --namespace=$namespace label \
+        secret $secret_name $(echo 'app.kubernetes.io/name=release-name' | sed -E 's/=[^ ]*/-/g')
+    
+      kubectl --namespace=$namespace label \
+        --overwrite \
+        secret $secret_name app=gitlab chart=gitlab-10.0.0 release=release-name heritage=Helm  backstage.io/kubernetes-id="gitlab"
+    }
+    
+    # Args: secretname, args
+    function generate_secret_if_needed(){
+      local secret_args=( "${@:2}")
+      local secret_name=$1
+    
+      if ! $(kubectl --namespace=$namespace get secret $secret_name > /dev/null 2>&1); then
+        kubectl --namespace=$namespace create secret generic $secret_name ${secret_args[@]}
+      else
+        echo "secret \"$secret_name\" already exists."
+    
+        for arg in "${secret_args[@]}"; do
+          local from=$(echo -n ${arg} | cut -d '=' -f1)
+    
+          if [ -z "${from##*literal*}" ]; then
+            local key=$(echo -n ${arg} | cut -d '=' -f2)
+            local desiredValue=$(echo -n ${arg} | cut -d '=' -f3-)
+            local flags="--namespace=$namespace --allow-missing-template-keys=false"
+    
+            if ! $(kubectl $flags get secret $secret_name -ojsonpath="{.data.${key}}" > /dev/null 2>&1); then
+              echo "key \"${key}\" does not exist. patching it in."
+    
+              if [ "${desiredValue}" != "" ]; then
+                desiredValue=$(echo -n "${desiredValue}" | base64 -w 0)
+              fi
+    
+              kubectl --namespace=$namespace patch secret ${secret_name} -p "{\"data\":{\"$key\":\"${desiredValue}\"}}"
+            fi
+          fi
+        done
+      fi
+    
+      label_secret $secret_name
+    }
+    
+    # Initial root password
+    generate_secret_if_needed "release-name-gitlab-initial-root-password" --from-literal="password"=$(gen_random 'a-zA-Z0-9' 64)
+    
+    # Gitlab shell
+    generate_secret_if_needed "release-name-gitlab-shell-secret" --from-literal="secret"=$(gen_random 'a-zA-Z0-9' 64)
+    
+    # Gitaly secret
+    generate_secret_if_needed "release-name-gitaly-secret" --from-literal="token"=$(gen_random 'a-zA-Z0-9' 64)
+    
+    # Gitlab runner secret
+    generate_secret_if_needed "release-name-gitlab-runner-secret" --from-literal=runner-registration-token=$(gen_random 'a-zA-Z0-9' 64) --from-literal=runner-token=""
+    
+    # GitLab Pages API secret
+    
+    
+    # GitLab Pages auth secret for hashing cookie store when using access control
+    
+    
+    # GitLab Pages OAuth secret
+    
+    
+    # Gitlab-kas secret
+    generate_secret_if_needed "release-name-gitlab-kas-secret" --from-literal="kas_shared_secret"=$(gen_random 'a-zA-Z0-9' 32 | base64)
+    
+    # Gitlab-kas private API secret
+    generate_secret_if_needed "release-name-kas-private-api" --from-literal="kas_private_api_secret"=$(gen_random 'a-zA-Z0-9' 32 | base64)
+    
+    # Gitlab-kas WebSocket Token secret
+    generate_secret_if_needed "release-name-kas-websocket-token" --from-literal="kas_websocket_token_secret"=$(gen_random_base64 72)
+    
+    
+    
+    
+    
+    
+    
+    
+    # Registry certificates
+    mkdir -p certs
+    openssl req -new -newkey rsa:4096 -subj "/CN=gitlab-issuer" -nodes -x509 -keyout certs/registry-example-com.key -out certs/registry-example-com.crt -days 3650
+    generate_secret_if_needed "release-name-registry-secret" --from-file=registry-auth.key=certs/registry-example-com.key --from-file=registry-auth.crt=certs/registry-example-com.crt
+    
+    # config/secrets.yaml
+    if [ -n "$env" ]; then
+      rails_secret="release-name-rails-secret"
+    
+      # Fetch the values from the existing secret if it exists
+      if $(kubectl --namespace=$namespace get secret $rails_secret > /dev/null 2>&1); then
+        kubectl --namespace=$namespace get secret $rails_secret -o jsonpath="{.data.secrets\.yml}" | base64 --decode > secrets.yml
+        secret_key_base=$(fetch_rails_value secrets.yml "${env}.secret_key_base")
+        otp_key_base=$(fetch_rails_value secrets.yml "${env}.otp_key_base")
+        db_key_base=$(fetch_rails_value secrets.yml "${env}.db_key_base")
+        openid_connect_signing_key=$(fetch_rails_value secrets.yml "${env}.openid_connect_signing_key")
+        encrypted_settings_key_base=$(fetch_rails_value secrets.yml "${env}.encrypted_settings_key_base")
+    
+        active_record_encryption_primary_keys=$(fetch_rails_value secrets.yml "${env}.active_record_encryption_primary_key")
+        active_record_encryption_deterministic_keys=$(fetch_rails_value secrets.yml "${env}.active_record_encryption_deterministic_key")
+        active_record_encryption_key_derivation_salt=$(fetch_rails_value secrets.yml "${env}.active_record_encryption_key_derivation_salt")
+      fi;
+    
+      # Generate defaults for any unset secrets
+      secret_key_base="${secret_key_base:-$(gen_random 'a-f0-9' 128)}" # equivalent to secureRandom.hex(64)
+      otp_key_base="${otp_key_base:-$(gen_random 'a-f0-9' 128)}" # equivalent to secureRandom.hex(64)
+      db_key_base="${db_key_base:-$(gen_random 'a-f0-9' 128)}" # equivalent to secureRandom.hex(64)
+      openid_connect_signing_key="${openid_connect_signing_key:-$(openssl genrsa 2048)}"
+      encrypted_settings_key_base="${encrypted_settings_key_base:-$(gen_random 'a-f0-9' 128)}" # equivalent to secureRandom.hex(64)
+    
+      # 1. We set the following two keys as an array to support keys rotation.
+      #    The last key in the array is always used to encrypt data:
+      #    https://github.com/rails/rails/blob/v7.0.8.4/activerecord/lib/active_record/encryption/key_provider.rb#L21
+      #    while all the keys are used (in the order they're defined) to decrypt data:
+      #    https://github.com/rails/rails/blob/v7.0.8.4/activerecord/lib/active_record/encryption/cipher.rb#L26.
+      #    This allows to rotate keys by adding a new key as the last key, and start a re-encryption process that
+      #    runs in the background: https://gitlab.com/gitlab-org/gitlab/-/issues/494976
+      # 2. We use the same method and length as Rails' defaults:
+      #    https://github.com/rails/rails/blob/v7.0.8.4/activerecord/lib/active_record/railties/databases.rake#L537-L540
+      active_record_encryption_primary_keys=${active_record_encryption_primary_keys:-"- $(gen_random 'a-zA-Z0-9' 32)"}
+      active_record_encryption_deterministic_keys=${active_record_encryption_deterministic_keys:-"- $(gen_random 'a-zA-Z0-9' 32)"}
+      active_record_encryption_key_derivation_salt=${active_record_encryption_key_derivation_salt:-$(gen_random 'a-zA-Z0-9' 32)}
+    
+      # Update the existing secret
+      cat << EOF > rails-secrets.yml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: $rails_secret
+    type: Opaque
+    stringData:
+      secrets.yml: |-
+        $env:
+          secret_key_base: $secret_key_base
+          otp_key_base: $otp_key_base
+          db_key_base: $db_key_base
+          encrypted_settings_key_base: $encrypted_settings_key_base
+          openid_connect_signing_key: |
+    $(echo "${openid_connect_signing_key}" | awk '{print "        " $0}')
+          active_record_encryption_primary_key:
+            $active_record_encryption_primary_keys
+          active_record_encryption_deterministic_key:
+            $active_record_encryption_deterministic_keys
+          active_record_encryption_key_derivation_salt: $active_record_encryption_key_derivation_salt
+    EOF
+      kubectl --validate=false --namespace=$namespace apply -f rails-secrets.yml
+      label_secret $rails_secret
+    fi
+    
+    # Shell ssh host keys
+    ssh-keygen -A
+    mkdir -p host_keys
+    cp /etc/ssh/ssh_host_* host_keys/
+    generate_secret_if_needed "release-name-gitlab-shell-host-keys" --from-file host_keys
+    
+    # Gitlab-workhorse secret
+    generate_secret_if_needed "release-name-gitlab-workhorse-secret" --from-literal="shared_secret"=$(gen_random 'a-zA-Z0-9' 32 | base64)
+    
+    # Registry http.secret secret
+    generate_secret_if_needed "release-name-registry-httpsecret" --from-literal="secret"=$(gen_random 'a-z0-9' 128 | base64 -w 0)
+    
+    # Container Registry notification_secret
+    generate_secret_if_needed "release-name-registry-notification" --from-literal="secret"=[\"$(gen_random 'a-zA-Z0-9' 32)\"]
+---
+# Source: gitlab/charts/gitlab/templates/shared-secrets/rbac-config.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: release-name-shared-secrets
+  namespace: default
+  labels:
+    app: shared-secrets
+    chart: shared-secrets-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "create", "patch"]
+---
+# Source: gitlab/charts/gitlab/templates/shared-secrets/rbac-config.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: release-name-shared-secrets
+  namespace: default
+  labels:
+    app: shared-secrets
+    chart: shared-secrets-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: release-name-shared-secrets
+subjects:
+  - kind: ServiceAccount
+    name: release-name-shared-secrets
+    namespace: default
+---
+# Source: gitlab/charts/gitlab/charts/gitlab/charts/webservice/templates/tests/test-runner.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: release-name-webservice-test-runner-wcdc3
+  namespace: default
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+  labels:
+    app: webservice
+    chart: webservice-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+spec:
+  containers:
+  - name: test-runner
+    image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-webservice-ee:v19.0.0
+    command: ['sh', '/tests/test_login']
+    volumeMounts:
+      - name: tests
+        mountPath: '/tests'
+      - name: root-password
+        readOnly: true
+        mountPath: /initial_root_password
+        subPath: initial_root_password
+  volumes:
+  - name: tests
+    configMap:
+      name: release-name-webservice-tests
+  - name: root-password
+    secret:
+      secretName: "release-name-gitlab-initial-root-password"
+      items:
+        - key: "password"
+          path: initial_root_password
+  restartPolicy: Never
+---
+# Source: gitlab/charts/gitlab/templates/shared-secrets/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: release-name-shared-secrets-f3f9d59
+  namespace: default
+  labels:
+    app: gitlab
+    chart: gitlab-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        app: gitlab
+        chart: gitlab-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        
+      annotations:
+    spec:
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      
+      securityContext:
+        runAsUser: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: release-name-shared-secrets
+      restartPolicy: Never
+      
+      containers:
+        - name: gitlab
+          image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/kubectl:v19.0.0          
+          command: ['/bin/bash', '/scripts/generate-secrets']
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            - name: ssh
+              mountPath: /etc/ssh
+          resources:
+            requests:
+              cpu: 50m
+      volumes:
+      - name: scripts
+        configMap:
+          name: release-name-shared-secrets
+      - name: ssh
+        emptyDir: {}
+---
+# Source: gitlab/charts/gitlab/templates/shared-secrets/self-signed-cert-job.yml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: release-name-shared-secrets-f3f9d59-selfsign
+  namespace: default
+  labels:
+    app: gitlab
+    chart: gitlab-10.0.0
+    release: release-name
+    heritage: Helm
+    
+    backstage.io/kubernetes-id: "gitlab"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        app: gitlab
+        chart: gitlab-10.0.0
+        release: release-name
+        heritage: Helm
+        
+        backstage.io/kubernetes-id: "gitlab"
+        
+      annotations:
+    spec:
+      
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      
+      securityContext:
+        runAsUser: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: release-name-shared-secrets
+      restartPolicy: Never
+      
+      initContainers:
+      - name: cfssl-self-sign
+        image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/cfssl-self-sign:v19.0.0        
+        env:
+        - name: CA_SUBJECT
+          value: "GitLab Helm Chart" # defaults to GitLab in container
+        - name: CA_ORG
+          value: "default" # defaults to GitLab in container
+        - name: CA_ORG_UNIT
+          value: "release-name" # defaults to Cloud Native in container
+        - name: CERT_SUBJECT
+          value: "nwallace.io" # defaults to GitLab in container
+        - name: CERT_DOMAIN
+          value: "nwallace.io" # defaults to example.com in container
+        - name: EXPIRY
+          value: "3650d" # defaults to 8076h in container
+        - name: ALGORITHM
+          value: "rsa" # defaults to ecdsa in container
+        - name: KEY_SIZE
+          value: "4096" # defaults to 256 inside container
+        volumeMounts:
+        - name: certs-path
+          mountPath: /output
+        resources:
+          requests:
+            cpu: 50m
+      containers:
+      - name: kubectl
+        image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/kubectl:v19.0.0        
+        command:
+        - /bin/bash
+        - -exc
+        - |
+          certname=release-name-wildcard-tls
+          # create wildcard certificate secret
+          kubectl create secret tls $certname \
+            --cert=/output/wildcard.pem --key=/output/wildcard-key.pem || true
+          kubectl --namespace=$namespace label \
+            secret $certname  $(echo 'app.kubernetes.io/name=release-name' | sed -E 's/=[^ ]*/-/g')
+          kubectl --namespace=$namespace label --overwrite \
+            secret $certname app=gitlab chart=gitlab-10.0.0 release=release-name heritage=Helm  backstage.io/kubernetes-id="gitlab"
+          # create CA certificate secret
+          kubectl create secret generic ${certname}-ca \
+            --from-file=cfssl_ca=/output/ca.pem || true
+          kubectl --namespace=$namespace label \
+            secret ${certname}-ca  $(echo 'app.kubernetes.io/name=release-name' | sed -E 's/=[^ ]*/-/g')
+          kubectl --namespace=$namespace label --overwrite \
+            secret ${certname}-ca app=gitlab chart=gitlab-10.0.0 release=release-name heritage=Helm  backstage.io/kubernetes-id="gitlab"
+          # create certificate chain for GitLab Runner
+          cat /output/ca.pem /output/wildcard.pem > /tmp/gitlab.nwallace.io.crt
+          kubectl create secret generic ${certname}-chain \
+            --from-file=/tmp/gitlab.nwallace.io.crt || true
+          kubectl --namespace=$namespace label \
+            secret ${certname}-chain  $(echo 'app.kubernetes.io/name=release-name' | sed -E 's/=[^ ]*/-/g')
+          kubectl --namespace=$namespace label --overwrite \
+            secret ${certname}-chain app=gitlab chart=gitlab-10.0.0 release=release-name heritage=Helm  backstage.io/kubernetes-id="gitlab"
+        volumeMounts:
+        - name: certs-path
+          mountPath: /output
+        resources:
+          requests:
+            cpu: 50m
+      volumes:
+      - name: certs-path
+        emptyDir: {}

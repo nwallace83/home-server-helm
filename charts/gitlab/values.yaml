@@ -89,6 +89,9 @@ gitlab:
           {{ end }}
   postgresql:
     install: false
+  gatewayApiResources:
+    gateway:
+      protocol: HTTP
   gitlab:
     sidekiq:
       resources:
