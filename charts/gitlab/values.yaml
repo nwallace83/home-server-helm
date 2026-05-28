@@ -126,7 +126,7 @@ gitlab:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell
     webservice:
       gatewayRoute:
-        sectionName: ''
+        sectionName: null
       resources:
         requests:
           cpu: 50m
@@ -139,6 +139,9 @@ gitlab:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-webservice-ee
       gitlab:
+        applicationSettings:
+          webIdeExtensionHostDomain: "gitlab.nwallace.io"
+          webIdeDisableSingleOriginFallback: true
         webservice:
           workhorse:
             image: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-workhorse-ee
