@@ -39,6 +39,7 @@ kube-prometheus-stack:
       serviceMonitorSelector:
         matchLabels: null
       podMonitorSelector:
+        podMonitorNamespaceSelector: {}
         matchLabels: null
       retention: 7d
   prometheusOperator:
