@@ -109,14 +109,14 @@ gitlab:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitaly
     kas:
       gatewayRoute:
-        sectionName: ''
+        sectionName: https
       minReplicas: 1
       maxReplicas: 1
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas
     gitlab-shell:
       gatewayRoute:
-        sectionName: ''
+        sectionName: https
       minReplicas: 1
       maxReplicas: 1
       service:
@@ -126,7 +126,7 @@ gitlab:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell
     webservice:
       gatewayRoute:
-        sectionName: null
+        sectionName: https
       resources:
         requests:
           cpu: 50m
