@@ -44,3 +44,13 @@ spec:
     name: http
     port: 80
     protocol: HTTP
+  - name: ssh
+    protocol: TLS
+    port: 22
+    tls:
+      mode: Passthrough
+    allowedRoutes:
+      kinds:
+        - kind: TLSRoute
+      namespaces:
+        from: All
