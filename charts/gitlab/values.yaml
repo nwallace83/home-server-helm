@@ -4,7 +4,6 @@ global:
   hosts:
     domain: nwallace.io
     externalIP: 192.168.2.12
-    https: false
   monitoring:
     enabled: true
   certificates:
