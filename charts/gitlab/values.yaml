@@ -61,6 +61,9 @@ global:
   registry:
     enabled: false
 gitlab:
+  gatewayApiResources:
+    gateway:
+      protocol: HTTP
   installCertmanager: false
   gitlab-runner:
     runners:
@@ -89,9 +92,6 @@ gitlab:
           {{ end }}
   postgresql:
     install: false
-  gatewayApiResources:
-    gateway:
-      protocol: HTTP
   gitlab:
     sidekiq:
       resources:
@@ -108,11 +108,15 @@ gitlab:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitaly
     kas:
+      gatewayRoute:
+        sectionName: ''
       minReplicas: 1
       maxReplicas: 1
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas
     gitlab-shell:
+      gatewayRoute:
+        sectionName: ''
       minReplicas: 1
       maxReplicas: 1
       service:
@@ -121,6 +125,8 @@ gitlab:
       image:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-shell
     webservice:
+      gatewayRoute:
+        sectionName: ''
       resources:
         requests:
           cpu: 50m
