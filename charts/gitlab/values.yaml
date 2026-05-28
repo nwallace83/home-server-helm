@@ -116,7 +116,7 @@ gitlab:
         repository: harbor.nwallace.io/gitlab/gitlab-org/build/cng/gitlab-kas
     gitlab-shell:
       gatewayRoute:
-        sectionName: https
+        sectionName: ssh
       minReplicas: 1
       maxReplicas: 1
       service:
