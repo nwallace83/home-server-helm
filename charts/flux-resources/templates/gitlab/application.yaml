@@ -15,7 +15,6 @@ spec:
   syncPolicy:
     syncOptions:
       - RespectIgnoreDifferences=true
-      - ServerSideApply=true
   ignoreDifferences:
     - group: apps
       kind: StatefulSet

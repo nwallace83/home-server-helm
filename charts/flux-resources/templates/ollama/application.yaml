@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloudnative-pg
+  name: ollama
   namespace: argo-cd
 spec:
   destination:
-    namespace: cnpg-system
+    namespace: ollama
     server: https://kubernetes.default.svc
   project: home-server
   source:
-    path: charts/cloudnative-pg
+    path: charts/headlamp
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
   syncPolicy:
