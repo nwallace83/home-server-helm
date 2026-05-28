@@ -38,9 +38,8 @@ kube-prometheus-stack:
                 storage: 25Gi
       serviceMonitorSelector:
         matchLabels: null
-      podMonitorSelector:
-        podMonitorNamespaceSelector: {}
-        matchLabels: null
+      podMonitorNamespaceSelector: {}
+      podMonitorSelector: {}
       retention: 7d
   prometheusOperator:
     image:
