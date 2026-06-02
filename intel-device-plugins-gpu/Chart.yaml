@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: 0.35.0
+description: A Helm chart for Intel GPU Device Plugin
+name: intel-device-plugins-gpu
+type: application
+version: 0.35.0
