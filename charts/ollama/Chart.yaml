@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gpu-operator
-description: gpu-operator
+name: ollama
+description: ollama
 
 # A chart can be either an 'application' or a 'library' chart.
 #
