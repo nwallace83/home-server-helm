@@ -1,4 +1,5 @@
 ollama:
+  replicaCount: 0
   ollama:
     gpu:
       enabled: true
