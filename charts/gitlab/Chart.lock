@@ -1,9 +1,9 @@
 dependencies:
 - name: gitlab
   repository: https://charts.gitlab.io
-  version: 10.5.0
+  version: 10.5.1
 - name: valkey
   repository: https://valkey.io/valkey-helm/
   version: 0.12.0
-digest: sha256:6cc178ed436b7f018162785fc25a30fae9fc545f3ebacdece91f248b5221c888
-generated: "2026-10-15T14:20:18.2934956Z"
+digest: sha256:7101b5d478fcbd8d89c4a49b77afca81b459a1019258f6cb5f18d4d8c3362254
+generated: "2026-10-21T18:20:21.95252435Z"
