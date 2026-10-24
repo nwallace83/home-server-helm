@@ -30,6 +30,8 @@ ollama:
 
 open-webui:
   enableOpenaiApi: false
+  ollama:
+    enabled: false
   ollamaUrls:
     - ollama:11434
   route:
