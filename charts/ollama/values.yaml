@@ -77,3 +77,10 @@ searxng:
     settings:
       server:
         base_url: https://searxng.nwallace.io/
+      search:
+        safe_search: 0
+        autocomplete: ""
+        # ⚠️ CRITICAL STEP: Add 'json' to the list of allowed response formats
+        formats:
+          - html
+          - json
