@@ -33,7 +33,7 @@ open-webui:
   ollama:
     enabled: false
   ollamaUrls:
-    - http://ollama:11434
+    - https://ollama.nwallace.io
   route:
     enabled: true
     parentRefs:
