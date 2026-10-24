@@ -29,4 +29,7 @@ dependencies:
   repository: https://otwld.github.io/ollama-helm
 - name: open-webui
   version: ">=17.0.0"
-  repository: https://helm.openwebui.com/
+  repository: https://helm.openwebui.com
+- name: searxng
+  version: ">=0.1.11"
+  repository: https://techpipe-io.github.io/searxng-helm-chart

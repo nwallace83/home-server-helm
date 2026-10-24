@@ -61,3 +61,19 @@ open-webui:
       namespace: kube-system 
     hostnames:
     - webui.nwallace.io
+searxng:
+  ingress:
+    enabled: false
+  gateway:
+    enabled: true
+    parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway-internal
+      namespace: kube-system 
+    hostnames:
+      - searxng.nwallace.io
+  config:
+    settings:
+      server:
+        base_url: https://searxng.nwallace.io/
