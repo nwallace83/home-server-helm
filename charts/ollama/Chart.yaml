@@ -27,3 +27,6 @@ dependencies:
 - name: ollama
   version: ">=1.57.0"
   repository: https://otwld.github.io/ollama-helm
+- name: open-webui
+  version: ">=17.0.0"
+  repository: https://helm.openwebui.com/
