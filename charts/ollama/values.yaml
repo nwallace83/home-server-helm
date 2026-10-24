@@ -33,7 +33,7 @@ open-webui:
   ollama:
     enabled: false
   ollamaUrls:
-    - ollama:11434
+    - http://ollama:11434
   route:
     enabled: true
     parentRefs:
