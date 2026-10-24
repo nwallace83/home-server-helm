@@ -5,12 +5,27 @@ ollama:
       enabled: true
     models:
       create:
-        - name: "qwen3-coder"
+        - name: "qwen3-coder:35b"
           template: |
             FROM qwen3.6:35b-a3
             PARAMETER num_ctx 131072
+        - name: "qwen3:8b"
+          template: |
+            FROM qwen3:8b
+            PARAMETER num_ctx 8192
+        - name: "llama3.1:8b"
+          template: |
+            FROM llama3.1:8b
+            PARAMETER num_ctx 8192
+        - name: "qwen2.5-coder:7b"
+          template: |
+            FROM qwen2.5-coder:7b
+            PARAMETER num_ctx 8192
       run:
-        - "qwen3-coder"
+        - "qwen3-coder:35b"
+        - "qwen3:8b"
+        - "llama3.1:8b"
+        - "qwen2.5-coder:7b"
   httpRoute:
     enabled: true
     parentRefs:
@@ -27,6 +42,9 @@ ollama:
     existingClaim: ollama-data
   image:
     repository: harbor.nwallace.io/docker-hub/ollama/ollama
+  extraEnv:
+    - name: OLLAMA_MAX_LOADED_MODELS
+      value: '1'
 
 open-webui:
   enableOpenaiApi: false
