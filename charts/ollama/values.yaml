@@ -5,9 +5,9 @@ ollama:
       enabled: true
     models:
       create:
-      - name: "qwen2.5-coder:32b-instruct-q3_K_M"
+      - name: "qwen2.5-coder:14b-instruct-q3_K_M"
         template: |
-          FROM qwen2.5-coder:32b-instruct-q3_K_M
+          FROM qwen2.5-coder:14b-instruct-q3_K_M
           PARAMETER num_ctx 131072
       - name: "qwen3.6:27b"
         template: |
@@ -22,7 +22,7 @@ ollama:
           FROM qwen2.5-coder:7b
           PARAMETER num_ctx 131072
       run:
-      - "qwen2.5-coder:32b-instruct-q3_K_M"
+      - "qwen2.5-coder:14b-instruct-q3_K_M"
       - "qwen3.6:27b"
       - "qwen3:8b"
       - "qwen2.5-coder:7b"
