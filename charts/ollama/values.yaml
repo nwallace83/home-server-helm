@@ -22,7 +22,6 @@ ollama:
             FROM qwen2.5-coder:7b
             PARAMETER num_ctx 8192
       run:
-        - "qwen3-coder:35b"
         - "qwen3:8b"
         - "llama3.1:8b"
         - "qwen2.5-coder:7b"
