@@ -10,6 +10,7 @@ ollama:
           FROM qwen3:8b
           PARAMETER num_ctx 13560
       - name: "qwen2.5-coder:7b"
+        model: "qwen2.5-coder:7b"
         template: |
           FROM qwen2.5-coder:7b
           PARAMETER num_ctx 131072
