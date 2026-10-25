@@ -5,17 +5,22 @@ ollama:
       enabled: true
     models:
       create:
-        - name: "qwen3:8b"
-          template: |
-            FROM qwen3:8b
-            PARAMETER num_ctx 13560
-        - name: "qwen2.5-coder:7b"
-          template: |
-            FROM qwen2.5-coder:7b
-            PARAMETER num_ctx 8192
+      - name: "qwen3:8b"
+        template: |
+          FROM qwen3:8b
+          PARAMETER num_ctx 13560
+      - name: "qwen2.5-coder:7b"
+        template: |
+          FROM qwen2.5-coder:7b
+          PARAMETER num_ctx 8192
+      - name: "qwen3.6:27b"
+        template: |
+          FROM qwen3.6:27b
+          PARAMETER num_ctx 256000
       run:
-        - "qwen3:8b"
-        - "qwen2.5-coder:7b"
+      - "qwen3:8b"
+      - "qwen2.5-coder:7b"
+      - "qwen3.6:27b"
   httpRoute:
     enabled: true
     parentRefs:
@@ -33,22 +38,22 @@ ollama:
   image:
     repository: harbor.nwallace.io/docker-hub/ollama/ollama
   extraEnv:
-    - name: OLLAMA_MAX_LOADED_MODELS
-      value: '1'
+  - name: OLLAMA_MAX_LOADED_MODELS
+    value: '1'
 
 open-webui:
   enableOpenaiApi: false
   ollama:
     enabled: false
   ollamaUrls:
-    - https://ollama.nwallace.io
+  - https://ollama.nwallace.io
   route:
     enabled: true
     parentRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: gateway-internal
-      namespace: kube-system 
+      namespace: kube-system
     hostnames:
     - webui.nwallace.io
 searxng:
@@ -60,9 +65,9 @@ searxng:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: gateway-internal
-      namespace: kube-system 
+      namespace: kube-system
     hostnames:
-      - searxng.nwallace.io
+    - searxng.nwallace.io
   config:
     settings:
       server:
@@ -72,5 +77,5 @@ searxng:
         autocomplete: ""
         # ⚠️ CRITICAL STEP: Add 'json' to the list of allowed response formats
         formats:
-          - html
-          - json
+        - html
+        - json
