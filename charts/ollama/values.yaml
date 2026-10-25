@@ -40,6 +40,14 @@ ollama:
   extraEnv:
   - name: OLLAMA_MAX_LOADED_MODELS
     value: '1'
+  readinessProbe:
+    enabled: true
+    path: /
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 24
+    successThreshold: 1
 
 open-webui:
   enableOpenaiApi: false
