@@ -9,23 +9,13 @@ ollama:
           template: |
             FROM qwen3:8b
             PARAMETER num_ctx 13560
-        - name: "llama3.1:8b"
-          template: |
-            FROM llama3.1:8b
-            PARAMETER num_ctx 8192
         - name: "qwen2.5-coder:7b"
           template: |
             FROM qwen2.5-coder:7b
             PARAMETER num_ctx 8192
-        - name: "qwen3-coder:8b"
-          template: |
-            FROM qwen3-coder:8b
-            PARAMETER num_ctx 8192
       run:
         - "qwen3:8b"
-        - "llama3.1:8b"
         - "qwen2.5-coder:7b"
-        - "qwen3-coder:8b"
   httpRoute:
     enabled: true
     parentRefs:
