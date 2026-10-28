@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  serviceName: {{ .Release.Name }}
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        {{- include "commonLabels" . | nindent 8 }}
+        app: {{ .Release.Name }}
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: strata
+          image: {{ .Values.image }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-env
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+        labels:
+          {{- include "commonLabels" . | nindent 10 }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.pvc.storageClassName }}
+        resources:
+          requests:
+            storage: {{ .Values.pvc.size }}

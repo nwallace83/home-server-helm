@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-env
+data:
+  STRATA_KV_ROT: '1'
+  STRATA_HC_Q8: '1'
+  MODEL: IQ2_XS
+  TZ: {{ .Values.timezone }}
