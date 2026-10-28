@@ -4,9 +4,9 @@ dependencies:
   version: 1.93.0
 - name: open-webui
   repository: https://helm.openwebui.com
-  version: 17.0.0
+  version: 17.4.0
 - name: searxng
   repository: https://techpipe-io.github.io/searxng-helm-chart
   version: 0.1.11
-digest: sha256:d3e6c44fdc98fe983a60dc4f31dabfa3c5da75c3ab45017f97fe0f2636acb814
-generated: "2026-10-28T14:20:15.675774168Z"
+digest: sha256:ae40d0146f7fc9f5b2cbbbd070f1905af9cd598a1b13bae055f4f128982f18f4
+generated: "2026-10-28T18:20:15.563703397Z"
