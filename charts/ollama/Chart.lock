@@ -1,12 +1,12 @@
 dependencies:
 - name: ollama
   repository: https://helm.otwld.com/
-  version: 1.92.0
+  version: 1.93.0
 - name: open-webui
   repository: https://helm.openwebui.com
   version: 17.0.0
 - name: searxng
   repository: https://techpipe-io.github.io/searxng-helm-chart
   version: 0.1.11
-digest: sha256:bf8d7e3d94ccb0ad10a1934fee3b9c9ccde9abdb6e29e44867e575f3d7b159ff
-generated: "2026-10-26T14:20:16.324525284Z"
+digest: sha256:d3e6c44fdc98fe983a60dc4f31dabfa3c5da75c3ab45017f97fe0f2636acb814
+generated: "2026-10-28T14:20:15.675774168Z"
