@@ -26,3 +26,4 @@ spec:
       jsonPointers:
         - /spec/rules/0/backendRefs/0/group
         - /spec/rules/0/backendRefs/0/kind
+        - /spec/rules/0/backendRefs/0/weight
