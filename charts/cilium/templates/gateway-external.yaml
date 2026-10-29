@@ -52,3 +52,16 @@ spec:
     allowedRoutes:
       namespaces:
         from: All
+  - allowedRoutes:
+      namespaces:
+        from: All
+    name: https
+    hostname: "*.gitlab.nwallace.io"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - group: ''
+        kind: Secret
+        name: nwallace.io-gitlab-external-tls-secret
