@@ -47,19 +47,10 @@ spec:
         - /spec/externalClusters/0/plugin/isWALArchiver
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: gitlab-gitlab
       jsonPointers:
         - /spec/rules/0/backendRefs/0/group
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: gitlab-kas
-      jsonPointers:
-        - /spec/rules/0/backendRefs/0/group
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: gitlab-kas-k8s-proxy
-      jsonPointers:
-        - /spec/rules/0/backendRefs/0/group
+        - /spec/rules/0/backendRefs/0/kind
+        - /spec/rules/0/backendRefs/0/weight
     - group: gateway.networking.k8s.io
       kind: TCPRoute
       name: gitlab-gitlab-shell
