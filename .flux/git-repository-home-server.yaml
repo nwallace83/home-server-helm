@@ -3,7 +3,7 @@ kind: GitRepository
 metadata:
   name: home-server
 spec:
-  interval: 1m
+  interval: 5m
   url: https://gitlab.nwallace.io/home-server/home-server-helm.git
   secretRef:
     name: gitlab-pat
