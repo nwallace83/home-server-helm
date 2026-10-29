@@ -5,6 +5,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 60m
+  install:
+    crds: CreateReplace
   chart:
     spec:
       chart: ./charts/flux
