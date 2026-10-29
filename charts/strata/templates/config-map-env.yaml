@@ -6,5 +6,5 @@ data:
   STRATA_KV_ROT: '1'
   STRATA_HC_Q8: '1'
   MODEL: IQ2_XS
-  API_KEY: ''
+  CONTEXT: 128K
   TZ: {{ .Values.timezone }}

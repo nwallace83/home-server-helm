@@ -57,5 +57,6 @@ spec:
   - .backstage/catalog-smarter-device-manager.yaml
   - .backstage/catalog-sonarr.yaml
   - .backstage/catalog-storage.yaml
+  - .backstage/catalog-strata.yaml
   - .backstage/catalog-vault.yaml
   - .backstage/catalog-vaultwarden.yaml

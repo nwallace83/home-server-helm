@@ -2,6 +2,7 @@ timezone: America/Denver
 image: harbor.nwallace.io/home-server/strata:local
 commonLabels:
   backstage.io/kubernetes-id: strata
+vaultSecretPath: strata
 resources:
   requests:
     nvidia.com/gpu: '1'
