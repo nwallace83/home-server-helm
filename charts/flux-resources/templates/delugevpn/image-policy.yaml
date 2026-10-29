@@ -7,5 +7,7 @@ spec:
   imageRepositoryRef:
     name: delugevpn
   policy:
-    semver:
-      range: ">=2.2"
+    alphabetical:
+      order: asc
+  filterTags:
+    extract: '^([0-9]+)\.([0-9]+)$'
