@@ -55,7 +55,7 @@ spec:
   - allowedRoutes:
       namespaces:
         from: All
-    name: https
+    name: gitlab-wildcard
     hostname: "*.gitlab.nwallace.io"
     port: 443
     protocol: HTTPS
