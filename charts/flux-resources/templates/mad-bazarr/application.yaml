@@ -27,6 +27,10 @@ spec:
         commonLabels:
           backstage.io/kubernetes-id: mad-bazarr
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
     syncOptions:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true

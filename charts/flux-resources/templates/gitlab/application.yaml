@@ -13,8 +13,13 @@ spec:
     repoURL: https://gitlab.nwallace.io/home-server/home-server-helm.git
     targetRevision: HEAD
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
     syncOptions:
       - RespectIgnoreDifferences=true
+      - ServerSideApply=true
   ignoreDifferences:
     - group: apps
       kind: StatefulSet

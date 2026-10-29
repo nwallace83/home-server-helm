@@ -20,5 +20,10 @@ spec:
         - /spec/resourceManager
         - /spec/tolerations
   syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
     syncOptions:
       - RespectIgnoreDifferences=true
+      - ServerSideApply=true
