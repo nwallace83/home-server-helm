@@ -5,7 +5,7 @@ metadata:
   namespace: argo-cd
 spec:
   destination:
-    namespace: strata
+    namespace: home-server
     server: https://kubernetes.default.svc
   project: home-server
   source:
