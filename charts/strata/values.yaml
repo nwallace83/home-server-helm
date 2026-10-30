@@ -53,6 +53,8 @@ searxng:
       namespace: kube-system
     hostnames:
     - searxng.nwallace.io
+  secret:
+    existingSecret: searxng-secret
   config:
     settings:
       server:
