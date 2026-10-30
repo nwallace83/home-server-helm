@@ -1,24 +1,5 @@
 dbImage: harbor.nwallace.io/github/cloudnative-pg/postgresql:17
 
-httpRoute:
-  # Route for the GitLab Web IDE workbench hostnames (workbench-<id>.gitlab.nwallace.io).
-  # gateway-external only terminates TLS on the gitlab-wildcard listener, so the
-  # webservice HTTPRoute rendered by the upstream chart (hostname gitlab.nwallace.io,
-  # sectionName https) does not match these hosts - this route does.
-  parentRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: gateway-external
-    namespace: kube-system
-    sectionName: gitlab-wildcard
-  hostnames:
-  - '*.gitlab.nwallace.io'
-  path: /
-  backendRef:
-    name: gitlab-webservice-default
-    port: 8181
-    weight: 1
-
 global:
   hosts:
     domain: nwallace.io
