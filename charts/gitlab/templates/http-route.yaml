@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}-wildcard
+  labels:
+    {{- include "commonLabels" . | nindent 4 }}
+spec:
+  hostnames:
+    {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
+  parentRefs:
+    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
+  rules:
+    - backendRefs:
+        - group: ''
+          kind: Service
+          name: {{ .Values.httpRoute.backendRef.name }}
+          port: {{ .Values.httpRoute.backendRef.port }}
+          weight: {{ .Values.httpRoute.backendRef.weight }}
+      matches:
+        - path:
+            type: PathPrefix
+            value: {{ .Values.httpRoute.path }}
