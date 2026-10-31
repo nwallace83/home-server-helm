@@ -58,19 +58,3 @@ ollama:
     timeoutSeconds: 3
     failureThreshold: 24
     successThreshold: 1
-
-open-webui:
-  enableOpenaiApi: false
-  ollama:
-    enabled: false
-  ollamaUrls:
-  - https://ollama.nwallace.io
-  route:
-    enabled: true
-    parentRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: gateway-internal
-      namespace: kube-system
-    hostnames:
-    - webui.nwallace.io

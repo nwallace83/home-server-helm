@@ -2,8 +2,5 @@ dependencies:
 - name: ollama
   repository: https://helm.otwld.com/
   version: 1.93.0
-- name: open-webui
-  repository: https://helm.openwebui.com
-  version: 17.5.0
-digest: sha256:4ae0b9834cdf99d6fc2a9b409af6dac5c8e89c8224dc0975f4f8de88600c6437
-generated: "2026-10-31T02:20:17.218035726Z"
+digest: sha256:77f3c417ad0885df5a7dc5222e74a04dc4a006316830b31ff3be5b869cfe9181
+generated: "2026-10-31T10:00:32.510025-06:00"

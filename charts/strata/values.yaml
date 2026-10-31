@@ -65,3 +65,36 @@ searxng:
         formats:
         - html
         - json
+
+open-webui:
+  fullnameOverride: "open-webui"
+  enableOpenaiApi: true
+  openaiBaseApiUrl: https://strata.nwallace.io/v1
+  openaiApiKeyExistingSecret: strata-env
+  openaiApiKeyExistingSecretKey: API_KEY
+  ollama:
+    enabled: false
+  route:
+    enabled: true
+    parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway-internal
+      namespace: kube-system
+    hostnames:
+    - webui.nwallace.io
+  persistence:
+    s3:
+      bucket: web-ui
+      endpointUrl: https://minio.nwallace.io
+      region: us-east-1
+      accessKeyExistingSecret: strata-env
+      accessKeyExistingAccessKey: S3_ACCESS_KEY
+      secretKeyExistingSecret: strata-env
+      secretKeyExistingSecretKey: S3_SECRET_KEY
+  terminals:
+    enabled: true
+  pipelines:
+    enabled: true
+  image:
+    repository: harbor.nwallace.io/github/open-webui/open-webui
