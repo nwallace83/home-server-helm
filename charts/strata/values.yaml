@@ -99,6 +99,11 @@ open-webui:
     extraEnvVars:
       - name: PIPELINES_URLS
         value: "https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py"
+      - name: PIPELINES_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: strata-env
+            key: PIPELINES_API_KEY
     fullnameOverride: web-ui-pipelines
   image:
     repository: harbor.nwallace.io/github/open-webui/open-webui
