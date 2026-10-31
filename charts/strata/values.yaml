@@ -67,9 +67,9 @@ searxng:
         - json
 
 open-webui:
-  fullnameOverride: "open-webui"
+  fullnameOverride: open-webui
   enableOpenaiApi: true
-  openaiBaseApiUrl: https://strata.nwallace.io/v1
+  openaiBaseApiUrl: https://strata.nwallace.io
   openaiApiKeyExistingSecret: strata-env
   openaiApiKeyExistingSecretKey: API_KEY
   ollama:
