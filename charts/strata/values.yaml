@@ -96,5 +96,9 @@ open-webui:
     enabled: true
   pipelines:
     enabled: true
+    extraEnvVars:
+      - name: PIPELINES_URLS
+        value: "https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py"
+    fullnameOverride: web-ui-pipelines
   image:
     repository: harbor.nwallace.io/github/open-webui/open-webui
